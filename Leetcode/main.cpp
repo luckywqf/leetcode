@@ -333,9 +333,23 @@ public:
 	//-------------------------------------------------
 	// 28. https://leetcode.com/problems/implement-strstr/
 	//-------------------------------------------------
-	//?????????????????????????????????????????????????
 	int strStr(string haystack, string needle) {
-
+		if (haystack.empty() || needle.empty()) {
+			return -1;
+		}
+		int j;
+		for (int i = 0; i < haystack.size(); ++i) {
+			for (j = 0; j < needle.size() && i < haystack.size(); ++j, ++i) {
+				if (needle[j] != haystack[i]) {
+					break;
+				}
+			}
+			i -= j;
+			if (j >= needle.size()) {
+				return i;
+			}
+		}
+		return -1;
 	}
 
 	//-------------------------------------------------
@@ -1049,5 +1063,7 @@ public:
 
 int main() {
 	Solution s;
+	string str(32332, 'a');
+	s.strStr(str, str + "b");
 	return 0;
 }
