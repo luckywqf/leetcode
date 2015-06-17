@@ -12,6 +12,7 @@
 #include <unordered_map>
 #include <algorithm>
 #include <functional>
+#include <memory>
 #include <cstdint>
 #include <cstring>
 using namespace std;

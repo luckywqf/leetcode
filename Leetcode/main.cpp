@@ -352,6 +352,52 @@ public:
 		return -1;
 	}
 
+	void getNext(const char *p, int next[]) {
+		int i = 0, j = 1;
+		next[0] = 0;
+		while (p[j] != '\0') {
+			if (p[j] == p[i]) {
+				next[j] = next[j - 1] + 1;
+				++i; ++j;
+			}
+			else {
+				i = 0;
+				next[j] = 0;
+				++j;
+			}
+		}
+	}
+	int KmpStrStr(string haystack, string needle) {
+		if (needle.empty()) {
+			return 0;
+		}
+		if (haystack.empty()) {
+			return -1;
+		}
+		//std::shared_ptr<int> next = std::shared_ptr<int>(new int[needle.size()], [](int *p) {delete []p;});
+		int *next = new int[needle.size()];
+		getNext(needle.c_str(), next);
+		for (int i = 0, j = 0; i < haystack.size();) {
+			for (; j < needle.size() && i < haystack.size(); ++j, ++i) {
+				if (needle[j] != haystack[i]) {
+					break;
+				}
+			}
+			if (j >= needle.size()) {
+				delete []next;
+				return i - j;
+			}
+			else if (j != 0) {
+				j = next[j - 1];
+			}
+			else {
+				++i;
+			}
+		}
+		delete []next;
+		return -1;
+	}
+
 	//-------------------------------------------------
 	// 58. https://leetcode.com/problems/length-of-last-word/
 	//-------------------------------------------------
@@ -1064,6 +1110,6 @@ public:
 int main() {
 	Solution s;
 	string str(32332, 'a');
-	s.strStr(str, str + "b");
+	s.KmpStrStr(str, str + "b");
 	return 0;
 }
