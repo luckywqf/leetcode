@@ -399,6 +399,54 @@ public:
 	}
 
 	//-------------------------------------------------
+	// 38. https://leetcode.com/problems/valid-sudoku/
+	//-------------------------------------------------
+	bool isValidSudoku(vector<vector<char>>& board) {
+		int row[9][10] = { 0 };
+		int column[9][10] = { 0 };
+		int box[9][10] = { 0 };
+		for (int i = 0; i < board.size(); ++i) {
+			for (int j = 0; j < board[i].size(); ++j) {
+				if (board[i][j] != '.') {
+					char c = board[i][j] - '0';
+					int boxP = i / 3 * 3 + j / 3;
+					if (row[i][c] || column[j][c] || box[boxP][c]) {
+						return false;
+					}
+					row[i][c] = 1;
+					column[j][c] = 1;
+					box[boxP][c] = 1;
+				}
+			}
+		}
+		return true;
+	}
+
+	//-------------------------------------------------
+	// 39. https://leetcode.com/problems/count-and-say/
+	//-------------------------------------------------
+	string countAndSayString(string str) {
+		string result;
+		for (int i = 0; i < str.size(); ) {
+			int j = i + 1;
+			while (str[j] == str[i]) {
+				++j;
+			}
+			result += to_string(j - i);
+			result += str[i];
+			i = j;
+		}
+		return result;
+	}
+
+	string countAndSay(int n) {
+		string result = "1";
+		for (int i = 1; i < n; ++i) {
+			result = countAndSayString(result);
+		}
+		return result;
+	}
+	//-------------------------------------------------
 	// 58. https://leetcode.com/problems/length-of-last-word/
 	//-------------------------------------------------
 	int lengthOfLastWord(string s) {
@@ -412,6 +460,37 @@ public:
 			++sum;
 		}
 		return sum;
+	}
+
+	//-------------------------------------------------
+	// 66. https://leetcode.com/problems/plus-one/
+	//-------------------------------------------------
+	vector<int> plusOne(vector<int>& digits) {
+		vector<int> result;
+		int carryBit = 0, bit;
+		for (int i = digits.size() - 1; i >= 0 || carryBit; --i) {
+			if (i >= 0) {
+				bit = digits[i];
+			}
+			else {
+				bit = 0;
+			}
+			if (i == digits.size() - 1) {
+				bit += 1;
+			}
+			else {
+				bit += carryBit;
+			}
+			if (bit > 9) {
+				bit -= 10;
+				carryBit = 1;
+			}
+			else {
+				carryBit = 0;
+			}
+			result.insert(result.begin(), bit);
+		}
+		return result;
 	}
 
 	//-------------------------------------------------
@@ -450,6 +529,21 @@ public:
 		return result;
 	}
 
+
+	//-------------------------------------------------
+	// 70. https://leetcode.com/problems/climbing-stairs/
+	//-------------------------------------------------
+	int climbStairs(int n) {
+		int *ways = new int[n + 1];
+		ways[0] = ways[1] = 1;
+		for (int i = 2; i <= n; ++i) {
+			ways[i] = ways[i - 1] + ways[i - 2];
+		}
+		int result = ways[n];
+		delete []ways;
+		return result;
+	}
+
 	//-------------------------------------------------
 	// 83. https://leetcode.com/problems/remove-duplicates-from-sorted-list/
 	//-------------------------------------------------
@@ -468,6 +562,23 @@ public:
 			}
 		}
 		return head;
+	}
+
+	//-------------------------------------------------
+	// 88. https://leetcode.com/problems/merge-sorted-array/
+	//-------------------------------------------------
+	void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
+		for (int i = 0, j = 0; i < n; ++i) {
+			while (j < m && nums1[j] < nums2[i]) {
+				++j;
+			}
+			for (int x = m; x > j; --x) {
+				nums1[x] = nums1[x - 1];
+			}
+			nums1[j] = nums2[i];
+			++m;
+			++j;
+		}
 	}
 
 	//-------------------------------------------------
@@ -972,28 +1083,24 @@ public:
 	//-------------------------------------------------
 	// 204. https://leetcode.com/problems/count-primes/
 	//-------------------------------------------------
-	//?????????????????????????????????????????????????
-	bool isPrime(int num) {
-		//int upper = sqrt(num);
-		//for (int i = 2; i <= upper; i++) {
-		for (int i = 2; i * i <= num; i++) {
-			if (num % i == 0) {
-				return false;
-			}
-		}
-		return true;
-	}
 	int countPrimes(int n) {
-		int all = 0;
-		for (int i = 1; i < n; i += 2) {
-			if (isPrime(i)) {
-				++all;
+		char *isPrime = new char[n];
+		for (int i = 2; i < n; i++) {
+			isPrime[i] = 1;
+		}
+		for (int i = 2; i * i < n; i++) {
+			if (!isPrime[i]) {
+				continue;
+			}
+			for (int j = i * i; j < n; j += i) {
+				isPrime[j] = 0;
 			}
 		}
-		if (n >= 3) {
-			all += 1;//include 2
+		int count = 0;
+		for (int i = 2; i < n; i++) {
+			if (isPrime[i]) count++;
 		}
-		return all;
+		return count;
 	}
 
 	//-------------------------------------------------
@@ -1100,16 +1207,11 @@ public:
 		return root;
 	}
 
-	string countAndSay(int n) {
-		string result;
-		string str = to_string(n);
-
-	}
 };
 
 int main() {
 	Solution s;
-	string str(32332, 'a');
-	s.KmpStrStr(str, str + "b");
+	auto v = s.convert("PAYPALISHIRING", 3);
+	cout << v;
 	return 0;
 }
