@@ -74,6 +74,55 @@ public:
 	}
 
 	//-------------------------------------------------
+	// 2. https://leetcode.com/problems/add-two-numbers/
+	//-------------------------------------------------
+	ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+		if (l1 == NULL) {
+			return l2;
+		}
+		if (l2 == NULL) {
+			return l1;
+		}
+		ListNode *head = new ListNode(0);
+		ListNode *p = head;
+		int carryBit = 0;
+		int value = 0;
+		while (l1 != NULL && l2 != NULL) {
+			p->next = new ListNode(0);
+			p = p->next;
+			value = l1->val + l2->val + carryBit;
+			p->val = value % 10;
+			carryBit = value / 10;
+
+			l1 = l1->next;
+			l2 = l2->next;
+		}
+
+		while (l1 != NULL) {
+			p->next = new ListNode(0);
+			p = p->next;
+			value = l1->val + carryBit;
+			p->val = value % 10;
+			carryBit = value / 10;
+			l1 = l1->next;
+		}
+		while (l2 != NULL) {
+			p->next = new ListNode(0);
+			p = p->next;
+			value = l2->val + carryBit;
+			p->val = value % 10;
+			carryBit = value / 10;
+			l2 = l2->next;
+		}
+
+		if (carryBit != 0) {
+			p->next = new ListNode(carryBit);
+		}
+
+		return head->next;
+	}
+
+	//-------------------------------------------------
 	// 6. https://leetcode.com/problems/zigzag-conversion/
 	//-------------------------------------------------
 	//?????????????????????????????????????????????????
