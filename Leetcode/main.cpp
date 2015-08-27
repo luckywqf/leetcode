@@ -49,6 +49,31 @@ public:
 	//=================================================
 
 	//-------------------------------------------------
+	// 1. https://leetcode.com/problems/two-sum/
+	//-------------------------------------------------
+	vector<int> twoSum(vector<int>& nums, int target) {
+		vector<pair<int, int>> number;
+		for (int i = 0; i < nums.size(); ++i) {
+			number.emplace_back(i, nums[i]);
+		}
+		sort(number.begin(), number.end(), [](pair<int, int> x, pair<int, int> y) { return x.second < y.second; });
+		int maxAviliable = target - number[0].second;
+		int value = 0;
+		for (int i = 0; number[i].second <= maxAviliable; ++i) {
+			for (int j = i + 1; j < number.size(); ++j) {
+				value = number[i].second + number[j].second;
+				if (value == target) {
+					return { std::min(number[i].first, number[j].first) + 1, 
+						std::max(number[i].first, number[j].first) + 1 };
+				}
+				else if (value > target) {
+					break;
+				}
+			}
+		}
+	}
+
+	//-------------------------------------------------
 	// 6. https://leetcode.com/problems/zigzag-conversion/
 	//-------------------------------------------------
 	//?????????????????????????????????????????????????
@@ -1211,7 +1236,8 @@ public:
 
 int main() {
 	Solution s;
-	auto v = s.convert("PAYPALISHIRING", 3);
-	cout << v;
+	vector<int> nums = { 0, 4, 3, 0 };
+	auto a = s.twoSum(nums, 0);
+	//cout << a;
 	return 0;
 }
