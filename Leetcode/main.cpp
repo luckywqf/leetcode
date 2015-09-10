@@ -123,6 +123,87 @@ public:
 	}
 
 	//-------------------------------------------------
+	// 3. https://leetcode.com/problems/longest-substring-without-repeating-characters/
+	//-------------------------------------------------
+	int lengthOfLongestSubstring(string s) {
+		if (s.empty()) {
+			return 0;
+		}
+		uint8_t dic[256] = { 0 };
+		int maxLen = 0;
+		for (int i = 0; i < s.size(); ++i) {
+			for (int j = i; ; ++j) {
+				if (j == s.size() || dic[s[j]]) {
+					if (j - i > maxLen) {
+						maxLen = j - i;
+					}
+					memset(dic, 0, sizeof(dic));
+					break;
+				}
+				dic[s[j]] = 1;
+			}
+		}
+		return maxLen;
+	}
+
+	//-------------------------------------------------
+	// 4. https://leetcode.com/problems/median-of-two-sorted-arrays/
+	//-------------------------------------------------
+	double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
+		if (nums1.empty()) {
+			if (nums2.size() % 2 == 1) {
+				return nums2[nums2.size() / 2 - 1];
+			}
+			else {
+				return (nums2[nums2.size() / 2 - 1] + nums2[nums2.size() / 2]) / 2;
+			}
+		}
+		if (nums2.empty()) {
+			if (nums1.size() % 2 == 1) {
+				return nums1[nums1.size() / 2 - 1];
+			}
+			else {
+				return (nums1[nums1.size() / 2 - 1] + nums1[nums1.size() / 2]) / 2;
+			}
+		}
+		
+		int lenSum = nums1.size() + nums2.size();
+		int low1(0), low2(0), high1(nums1.size() - 1), high2(nums2.size());
+
+		int mid1, mid2;
+		while (low1 <= high1 && low2 <= high2) {
+			if (nums1[high1] <= nums2[low2]) {
+				if (lenSum % 2 == 1) {
+					if (nums1.size() > nums2.size()) {
+						return nums1[lenSum / 2 - 1];
+					}
+					else {
+						return nums2[lenSum / 2 - 1 - nums1.size()];
+					}
+				}
+				else {
+					if (nums1.size() > nums2.size()) {
+						return (nums1[lenSum / 2 - 1] + nums1[lenSum / 2]) / 2;
+					}
+					else if (nums1.size() == nums2.size()) {
+						return (nums1[high1] + nums2[low2]) / 2;
+					}
+					else {
+						return (nums1[lenSum / 2 - 1 - nums1.size()] + nums1[lenSum / 2 - nums1.size()]) / 2;
+					}
+				}
+			}
+		}
+
+		int leftNums;
+		while (low1 <= high1 && low2 <= high2) {
+			mid1 = (low1 + high1) / 2;
+			mid2 = (low2 + high2) / 2;
+			if (nums1[mid1])
+		}
+	}
+
+	//-------------------------------------------------
 	// 6. https://leetcode.com/problems/zigzag-conversion/
 	//-------------------------------------------------
 	//?????????????????????????????????????????????????
@@ -1285,8 +1366,11 @@ public:
 
 int main() {
 	Solution s;
-	vector<int> nums = { 0, 4, 3, 0 };
-	auto a = s.twoSum(nums, 0);
-	//cout << a;
+	string str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~ ";
+	for (int i = 0; i < 10; i++) {
+		str += str;
+	}
+	str = "ca";
+	auto vaule = s.lengthOfLongestSubstring(str);
 	return 0;
 }
