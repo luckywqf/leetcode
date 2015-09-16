@@ -150,57 +150,62 @@ public:
 	// 4. https://leetcode.com/problems/median-of-two-sorted-arrays/
 	//-------------------------------------------------
 	double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
-		if (nums1.empty()) {
-			if (nums2.size() % 2 == 1) {
-				return nums2[nums2.size() / 2 - 1];
-			}
-			else {
-				return (nums2[nums2.size() / 2 - 1] + nums2[nums2.size() / 2]) / 2;
-			}
-		}
-		if (nums2.empty()) {
-			if (nums1.size() % 2 == 1) {
-				return nums1[nums1.size() / 2 - 1];
-			}
-			else {
-				return (nums1[nums1.size() / 2 - 1] + nums1[nums1.size() / 2]) / 2;
-			}
-		}
-		
-		int lenSum = nums1.size() + nums2.size();
-		int low1(0), low2(0), high1(nums1.size() - 1), high2(nums2.size());
+		int N1 = nums1.size();
+		int N2 = nums2.size();
+		if (N1 < N2) return findMedianSortedArrays(nums2, nums1);   // Make sure A2 is the shorter one.
 
-		int mid1, mid2;
-		while (low1 <= high1 && low2 <= high2) {
-			if (nums1[high1] <= nums2[low2]) {
-				if (lenSum % 2 == 1) {
-					if (nums1.size() > nums2.size()) {
-						return nums1[lenSum / 2 - 1];
-					}
-					else {
-						return nums2[lenSum / 2 - 1 - nums1.size()];
-					}
-				}
-				else {
-					if (nums1.size() > nums2.size()) {
-						return (nums1[lenSum / 2 - 1] + nums1[lenSum / 2]) / 2;
-					}
-					else if (nums1.size() == nums2.size()) {
-						return (nums1[high1] + nums2[low2]) / 2;
-					}
-					else {
-						return (nums1[lenSum / 2 - 1 - nums1.size()] + nums1[lenSum / 2 - nums1.size()]) / 2;
-					}
+		if (N2 == 0) return (nums1[(N1 - 1) / 2] + nums1[N1 / 2]) / 2;  // If A2 is empty
+
+		int lo = 0, hi = N2 * 2;
+		while (lo <= hi) {
+			int mid2 = (lo + hi) / 2;   // Try Cut 2 
+			int mid1 = N1 + N2 - mid2;  // Calculate Cut 1 accordingly
+
+			double L1 = (mid1 == 0) ? INT_MIN : nums1[(mid1 - 1) / 2];  // Get L1, R1, L2, R2 respectively
+			double L2 = (mid2 == 0) ? INT_MIN : nums2[(mid2 - 1) / 2];
+			double R1 = (mid1 == N1 * 2) ? INT_MAX : nums1[(mid1) / 2];
+			double R2 = (mid2 == N2 * 2) ? INT_MAX : nums2[(mid2) / 2];
+
+			if (L1 > R2) lo = mid2 + 1;     // A1's lower half is too big; need to move C1 left (C2 right)
+			else if (L2 > R1) hi = mid2 - 1;    // A2's lower half too big; need to move C2 left.
+			else return (max(L1, L2) + min(R1, R2)) / 2; // Otherwise, that's the right cut.
+		}
+		return -1;
+	}
+
+	//-------------------------------------------------
+	// 5. https://leetcode.com/problems/longest-palindromic-substring/
+	//-------------------------------------------------
+	string longestPalindrome(string s) {
+		if (s.size() <= 1) {
+			return s;
+		}
+		int startPos = 0, len = 1;
+		for (int i = 1; i < s.size(); ++i) {
+			int j, tempLen = 0;
+			for (j = 1; i - j >= 0 && i + j < s.size(); ++j) {
+				if (s[i - j] != s[i + j]) {
+					break;
 				}
 			}
-		}
+			tempLen = (j - 1) * 2 + 1;
+			if (tempLen > len) {
+				len = tempLen;
+				startPos = i - j + 1;
+			}
 
-		int leftNums;
-		while (low1 <= high1 && low2 <= high2) {
-			mid1 = (low1 + high1) / 2;
-			mid2 = (low2 + high2) / 2;
-			if (nums1[mid1])
+			for (j = 1; i - j >= 0 && i + j - 1 < s.size(); ++j) {
+				if (s[i - j] != s[i + j - 1]) {
+					break;
+				}
+			}
+			tempLen = (j - 1) * 2;
+			if (tempLen > len) {
+				len = (j - 1) * 2;
+				startPos = i - j + 1;
+			}
 		}
+		return s.substr(startPos, len);
 	}
 
 	//-------------------------------------------------
@@ -312,6 +317,107 @@ public:
 		return true;
 	}
 
+	//-------------------------------------------------
+	// 11. https://leetcode.com/problems/container-with-most-water/
+	//-------------------------------------------------
+	int maxArea(vector<int>& height) {
+		int maxA = 0;
+		for (int i = 1; i < height.size(); ++i) {
+			int lowH = 0;
+			for (int j = 0; j < i; ++j) {
+				if (height[j] <= lowH) {
+					continue;
+				}
+				int tempA = (i - j) * min(height[i], height[j]);
+				if (tempA > maxA) {
+					maxA = tempA;
+					lowH = height[j];
+				}
+				if (height[i] < height[j]) {
+					break;
+				}
+			}
+		}
+		return maxA;
+	}
+
+	//-------------------------------------------------
+	// 12. https://leetcode.com/problems/integer-to-roman/
+	//-------------------------------------------------
+	string intToRoman(int num) {
+		static map<int, char> romanDict = { {1, 'I'}, {5, 'V'}, {10, 'X'}, {50, 'L'}, {100, 'C'}, {500, 'D'}, {1000, 'M'} };
+		string result;
+
+		if (num < 10) {
+			if (num < 4) {
+				result += string(num, romanDict[1]);
+			} else if (num == 4) {
+				result += romanDict[1];
+				result += romanDict[5];
+			} else if (num == 5) {
+				result += romanDict[5];
+			} else if (num < 9) {
+				result += romanDict[5];
+				result += string(num - 5, romanDict[1]);
+			} else {
+				result += romanDict[1];
+				result += romanDict[10];
+			}
+			return result;
+		}
+		else if (num < 100)
+		{
+			int n10 = num / 10;
+			if (n10 < 4) {
+				result += string(n10, romanDict[10]);
+			}
+			else if (n10 == 4) {
+				result += romanDict[10];
+				result += romanDict[50];
+			}
+			else if (n10 == 5) {
+				result += romanDict[50];
+			}
+			else if (n10 < 9) {
+				result += romanDict[50];
+				result += string(n10 - 5, romanDict[10]);
+			}
+			else {
+				result += romanDict[10];
+				result += romanDict[100];
+			}
+			return result + intToRoman(num % 10);
+		}
+		else if (num < 1000) {
+			int n100 = num / 100;
+			if (n100 < 4) {
+				result += string(n100, romanDict[100]);
+			}
+			else if (n100 == 4) {
+				result += romanDict[100];
+				result += romanDict[500];
+			}
+			else if (n100 == 5) {
+				result += romanDict[500];
+			}
+			else if (n100 < 9) {
+				result += romanDict[500];
+				result += string(n100 - 5, romanDict[100]);
+			}
+			else {
+				result += romanDict[100];
+				result += romanDict[1000];
+			}
+			return result + intToRoman(num % 100);
+		}
+		else {
+			int n1000 = num / 1000;
+			if (n1000 > 0) {
+				result += string(n1000, romanDict[1000]);
+				return result + intToRoman(num % 1000);
+			}
+		}
+	}
 	//-------------------------------------------------
 	// 13. https://leetcode.com/problems/roman-to-integer/
 	//-------------------------------------------------
@@ -1366,11 +1472,6 @@ public:
 
 int main() {
 	Solution s;
-	string str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~ ";
-	for (int i = 0; i < 10; i++) {
-		str += str;
-	}
-	str = "ca";
-	auto vaule = s.lengthOfLongestSubstring(str);
+	cout << s.intToRoman(6);
 	return 0;
 }
