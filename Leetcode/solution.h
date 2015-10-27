@@ -321,6 +321,36 @@ public:
 	}
 
 	//-------------------------------------------------
+	// 10. https://leetcode.com/problems/regular-expression-matching/
+	//-------------------------------------------------
+	bool matchFirst(const char *s, const char *p) {
+		return (*p == *s || (*p == '.' && *s != '\0'));
+	}
+
+	bool isMatch(const char *s, const char *p) {
+		if (*p == '\0') {
+			return *s == '\0';  //empty
+		}
+
+		if (*(p + 1) != '*') {//without *
+			if (!matchFirst(s, p)) {
+				return false;
+			}
+			return isMatch(s + 1, p + 1);
+		}
+		else { //next: with a *
+			if (isMatch(s, p + 2)) {
+				return true;    //try the length of 0
+			}
+			while (matchFirst(s, p)) {      //try all possible lengths 
+				if (isMatch(++s, p + 2)) {
+					return true;
+				}
+			}
+		}
+	}
+
+	//-------------------------------------------------
 	// 11. https://leetcode.com/problems/container-with-most-water/
 	//-------------------------------------------------
 	int maxArea(vector<int>& height) {
@@ -474,6 +504,62 @@ public:
 		}
 	over:
 		return result;
+	}
+
+	//-------------------------------------------------
+	// 15. https://leetcode.com/problems/3sum/
+	//-------------------------------------------------
+	vector<vector<int>> threeSum(vector<int>& nums) {
+		sort(nums.begin(), nums.end());
+		vector<vector<int>> result;
+		int i = 0;
+		// 0 0 0
+		while (nums[i] < 0) ++i;
+		if (nums[i] == 0) {
+			int l = i - 1, h = i + 1;
+			while (h < nums.size() && nums[h] == 0) ++h;
+			if (h - i >= 3) {
+				result.push_back({ 0, 0, 0 });
+			}
+			while (l >= 0 && h < nums.size()) {
+				if (nums[l] == -nums[h]) {
+					result.push_back({ nums[l], 0, nums[h] });
+				}
+				else if (-nums[l] < nums[h]) {
+					--l;
+				}
+				else {
+					++h;
+				}
+			}
+		}
+		else {
+			int l = i - 1, h = i + 1;
+			while (h < nums.size() && nums[h] == 0) ++h;
+			while (l >= 0 && h < nums.size()) {
+				int left = -nums[l] - nums[h];
+				for (int k = h + 1; k < nums.size(); ++k) {
+					if (nums[k] == left) {
+						result.push_back({ nums[l], nums[h], nums[k] });
+						break;
+					}
+					else if (nums[k] > left) {
+						break;
+					}
+				}
+
+				if (-nums[l] >= nums[h]) {
+					result.push_back({ nums[l], 0, nums[h] });
+				}
+				else if (-nums[l] < nums[h]) {
+					--l;
+				}
+				else {
+					++h;
+				}
+			}
+		}
+
 	}
 
 	//-------------------------------------------------
