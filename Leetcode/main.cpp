@@ -16,5 +16,8 @@ int main() {
 
 	vector<int> val = { 5,5,3,5,1,-5,1,-2 };
 	auto v = s.fourSum(val, 4);
+
+
+	auto p = s.generateParenthesis(3);
 	return 0;
 }

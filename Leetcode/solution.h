@@ -742,8 +742,28 @@ public:
 	//-------------------------------------------------
 	// 22. https://leetcode.com/problems/generate-parentheses/
 	//-------------------------------------------------
-	vector<string> generateParenthesis(int n) {
+	vector<string> generateP(string s, int sum, int left) {
+		vector<string> result;
+		if (left == 0) {
+			result.push_back(s);
+			return result;
+		}
+		if (sum == left) {
+			return generateP(s + string(left, ')'), 0, 0);
+		}
+		else if (sum > 0) {
+			auto r = generateP(s + ')', sum - 1, left - 1);
+			auto l = generateP(s + '(', sum + 1, left - 1);
+			l.insert(l.end(), r.begin(), r.end());
+			return l;
+		}
+		else {
+			return generateP(s + '(', sum + 1, left - 1);
+		}
+	}
 
+	vector<string> generateParenthesis(int n) {
+		return generateP("", 0, n * 2);
 	}
 
 
