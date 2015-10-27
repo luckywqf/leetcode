@@ -15,6 +15,7 @@
 #include <memory>
 #include <cstdint>
 #include <cstring>
+#include <cassert>
 using namespace std;
 
 struct ListNode {
