@@ -13,5 +13,8 @@ int main() {
 	assert(s.isMatch("aaa", "a.a") == true);
 	assert(s.isMatch("aaa", "a*a") == true);
 	assert(s.isMatch("aaa", "ab*a*c*a") == true);
+
+	vector<int> val = { 5,5,3,5,1,-5,1,-2 };
+	auto v = s.fourSum(val, 4);
 	return 0;
 }

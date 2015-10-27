@@ -509,57 +509,150 @@ public:
 	//-------------------------------------------------
 	// 15. https://leetcode.com/problems/3sum/
 	//-------------------------------------------------
-	vector<vector<int>> threeSum(vector<int>& nums) {
-		sort(nums.begin(), nums.end());
-		vector<vector<int>> result;
-		int i = 0;
-		// 0 0 0
-		while (nums[i] < 0) ++i;
-		if (nums[i] == 0) {
-			int l = i - 1, h = i + 1;
-			while (h < nums.size() && nums[h] == 0) ++h;
-			if (h - i >= 3) {
-				result.push_back({ 0, 0, 0 });
-			}
-			while (l >= 0 && h < nums.size()) {
-				if (nums[l] == -nums[h]) {
-					result.push_back({ nums[l], 0, nums[h] });
+	vector<vector<int> > threeSum(vector<int> &num) {
+		vector<vector<int> > res;
+		std::sort(num.begin(), num.end());
+		for (int i = 0; i < num.size();) {
+			int target = -num[i];
+			int front = i + 1;
+			int back = num.size() - 1;
+
+			while (front < back) {
+				int sum = num[front] + num[back];
+				// Finding answer which start from number num[i]
+				if (sum < target)
+					front++;
+				else if (sum > target)
+					back--;
+				else {
+					vector<int> triplet(3, 0);
+					triplet[0] = num[i];
+					triplet[1] = num[front];
+					triplet[2] = num[back];
+					res.push_back(triplet);
+
+					while (front < back && num[front] == triplet[1]) front++;
+					while (front < back && num[back] == triplet[2]) back--;
 				}
-				else if (-nums[l] < nums[h]) {
-					--l;
+			}
+			// Processing duplicates of Number 1
+			while (++i < num.size() && num[i] == num[i - 1]);
+		}
+		return res;
+	}
+
+
+	//-------------------------------------------------
+	// 16. https://leetcode.com/problems/3sum-closest/
+	//-------------------------------------------------
+	int threeSumClosest(vector<int>& nums, int target) {
+		int res = INT_MAX;
+		std::sort(nums.begin(), nums.end());
+		for (int i = 0; i < nums.size();) {
+			int left = target - nums[i];
+			int front = i + 1;
+			int back = nums.size() - 1;
+
+			while (front < back) {
+				int delta = nums[front] + nums[back] - left;
+
+				if (delta < 0) {
+					front++;
+				}
+				else if (delta > 0) {
+					back--;
 				}
 				else {
-					++h;
+					return target;
+				}
+				if (myabs(delta) < myabs(res)) {
+					res = delta;
 				}
 			}
+			// Processing duplicates of Number 1
+			while (++i < nums.size() && nums[i] == nums[i - 1]);
+		}
+		return res + target;
+	}
+
+	//-------------------------------------------------
+	// 17. https://leetcode.com/problems/letter-combinations-of-a-phone-number/
+	//-------------------------------------------------
+	vector<string> letterCombinations(string digits) {
+		vector<string> code = {"", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+		vector<string> result;
+		if (digits.empty()) {
+			return result;
+		}
+		else if (digits.size() == 1) {
+			int index = digits[0] - '1';
+			for (int i = 0; i < code[index].size(); ++i) {
+				result.push_back(string(1, code[index][i]));
+			}
+			return result;
 		}
 		else {
-			int l = i - 1, h = i + 1;
-			while (h < nums.size() && nums[h] == 0) ++h;
-			while (l >= 0 && h < nums.size()) {
-				int left = -nums[l] - nums[h];
-				for (int k = h + 1; k < nums.size(); ++k) {
-					if (nums[k] == left) {
-						result.push_back({ nums[l], nums[h], nums[k] });
-						break;
-					}
-					else if (nums[k] > left) {
-						break;
-					}
-				}
-
-				if (-nums[l] >= nums[h]) {
-					result.push_back({ nums[l], 0, nums[h] });
-				}
-				else if (-nums[l] < nums[h]) {
-					--l;
-				}
-				else {
-					++h;
+			int index = digits.back() - '1';
+			digits.pop_back();
+			auto pre = letterCombinations(digits);
+			for (int i = 0; i < code[index].size(); ++i) {
+				for (int j = 0; j < pre.size(); ++j) {
+					result.push_back(pre[j] + code[index][i]);
 				}
 			}
+			return result;
 		}
+	}
 
+	//-------------------------------------------------
+	// 18. https://leetcode.com/problems/4sum/
+	//-------------------------------------------------
+	vector<vector<int> > threeSortedSum(vector<int> &num, int target) {
+		vector<vector<int> > res;
+		for (int i = 0; i < num.size();) {
+			int left = target - num[i];
+			int front = i + 1;
+			int back = num.size() - 1;
+
+			while (front < back) {
+				int sum = num[front] + num[back];
+				// Finding answer which start from number num[i]
+				if (sum < left)
+					front++;
+				else if (sum > left)
+					back--;
+				else {
+					vector<int> triplet(3, 0);
+					triplet[0] = num[i];
+					triplet[1] = num[front];
+					triplet[2] = num[back];
+					res.push_back(triplet);
+
+					while (front < back && num[front] == triplet[1]) front++;
+					while (front < back && num[back] == triplet[2]) back--;
+				}
+			}
+			// Processing duplicates of Number 1
+			while (++i < num.size() && num[i] == num[i - 1]);
+		}
+		return res;
+	}
+	vector<vector<int>> fourSum(vector<int>& nums, int target) {
+		vector<vector<int> > res;
+		std::sort(nums.begin(), nums.end());
+		for (int i = nums.size() - 1; i >= 0;) {
+			int left = target - nums[i];
+			int last = nums[i];
+			nums.pop_back();
+			auto val = threeSortedSum(nums, left);
+			for (auto v : val) {
+				v.push_back(last);
+				res.push_back(v);
+			}
+			while (--i >= 0 && nums[i] == last)
+				nums.pop_back();
+		}
+		return res;
 	}
 
 	//-------------------------------------------------
@@ -645,6 +738,14 @@ public:
 		}
 		return node.next;
 	}
+
+	//-------------------------------------------------
+	// 22. https://leetcode.com/problems/generate-parentheses/
+	//-------------------------------------------------
+	vector<string> generateParenthesis(int n) {
+
+	}
+
 
 	//-------------------------------------------------
 	// 26. https://leetcode.com/problems/remove-duplicates-from-sorted-array/
