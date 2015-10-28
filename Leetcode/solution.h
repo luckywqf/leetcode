@@ -768,6 +768,35 @@ public:
 
 
 	//-------------------------------------------------
+	// 24. https://leetcode.com/problems/swap-nodes-in-pairs/
+	//-------------------------------------------------
+	ListNode* swapPairs(ListNode* head) {
+		if (head == nullptr) {
+			return nullptr;
+		}
+		ListNode* p1 = head;
+		if (p1->next == nullptr) {
+			return p1;
+		}
+		ListNode* result = p1->next;
+		ListNode* next = nullptr, *last = nullptr;
+
+		while (p1 && p1->next != nullptr) {
+			ListNode* p2 = p1->next;
+			next = p2->next;
+			p2->next = p1;
+			if (last != nullptr) {
+				last->next = p2;
+			}
+			last = p1;
+			p1 = next;
+		}
+		last->next = next;
+
+		return result;
+	}
+
+	//-------------------------------------------------
 	// 26. https://leetcode.com/problems/remove-duplicates-from-sorted-array/
 	//-------------------------------------------------
 	int removeDuplicates(vector<int>& nums) {
@@ -874,6 +903,115 @@ public:
 		return -1;
 	}
 
+
+	//-------------------------------------------------
+	// 29. https://leetcode.com/problems/divide-two-integers/
+	//-------------------------------------------------
+	int divide(int dividend, int divisor) {
+		if (divisor == 0) {
+			return INT_MAX;
+		}
+		string result = "0";
+		if ((dividend < 0 && divisor > 0) || (dividend > 0 && divisor < 0)) {
+			result = "-0";
+		}
+		int64_t i1 = myabs((int64_t)dividend);
+		int64_t i2 = myabs((int64_t)divisor);
+		string d1 = to_string(i1);
+		string d2 = to_string(i2);
+
+		int len2 = d2.size();
+		while (d1.size() >= len2) {
+			int64_t step = stoll(d1.substr(0, len2));
+			if (step < i2) {
+				if (d1.size() == len2) {
+					int64_t v = stoll(result);
+					if (v > INT_MAX || v < INT_MIN)
+						return INT_MAX;
+					return v;
+				}
+				else {
+					int len = std::min(len2 + 1, (int)d1.size());
+					step = stoll(d1.substr(0, len));
+					d1 = d1.substr(len);
+				}
+			} else {
+				d1 = d1.substr(len2);
+			}
+
+			int bit = 0;
+			while (step >= i2) {
+				step -= i2;
+				++bit;
+			}
+			result += bit + '0';
+			d1 = to_string(step) + d1;
+		}
+		return stoi(result);
+	}
+
+	//-------------------------------------------------
+	// 31. https://leetcode.com/problems/next-permutation/
+	//-------------------------------------------------
+	void nextPermutation(vector<int>& nums) {
+		if (nums.size() <= 1) {
+			return;
+		}
+		int i;
+		for (i = nums.size() - 2; i >= 0; --i) {
+			if (nums[i] < nums[i + 1]) {
+				break;
+			}
+		}
+		if (i < 0) {
+			sort(nums.begin(), nums.end());
+		}
+		else {
+			int candicate = INT_MAX;
+			int index = 0;
+			for (int j = i + 1; j < nums.size(); ++j) {
+				if (nums[j] > nums[i]) {
+					if (nums[j] < candicate) {
+						index = j;
+						candicate = nums[j];
+					}
+				}
+			}
+			swap(nums[i], nums[index]);
+			sort(nums.begin() + i + 1, nums.end());
+		}
+	}
+
+
+
+	//-------------------------------------------------
+	// 34. https://leetcode.com/problems/search-for-a-range/
+	//-------------------------------------------------
+	vector<int> searchRange(vector<int>& nums, int target) {
+		vector<int> result = { -1, -1 };
+		if (nums.empty()) {
+			return result;
+		}
+		int low = 0, high = nums.size() - 1;
+		int mid;
+		while (low <= high) {
+			mid = (low + high) / 2;
+			if (nums[mid] == target) {
+				break;
+			} else if(nums[mid] > target) {
+				high = mid - 1;
+			}
+			else {
+				low = mid + 1;
+			}
+		}
+
+		low = 0;
+		high = nums.size() - 1;
+
+	}
+
+
 	//-------------------------------------------------
 	// 38. https://leetcode.com/problems/valid-sudoku/
 	//-------------------------------------------------
@@ -922,6 +1060,34 @@ public:
 		}
 		return result;
 	}
+
+
+	//-------------------------------------------------
+	// 46. https://leetcode.com/problems/permutations/
+	//-------------------------------------------------
+	vector<vector<int>> permute(vector<int>& nums) {
+		vector<vector<int>> result;
+		if (nums.empty()) {
+			return result;
+		}
+		if (nums.size() == 1) {
+			result.push_back(nums);
+			return result;
+		} else {
+			int last = nums.back();
+			nums.pop_back();
+			auto lefts = permute(nums);
+			for (auto v : lefts) {
+				for (int i = 0; i <= v.size(); ++i) {
+					auto temp = v;
+					temp.insert(temp.begin() + i, last);
+					result.push_back(temp);
+				}
+			}
+			return result;
+		}
+	}
+
 	//-------------------------------------------------
 	// 58. https://leetcode.com/problems/length-of-last-word/
 	//-------------------------------------------------

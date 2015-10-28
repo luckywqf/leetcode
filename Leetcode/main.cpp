@@ -17,7 +17,25 @@ int main() {
 	vector<int> val = { 5,5,3,5,1,-5,1,-2 };
 	auto v = s.fourSum(val, 4);
 
+	ListNode l(1), *p = &l;
+	for (int i = 2; i < 2; i++) {
+		p->next = new ListNode(i);
+		p = p->next;
+	}
+	auto s24 = s.swapPairs(&l);
 
-	auto p = s.generateParenthesis(3);
+
+	//auto s29 = s.divide(-1060849722, 99958928);
+
+	vector<int> s46 = { 4,2 };
+	//auto r46 = s.permute(s46);
+	//for (auto v : r46) {
+	//	for (auto i : v) {
+	//		cout << i << " ";
+	//	}
+	//	cout << endl;
+	//}
+
+	s.nextPermutation(s46);
 	return 0;
 }
