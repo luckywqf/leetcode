@@ -13,5 +13,8 @@ int main() {
 	assert(s.isMatch("aaa", "a.a") == true);
 	assert(s.isMatch("aaa", "a*a") == true);
 	assert(s.isMatch("aaa", "ab*a*c*a") == true);
+
+	//auto s29 = s.divide(-1060849722, 99958928);
+
 	return 0;
 }

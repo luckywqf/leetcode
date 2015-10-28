@@ -31,3 +31,8 @@ struct TreeNode {
 	TreeNode *right;
 	TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
+
+template<typename T>
+inline T myabs(T t) {
+	return t > 0 ? t : -t;
+}

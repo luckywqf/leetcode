@@ -509,57 +509,150 @@ public:
 	//-------------------------------------------------
 	// 15. https://leetcode.com/problems/3sum/
 	//-------------------------------------------------
-	vector<vector<int>> threeSum(vector<int>& nums) {
-		sort(nums.begin(), nums.end());
-		vector<vector<int>> result;
-		int i = 0;
-		// 0 0 0
-		while (nums[i] < 0) ++i;
-		if (nums[i] == 0) {
-			int l = i - 1, h = i + 1;
-			while (h < nums.size() && nums[h] == 0) ++h;
-			if (h - i >= 3) {
-				result.push_back({ 0, 0, 0 });
-			}
-			while (l >= 0 && h < nums.size()) {
-				if (nums[l] == -nums[h]) {
-					result.push_back({ nums[l], 0, nums[h] });
+	vector<vector<int> > threeSum(vector<int> &num) {
+		vector<vector<int> > res;
+		std::sort(num.begin(), num.end());
+		for (int i = 0; i < num.size();) {
+			int target = -num[i];
+			int front = i + 1;
+			int back = num.size() - 1;
+
+			while (front < back) {
+				int sum = num[front] + num[back];
+				// Finding answer which start from number num[i]
+				if (sum < target)
+					front++;
+				else if (sum > target)
+					back--;
+				else {
+					vector<int> triplet(3, 0);
+					triplet[0] = num[i];
+					triplet[1] = num[front];
+					triplet[2] = num[back];
+					res.push_back(triplet);
+
+					while (front < back && num[front] == triplet[1]) front++;
+					while (front < back && num[back] == triplet[2]) back--;
 				}
-				else if (-nums[l] < nums[h]) {
-					--l;
+			}
+			// Processing duplicates of Number 1
+			while (++i < num.size() && num[i] == num[i - 1]);
+		}
+		return res;
+	}
+
+
+	//-------------------------------------------------
+	// 16. https://leetcode.com/problems/3sum-closest/
+	//-------------------------------------------------
+	int threeSumClosest(vector<int>& nums, int target) {
+		int res = INT_MAX;
+		std::sort(nums.begin(), nums.end());
+		for (int i = 0; i < nums.size();) {
+			int left = target - nums[i];
+			int front = i + 1;
+			int back = nums.size() - 1;
+
+			while (front < back) {
+				int delta = nums[front] + nums[back] - left;
+
+				if (delta < 0) {
+					front++;
+				}
+				else if (delta > 0) {
+					back--;
 				}
 				else {
-					++h;
+					return target;
+				}
+				if (myabs(delta) < myabs(res)) {
+					res = delta;
 				}
 			}
+			// Processing duplicates of Number 1
+			while (++i < nums.size() && nums[i] == nums[i - 1]);
+		}
+		return res + target;
+	}
+
+	//-------------------------------------------------
+	// 17. https://leetcode.com/problems/letter-combinations-of-a-phone-number/
+	//-------------------------------------------------
+	vector<string> letterCombinations(string digits) {
+		vector<string> code = {"", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+		vector<string> result;
+		if (digits.empty()) {
+			return result;
+		}
+		else if (digits.size() == 1) {
+			int index = digits[0] - '1';
+			for (int i = 0; i < code[index].size(); ++i) {
+				result.push_back(string(1, code[index][i]));
+			}
+			return result;
 		}
 		else {
-			int l = i - 1, h = i + 1;
-			while (h < nums.size() && nums[h] == 0) ++h;
-			while (l >= 0 && h < nums.size()) {
-				int left = -nums[l] - nums[h];
-				for (int k = h + 1; k < nums.size(); ++k) {
-					if (nums[k] == left) {
-						result.push_back({ nums[l], nums[h], nums[k] });
-						break;
-					}
-					else if (nums[k] > left) {
-						break;
-					}
-				}
-
-				if (-nums[l] >= nums[h]) {
-					result.push_back({ nums[l], 0, nums[h] });
-				}
-				else if (-nums[l] < nums[h]) {
-					--l;
-				}
-				else {
-					++h;
+			int index = digits.back() - '1';
+			digits.pop_back();
+			auto pre = letterCombinations(digits);
+			for (int i = 0; i < code[index].size(); ++i) {
+				for (int j = 0; j < pre.size(); ++j) {
+					result.push_back(pre[j] + code[index][i]);
 				}
 			}
+			return result;
 		}
+	}
 
+	//-------------------------------------------------
+	// 18. https://leetcode.com/problems/4sum/
+	//-------------------------------------------------
+	vector<vector<int> > threeSortedSum(vector<int> &num, int target) {
+		vector<vector<int> > res;
+		for (int i = 0; i < num.size();) {
+			int left = target - num[i];
+			int front = i + 1;
+			int back = num.size() - 1;
+
+			while (front < back) {
+				int sum = num[front] + num[back];
+				// Finding answer which start from number num[i]
+				if (sum < left)
+					front++;
+				else if (sum > left)
+					back--;
+				else {
+					vector<int> triplet(3, 0);
+					triplet[0] = num[i];
+					triplet[1] = num[front];
+					triplet[2] = num[back];
+					res.push_back(triplet);
+
+					while (front < back && num[front] == triplet[1]) front++;
+					while (front < back && num[back] == triplet[2]) back--;
+				}
+			}
+			// Processing duplicates of Number 1
+			while (++i < num.size() && num[i] == num[i - 1]);
+		}
+		return res;
+	}
+	vector<vector<int>> fourSum(vector<int>& nums, int target) {
+		vector<vector<int> > res;
+		std::sort(nums.begin(), nums.end());
+		for (int i = nums.size() - 1; i >= 0;) {
+			int left = target - nums[i];
+			int last = nums[i];
+			nums.pop_back();
+			auto val = threeSortedSum(nums, left);
+			for (auto v : val) {
+				v.push_back(last);
+				res.push_back(v);
+			}
+			while (--i >= 0 && nums[i] == last)
+				nums.pop_back();
+		}
+		return res;
 	}
 
 	//-------------------------------------------------
@@ -644,6 +737,63 @@ public:
 			p->next = l2;
 		}
 		return node.next;
+	}
+
+	//-------------------------------------------------
+	// 22. https://leetcode.com/problems/generate-parentheses/
+	//-------------------------------------------------
+	vector<string> generateP(string s, int sum, int left) {
+		vector<string> result;
+		if (left == 0) {
+			result.push_back(s);
+			return result;
+		}
+		if (sum == left) {
+			return generateP(s + string(left, ')'), 0, 0);
+		}
+		else if (sum > 0) {
+			auto r = generateP(s + ')', sum - 1, left - 1);
+			auto l = generateP(s + '(', sum + 1, left - 1);
+			l.insert(l.end(), r.begin(), r.end());
+			return l;
+		}
+		else {
+			return generateP(s + '(', sum + 1, left - 1);
+		}
+	}
+
+	vector<string> generateParenthesis(int n) {
+		return generateP("", 0, n * 2);
+	}
+
+
+	//-------------------------------------------------
+	// 24. https://leetcode.com/problems/swap-nodes-in-pairs/
+	//-------------------------------------------------
+	ListNode* swapPairs(ListNode* head) {
+		if (head == nullptr) {
+			return nullptr;
+		}
+		ListNode* p1 = head;
+		if (p1->next == nullptr) {
+			return p1;
+		}
+		ListNode* result = p1->next;
+		ListNode* next = nullptr, *last = nullptr;
+
+		while (p1 && p1->next != nullptr) {
+			ListNode* p2 = p1->next;
+			next = p2->next;
+			p2->next = p1;
+			if (last != nullptr) {
+				last->next = p2;
+			}
+			last = p1;
+			p1 = next;
+		}
+		last->next = next;
+
+		return result;
 	}
 
 	//-------------------------------------------------
@@ -753,6 +903,144 @@ public:
 		return -1;
 	}
 
+
+	//-------------------------------------------------
+	// 29. https://leetcode.com/problems/divide-two-integers/
+	//-------------------------------------------------
+	int divide(int dividend, int divisor) {
+		if (divisor == 0) {
+			return INT_MAX;
+		}
+		string result = "0";
+		if ((dividend < 0 && divisor > 0) || (dividend > 0 && divisor < 0)) {
+			result = "-0";
+		}
+		int64_t i1 = myabs((int64_t)dividend);
+		int64_t i2 = myabs((int64_t)divisor);
+		string d1 = to_string(i1);
+		string d2 = to_string(i2);
+
+		int len2 = d2.size();
+		while (d1.size() >= len2) {
+			int64_t step = stoll(d1.substr(0, len2));
+			if (step < i2) {
+				if (d1.size() == len2) {
+					int64_t v = stoll(result);
+					if (v > INT_MAX || v < INT_MIN)
+						return INT_MAX;
+					return v;
+				}
+				else {
+					int len = std::min(len2 + 1, (int)d1.size());
+					step = stoll(d1.substr(0, len));
+					d1 = d1.substr(len);
+				}
+			} else {
+				d1 = d1.substr(len2);
+			}
+
+			int bit = 0;
+			while (step >= i2) {
+				step -= i2;
+				++bit;
+			}
+			result += bit + '0';
+			d1 = to_string(step) + d1;
+		}
+		return stoi(result);
+	}
+
+	//-------------------------------------------------
+	// 31. https://leetcode.com/problems/next-permutation/
+	//-------------------------------------------------
+	void nextPermutation(vector<int>& nums) {
+		if (nums.size() <= 1) {
+			return;
+		}
+		int i;
+		for (i = nums.size() - 2; i >= 0; --i) {
+			if (nums[i] < nums[i + 1]) {
+				break;
+			}
+		}
+		if (i < 0) {
+			sort(nums.begin(), nums.end());
+		}
+		else {
+			int candicate = INT_MAX;
+			int index = 0;
+			for (int j = i + 1; j < nums.size(); ++j) {
+				if (nums[j] > nums[i]) {
+					if (nums[j] < candicate) {
+						index = j;
+						candicate = nums[j];
+					}
+				}
+			}
+			swap(nums[i], nums[index]);
+			sort(nums.begin() + i + 1, nums.end());
+		}
+	}
+
+
+
+	//-------------------------------------------------
+	// 34. https://leetcode.com/problems/search-for-a-range/
+	//-------------------------------------------------
+	vector<int> searchRange(vector<int>& nums, int target) {
+		vector<int> result = { -1, -1 };
+		if (nums.empty()) {
+			return result;
+		}
+		int low = 0, high = nums.size() - 1;
+		int mid;
+		while (low <= high) {
+			mid = (low + high) / 2;
+			if (nums[mid] == target) {
+				break;
+			} else if(nums[mid] > target) {
+				high = mid - 1;
+			}
+			else {
+				low = mid + 1;
+			}
+		}
+		if (low > high) {
+			return { -1, -1 };
+		}
+		auto mid1 = mid;
+		while (low <= mid1) {
+			result[0] = (low + mid1) / 2;
+			if (nums[result[0]] == target) {
+				if (result[0] == 0 || nums[result[0] - 1] != target) {
+					break;
+				}
+				else {
+					mid1 = result[0] - 1;
+				}
+			} else {
+				low = result[0] + 1;
+			}
+		}
+
+		while (mid <= high) {
+			result[1] = (high + mid) / 2;
+			if (nums[result[1]] == target) {
+				if (result[1] == nums.size() - 1 || nums[result[1] + 1] != target) {
+					break;
+				}
+				else {
+					mid = result[1] + 1;
+				}
+			}
+			else {
+				high = result[1] - 1;
+			}
+		}
+		return result;
+	}
+
+
 	//-------------------------------------------------
 	// 38. https://leetcode.com/problems/valid-sudoku/
 	//-------------------------------------------------
@@ -801,6 +1089,34 @@ public:
 		}
 		return result;
 	}
+
+
+	//-------------------------------------------------
+	// 46. https://leetcode.com/problems/permutations/
+	//-------------------------------------------------
+	vector<vector<int>> permute(vector<int>& nums) {
+		vector<vector<int>> result;
+		if (nums.empty()) {
+			return result;
+		}
+		if (nums.size() == 1) {
+			result.push_back(nums);
+			return result;
+		} else {
+			int last = nums.back();
+			nums.pop_back();
+			auto lefts = permute(nums);
+			for (auto v : lefts) {
+				for (int i = 0; i <= v.size(); ++i) {
+					auto temp = v;
+					temp.insert(temp.begin() + i, last);
+					result.push_back(temp);
+				}
+			}
+			return result;
+		}
+	}
+
 	//-------------------------------------------------
 	// 58. https://leetcode.com/problems/length-of-last-word/
 	//-------------------------------------------------
