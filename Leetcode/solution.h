@@ -1163,6 +1163,127 @@ public:
 	}
 
 	//-------------------------------------------------
+	// 40. https://leetcode.com/problems/combination-sum-ii/
+	//-------------------------------------------------
+	vector<vector<int> > combinationSum2(vector<int>& candidates, int target) {
+		sort(candidates.begin(), candidates.end());
+		vector<vector<int>> result;
+		vector<int> current;
+		int order = 0;
+		combinationSum2P(candidates, target, order, result, current);
+		return result;
+	}
+
+	void combinationSum2P(vector<int> candidates, int target, int order, vector<vector<int>> &result, vector<int> &current) {
+
+		if (target == 0) {
+			result.push_back(current);
+			return ;
+		}
+		if (target < 0) {
+			return ;
+		}
+	
+		for (int i = order; i < candidates.size(); ++i) {
+			if (i > order && candidates[i] == candidates[i - 1]) {
+				continue;
+			}
+			current.push_back(candidates[i]);
+			combinationSum2P(candidates, target - candidates[i], i + 1, result, current);
+			current.pop_back();
+		}
+
+		return;
+	}
+
+	//-------------------------------------------------
+	// 43. https://leetcode.com/problems/multiply-strings/
+	//-------------------------------------------------
+	const unsigned char ANSII_CHAR_0 = '0';
+	inline int AnsiiToNumber(char c) {
+		return c - ANSII_CHAR_0;
+	}
+	inline char NumberToAnsii(unsigned char n) {
+		return n + ANSII_CHAR_0;
+	}
+	string MultiplyOneBit(const string &base, unsigned int number) {
+		if (number == 0)
+			return "0";
+		if (number == 1)
+			return base;
+
+		string result;
+		result.resize(base.length() + 1);
+		unsigned int carryBit = 0; //进位
+		unsigned int oneBit; //当前位
+		for (int i = base.length() - 1, j = base.length(); i >= 0; i--, j--) {
+			oneBit = number * AnsiiToNumber(base[i]);
+			oneBit += carryBit;
+			result[j] = NumberToAnsii(oneBit % 10);
+			carryBit = oneBit / 10;
+		}
+		if (carryBit == 0) {
+			return result.substr(1);
+		}
+		else {
+			result[0] = NumberToAnsii(carryBit);
+			return result;
+		}
+	}
+
+	//第一个数与第二个数左移leftbits位的和
+	string ShiftAdd(const string &first, const string& second, unsigned int leftbits) {
+		string result;
+		result.resize(max(first.length(), second.length() + leftbits) + 1);
+		int vindex = result.size() - 1;
+		int findex = first.length() - 1;
+		int sindex = second.length() - 1;
+		for (unsigned int i = 0; i < leftbits; i++) {
+			result[vindex--] = first[findex--];
+		}
+		unsigned int carryBit = 0;
+		unsigned int oneBit;
+		while (findex >= 0 && sindex >= 0) {
+			oneBit = AnsiiToNumber(first[findex--]) + AnsiiToNumber(second[sindex--]) + carryBit;
+			result[vindex--] = NumberToAnsii(oneBit % 10);
+			carryBit = oneBit / 10;
+		}
+		while (findex >= 0) {
+			oneBit = AnsiiToNumber(first[findex--]) + carryBit;
+			result[vindex--] = NumberToAnsii(oneBit % 10);
+			carryBit = oneBit / 10;
+		}
+		while (sindex >= 0) {
+			oneBit = AnsiiToNumber(second[sindex--]) + carryBit;
+			result[vindex--] = NumberToAnsii(oneBit % 10);
+			carryBit = oneBit / 10;
+		}
+		if (carryBit == 0) {
+			return result.substr(1);
+		}
+		else {
+			result[0] = NumberToAnsii(carryBit);
+			return result;
+		}
+	}
+	string multiply(string num1, string num2) {
+		string result("0");
+		vector<string> base10(10); //为计算方便把乘数的0-9倍计算出来
+		for (int i = 0; i < 10; i++) {
+			base10[i] = MultiplyOneBit(num1, i);
+		}
+		for (int i = num2.length() - 1, j = 0; i >= 0; i--, j++) {
+			result = ShiftAdd(result, base10[AnsiiToNumber(num2[i])], j);
+		}
+		int i = 0;
+		while (result[i] == '0' && i < result.size() - 1) {
+			++i;
+		}
+		result = result.substr(i);
+		return result;
+	}
+
+	//-------------------------------------------------
 	// 46. https://leetcode.com/problems/permutations/
 	//-------------------------------------------------
 	vector<vector<int>> permute(vector<int>& nums) {
