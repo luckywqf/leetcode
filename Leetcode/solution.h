@@ -1088,7 +1088,7 @@ public:
 	}
 
 	//-------------------------------------------------
-	// 39. https://leetcode.com/problems/count-and-say/
+	// 38. https://leetcode.com/problems/count-and-say/
 	//-------------------------------------------------
 	string countAndSayString(string str) {
 		string result;
@@ -1112,6 +1112,55 @@ public:
 		return result;
 	}
 
+
+	//-------------------------------------------------
+	// 39. https://leetcode.com/problems/combination-sum/
+	//-------------------------------------------------
+	vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+		vector<vector<int>> result;
+		set<vector<int>> resultSet;
+		sort(candidates.begin(), candidates.end());
+		if (candidates.empty() || target < candidates[0]) {
+			return result;
+		}
+		
+		vector<int> one;
+		int i = 0;
+		for (; i < candidates.size(); ++i) {
+			if (candidates[i] == target) {
+				one.push_back(target);
+				break;
+			}
+		}
+		if (!one.empty()) {
+			resultSet.insert(one);
+		}
+
+		for (auto v : candidates) {
+			auto solution = combinationSum(candidates, target - v);
+			if (solution.empty()) {
+				continue;
+			}
+			for (auto &s : solution) {
+				bool found = false;
+				for (vector<int>::iterator it = s.begin(); it != s.end(); ++it) {
+					if (*it > v) {
+						s.insert(it, v);
+						found = true;
+						break;
+					}
+				}
+				if (!found) {
+					s.push_back(v);
+				}
+			}
+			resultSet.insert(solution.begin(), solution.end());
+		}
+		for (auto v : resultSet) {
+			result.push_back(v);
+		}
+		return result;
+	}
 
 	//-------------------------------------------------
 	// 46. https://leetcode.com/problems/permutations/
