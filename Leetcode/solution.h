@@ -1324,6 +1324,25 @@ public:
 		}
 	}
 
+
+	//-------------------------------------------------
+	// 49. https://leetcode.com/problems/anagrams/
+	//-------------------------------------------------
+	vector<vector<string>> groupAnagrams(vector<string>& strs) {
+		unordered_map<string, vector<string>> result;
+		for (auto str : strs) {
+			auto copy = str;
+			sort(copy.begin(), copy.end());
+			result[copy].push_back(str);
+		}
+		vector<vector<string>> value;
+		for (auto x : result) {
+			sort(x.second.begin(), x.second.end());
+			value.push_back(x.second); 
+		}
+		return value;
+	}
+
 	//-------------------------------------------------
 	// 50. https://leetcode.com/problems/powx-n/
 	//-------------------------------------------------
