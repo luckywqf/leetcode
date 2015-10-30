@@ -1308,6 +1308,34 @@ public:
 			return result;
 		}
 	}
+	//-------------------------------------------------
+	// 50. https://leetcode.com/problems/powx-n/
+	//-------------------------------------------------
+	double myPow(double x, int n) {
+		if (n == 0) {
+			return 1;
+		}
+		else if (n < 0) {
+			x = 1 / x;
+			n = -n;
+		}
+		return myPowPos(x, n);
+	}
+
+	double myPowPos(double x, int n) {
+		if (n == 1) {
+			return x;
+		}
+		double result = x;
+
+		const int maxRange = INT_MAX / 2;
+		int maxi = min(n / 2, maxRange);
+		int i = 1;
+		for (; i < maxi; i *= 2) {
+			result *= result;
+		}
+		return result * myPowPos(x, n - i);
+	}
 
 	//-------------------------------------------------
 	// 58. https://leetcode.com/problems/length-of-last-word/
