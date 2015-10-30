@@ -1308,6 +1308,22 @@ public:
 			return result;
 		}
 	}
+
+	//-------------------------------------------------
+	// 48. https://leetcode.com/problems/rotate-image/
+	//-------------------------------------------------
+	void rotate(vector<vector<int>>& matrix) {
+		for (int i = 0, j = matrix.size() - 1; i < j; ++i, --j) {
+			swap(matrix[i], matrix[j]);
+		}
+		int n = matrix.size();
+		for (int i = 0; i < n; ++i) {
+			for (int j = i + 1; j < n; ++j) {
+				swap(matrix[i][j], matrix[j][i]);
+			}
+		}
+	}
+
 	//-------------------------------------------------
 	// 50. https://leetcode.com/problems/powx-n/
 	//-------------------------------------------------
