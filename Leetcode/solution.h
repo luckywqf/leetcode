@@ -2137,4 +2137,27 @@ public:
 		return root;
 	}
 
+	//-------------------------------------------------
+	// 299. https://leetcode.com/problems/bulls-and-cows/
+	//-------------------------------------------------
+	string getHint(string secret, string guess) {
+		int  bull = 0, cows = 0;
+		int secretDic[256] = {0};
+		for (int i = 0; i < secret.size(); ++i) {
+			if (secret[i] == guess[i]) {
+				++bull;
+				guess[i] = 0;
+			}
+			else {
+				secretDic[secret[i]] += 1;
+			}
+		}
+		for (int i = 0; i < guess.size(); ++i) {
+			if (secretDic[guess[i]] > 0) {
+				++cows;
+				secretDic[guess[i]] -= 1;
+			}
+		}
+		return to_string(bull) + "A" + to_string(cows) + "B";
+	}
 };
