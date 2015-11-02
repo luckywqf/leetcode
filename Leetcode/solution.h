@@ -1530,6 +1530,35 @@ public:
 		return result;
 	}
 
+
+	//-------------------------------------------------
+	// 60. https://leetcode.com/problems/permutation-sequence/
+	//-------------------------------------------------
+	string getPermutation(int n, int k) {
+		string desOrder;
+		for (int i = 1; i <= n; ++i) {
+			desOrder.push_back('0' + i);
+		}
+
+		string result;
+		int nextp = 1, p = n - 1;
+		for (int i = 2; i < n; ++i) {
+			nextp *= i;
+		}
+
+		while (p > 0) {
+			int index = (k - 1) / nextp;
+			k = (k - 1) % nextp + 1;
+			nextp /= p;
+			--p;
+			result.push_back(desOrder[index]);
+			desOrder.erase(desOrder.begin() + index);
+		}
+		result.push_back(desOrder[0]);
+		return result;
+	}
+
+
 	//-------------------------------------------------
 	// 66. https://leetcode.com/problems/plus-one/
 	//-------------------------------------------------

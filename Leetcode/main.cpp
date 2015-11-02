@@ -26,5 +26,7 @@ int main() {
 	auto out55_1 = s.canJump(in55_1);
 	auto out55_2 = s.canJump(in55_2);
 	auto out59 = s.generateMatrix(3);
+
+	auto out60 = s.getPermutation(4, 4);
 	return 0;
 }
