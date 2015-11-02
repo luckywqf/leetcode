@@ -1463,22 +1463,11 @@ public:
 	// 55. https://leetcode.com/problems/jump-game/
 	//-------------------------------------------------
 	bool canJump(vector<int>& nums) {
-		if (nums.empty()) {
-			return false;
-		}
-		vector<bool> jumps(nums.size(), false);
-		jumps[nums.size() - 1] = true;
-		for (int i = nums.size() - 2; i >= 0; --i) {
-			for (int j = 1; j <= nums[i] && i + j < nums.size(); ++j) {
-				if (jumps[i + j]) {
-					jumps[i] = true;
-					break;
-				}
-			}
-		}
-		return jumps[0];
+		int i = 0;
+		for (int reach = 0; i < nums.size() && i <= reach; ++i)
+			reach = max(i + nums[i], reach);
+		return i == nums.size();
 	}
-
 
 	//-------------------------------------------------
 	// 58. https://leetcode.com/problems/length-of-last-word/
