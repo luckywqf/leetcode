@@ -22,8 +22,17 @@ struct ListNode {
 	int val;
 	ListNode *next;
 	ListNode(int x) : val(x), next(NULL) {}
-
 };
+
+inline int GetListLength(ListNode *head) {
+	int len = 0;
+	ListNode *p = head;
+	while (p) {
+		++len;
+		p = p->next;
+	}
+	return len;
+}
 
 struct TreeNode {
 	int val;

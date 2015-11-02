@@ -1558,6 +1558,40 @@ public:
 		return result;
 	}
 
+	//-------------------------------------------------
+	// 61. https://leetcode.com/problems/rotate-list/
+	//-------------------------------------------------
+	ListNode* rotateRight(ListNode* head, int k) {
+		if (head == nullptr) {
+			return head;
+		}
+		int len = GetListLength(head);
+		k = k % len;
+		if (k == 0) {
+			return head;
+		}
+
+		ListNode *end = head;
+		int index = 1;
+		while (index < k) {
+			++index;
+			end = end->next;
+		}
+		ListNode *result = head;
+		ListNode *last = nullptr;
+		while (end->next) {
+			end = end->next;
+			last = result;
+			result = result->next;
+		}
+		last->next = nullptr;
+		ListNode *p = result;
+		while (p->next) {
+			p = p->next;
+		}
+		p->next = head;
+		return result;
+	}
 
 	//-------------------------------------------------
 	// 66. https://leetcode.com/problems/plus-one/

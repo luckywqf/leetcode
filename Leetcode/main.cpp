@@ -28,5 +28,9 @@ int main() {
 	auto out59 = s.generateMatrix(3);
 
 	auto out60 = s.getPermutation(4, 4);
+
+	ListNode *head = new ListNode(1);
+	head->next = new ListNode(2);
+	auto out61 = s.rotateRight(nullptr, 0);
 	return 0;
 }
