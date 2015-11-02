@@ -25,5 +25,6 @@ int main() {
 	vector<int> in55_2 = { 3, 2, 1, 0, 4 };
 	auto out55_1 = s.canJump(in55_1);
 	auto out55_2 = s.canJump(in55_2);
+	auto out59 = s.generateMatrix(3);
 	return 0;
 }

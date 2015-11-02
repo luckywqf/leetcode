@@ -1486,6 +1486,51 @@ public:
 	}
 
 	//-------------------------------------------------
+	// 59. https://leetcode.com/problems/spiral-matrix-ii/
+	//-------------------------------------------------
+	vector<vector<int>> generateMatrix(int n) {
+		vector<vector<int>> result;
+		for (int i = 0; i < n; ++i) {
+			result.emplace_back(n, 0);
+		}
+		int num = 1;
+		int rowIndex = 0, columnIndex = 0;
+		int rowMin = 0, columnMin = 0;
+		int rowMax = n - 1;
+		int columnMax = n - 1;
+		while (rowMin <= rowMax && columnMin <= columnMax) {
+			for (columnIndex = columnMin; columnIndex <= columnMax; ++columnIndex) {
+				result[rowIndex][columnIndex] = num++;
+			}
+			--columnIndex;
+			--columnMax;
+
+			++rowMin;
+			for (rowIndex = rowMin; rowIndex <= rowMax; ++rowIndex) {
+				result[rowIndex][columnIndex] = num++;
+			}
+			--rowIndex;
+			--rowMax;
+
+			if (rowIndex >= rowMin) {
+				for (columnIndex = columnMax; columnIndex >= columnMin; --columnIndex) {
+					result[rowIndex][columnIndex] = num++;
+				}
+				++columnIndex;
+			}
+			++columnMin;
+
+			if (columnIndex <= columnMax) {
+				for (rowIndex = rowMax; rowIndex >= rowMin; --rowIndex) {
+					result[rowIndex][columnIndex] = num++;
+				}
+				++rowIndex;
+			}
+		}
+		return result;
+	}
+
+	//-------------------------------------------------
 	// 66. https://leetcode.com/problems/plus-one/
 	//-------------------------------------------------
 	vector<int> plusOne(vector<int>& digits) {
