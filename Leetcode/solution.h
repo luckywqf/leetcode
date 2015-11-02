@@ -1959,6 +1959,31 @@ public:
 	}
 
 	//-------------------------------------------------
+	// 200. https://leetcode.com/problems/number-of-islands/
+	//-------------------------------------------------
+	int numIslands(vector<vector<char>>& grid) {
+		int result = 0;
+		if (grid.empty()) {
+			return result;
+		}
+		for (int i = 0; i < grid.size(); ++i) {
+			grid[i].insert(grid[i].begin(), '0');
+		}
+		grid.insert(grid.begin(), vector<char>(grid[0].size(), '0'));
+
+		for (int i = 1; i < grid.size(); ++i) {
+			for (int j = 1; j < grid[i].size(); ++j) {
+				if (grid[i][j] == '1') {
+					if (grid[i - 1][j] == '0' && grid[i][j - 1] == '0'){
+						result++;
+					}
+				}
+			}
+		}
+		return result;
+	}
+
+	//-------------------------------------------------
 	// 202. https://leetcode.com/problems/happy-number/
 	//-------------------------------------------------
 	bool happyTest(int n, set<int>& intSet) {
