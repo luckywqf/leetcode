@@ -1593,6 +1593,23 @@ public:
 		return result;
 	}
 
+
+	//-------------------------------------------------
+	// 62. https://leetcode.com/problems/unique-paths/
+	//-------------------------------------------------
+	int uniquePaths(int m, int n) {
+		vector<vector<int>> paths;
+		for (int i = 0; i < m; ++i) {
+			paths.emplace_back(n, 1);
+		}
+		for (int i = 1; i < m; ++i) {
+			for (int j = 1; j < n; ++j) {
+				paths[i][j] = paths[i - 1][j] + paths[i][j - 1];
+			}
+		}
+		return paths[m - 1][n - 1];
+	}
+
 	//-------------------------------------------------
 	// 66. https://leetcode.com/problems/plus-one/
 	//-------------------------------------------------
