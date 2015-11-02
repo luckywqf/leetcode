@@ -17,5 +17,13 @@ int main() {
 	vector<vector<char>> in = { {'1','0','1','1','0','1','1'} };
 	auto v = s.numIslands(in);
 	cout << v << endl;
+
+	//A = [2, 3, 1, 1, 4], return true.
+
+	//	A = [3, 2, 1, 0, 4], return false.
+	vector<int> in55_1 = { 2, 3, 1, 1, 4 };
+	vector<int> in55_2 = { 3, 2, 1, 0, 4 };
+	auto out55_1 = s.canJump(in55_1);
+	auto out55_2 = s.canJump(in55_2);
 	return 0;
 }
