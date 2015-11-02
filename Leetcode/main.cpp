@@ -32,5 +32,7 @@ int main() {
 	ListNode *head = new ListNode(1);
 	head->next = new ListNode(2);
 	auto out61 = s.rotateRight(nullptr, 0);
+
+	auto out69 = s.mySqrt(2147395599);
 	return 0;
 }

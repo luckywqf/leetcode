@@ -1740,6 +1740,27 @@ public:
 		return result;
 	}
 
+	//-------------------------------------------------
+	// 69. https://leetcode.com/problems/sqrtx/
+	//-------------------------------------------------
+	int mySqrt(int x) {
+		int low = 0, high = x;
+		int64_t mid, mid2;
+		while (low <= high) {
+			mid = (low + high) / 2;
+			mid2 = mid * mid;
+			if (mid2 == x) {
+				return mid;
+			}
+			else if (mid2 < x) {
+				low = mid + 1;
+			}
+			else {
+				high = mid - 1;
+			}
+		}
+		return high;
+	}
 
 	//-------------------------------------------------
 	// 70. https://leetcode.com/problems/climbing-stairs/
