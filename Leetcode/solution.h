@@ -1310,6 +1310,27 @@ public:
 	}
 
 	//-------------------------------------------------
+	// 47. https://leetcode.com/problems/permutations-ii/
+	//-------------------------------------------------
+	void recursion(vector<int> num, int i, int j, vector<vector<int> > &res) {
+		if (i == j - 1) {
+			res.push_back(num);
+			return;
+		}
+		for (int k = i; k < j; k++) {
+			if (i != k && num[i] == num[k]) continue;
+			swap(num[i], num[k]);
+			recursion(num, i + 1, j, res);
+		}
+	}
+	vector<vector<int> > permuteUnique(vector<int> &num) {
+		sort(num.begin(), num.end());
+		vector<vector<int> >res;
+		recursion(num, 0, num.size(), res);
+		return res;
+	}
+
+	//-------------------------------------------------
 	// 48. https://leetcode.com/problems/rotate-image/
 	//-------------------------------------------------
 	void rotate(vector<vector<int>>& matrix) {
@@ -1370,6 +1391,71 @@ public:
 			result *= result;
 		}
 		return result * myPowPos(x, n - i);
+	}
+
+	//-------------------------------------------------
+	// 53. https://leetcode.com/problems/maximum-subarray/
+	//-------------------------------------------------
+	int maxSubArray(vector<int>& nums) {
+		int max = nums[0];
+		vector<int> sum(nums.size());
+		sum[0] = nums[0];
+		for (int i = 1; i < nums.size(); ++i) {
+			if (sum[i - 1] < 0) {
+				sum[i] = nums[i];
+			}
+			else {
+				sum[i] = sum[i - 1] + nums[i];
+			}
+			if (max < sum[i]) {
+				max = sum[i];
+			}
+		}
+		return max;
+	}
+
+	//-------------------------------------------------
+	// 54. https://leetcode.com/problems/spiral-matrix/
+	//-------------------------------------------------
+	vector<int> spiralOrder(vector<vector<int>>& matrix) {
+		vector<int> result;
+		if (matrix.empty()) {
+			return result;
+		}
+		int rowIndex = 0, columnIndex = 0;
+		int rowMin = 0, columnMin = 0;
+		int rowMax = matrix.size() - 1;
+		int columnMax = matrix[0].size() - 1;
+		while (rowMin <= rowMax && columnMin <= columnMax) {
+			for (columnIndex = columnMin; columnIndex <= columnMax; ++columnIndex) {
+				result.push_back(matrix[rowIndex][columnIndex]);
+			}
+			--columnIndex;
+			--columnMax;
+
+			++rowMin;
+			for (rowIndex = rowMin; rowIndex <= rowMax; ++rowIndex) {
+				result.push_back(matrix[rowIndex][columnIndex]);
+			}
+			--rowIndex;
+			--rowMax;
+
+			if (rowIndex >= rowMin) {
+				for (columnIndex = columnMax; columnIndex >= columnMin; --columnIndex) {
+					result.push_back(matrix[rowIndex][columnIndex]);
+				}
+				++columnIndex;
+			}
+			++columnMin;
+
+			if (columnIndex <= columnMax) {
+				for (rowIndex = rowMax; rowIndex >= rowMin; --rowIndex) {
+					result.push_back(matrix[rowIndex][columnIndex]);
+				}
+				++rowIndex;
+			}
+		}
+		return result;
 	}
 
 	//-------------------------------------------------
