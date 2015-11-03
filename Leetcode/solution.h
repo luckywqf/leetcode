@@ -1822,6 +1822,35 @@ public:
 		return result;
 	}
 
+
+	//-------------------------------------------------
+	// 74. https://leetcode.com/problems/search-a-2d-matrix/
+	//-------------------------------------------------
+	bool searchMatrix(vector<vector<int>>& matrix, int target) {
+		if (matrix.empty()) {
+			return false;
+		}
+		int m = matrix.size();
+		int n = matrix[0].size();
+		int low = 0, high = m * n - 1;
+		int mid, row, column;
+		while (low <= high) {
+			mid = (low + high) / 2;
+			row = mid / n;
+			column = mid % n;
+			if (matrix[row][column] == target) {
+				return true;
+			}
+			else if(matrix[row][column] > target) {
+				high = mid - 1;
+			}
+			else {
+				low = mid + 1;
+			}
+		}
+		return false;
+	}
+
 	//-------------------------------------------------
 	// 83. https://leetcode.com/problems/remove-duplicates-from-sorted-list/
 	//-------------------------------------------------
