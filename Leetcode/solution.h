@@ -1777,6 +1777,52 @@ public:
 	}
 
 	//-------------------------------------------------
+	// 71. https://leetcode.com/problems/simplify-path/
+	//-------------------------------------------------
+	string simplifyPath(string path) {
+		vector<string> spath;
+		string dirName;
+		for (int i = 0; i < path.size(); ++i) {
+			if (path[i] == '/') {
+				if (!dirName.empty()) {
+					spath.push_back(dirName);
+					dirName.clear();
+				}
+			}
+			else if (path[i] == '.') {
+				++i;
+				if (path[i] == '.' && (i + 1 == path.size() || path[i + 1] == '/')) {
+					if (!spath.empty()) {
+						spath.pop_back();
+					}
+				}
+				else if (path[i] != '/' && path[i] != '\0') {
+					dirName.push_back('.');
+					while (i < path.size() && path[i] != '/') {
+						dirName.push_back(path[i]);
+						++i;
+					}
+					--i;
+				}
+			}
+			else {
+				dirName.push_back(path[i]);
+			}
+		}
+		if (!dirName.empty()) {
+			spath.push_back(dirName);
+		}
+		string result = "/";
+		for (int i = 0; i < spath.size(); ++i) {
+			if (i != 0) {
+				result += '/';
+			}
+			result += spath[i];
+		}
+		return result;
+	}
+
+	//-------------------------------------------------
 	// 83. https://leetcode.com/problems/remove-duplicates-from-sorted-list/
 	//-------------------------------------------------
 	ListNode* deleteDuplicates(ListNode* head) {

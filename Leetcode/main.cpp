@@ -34,5 +34,13 @@ int main() {
 	auto out61 = s.rotateRight(nullptr, 0);
 
 	auto out69 = s.mySqrt(2147395599);
+	auto out71_0 = s.simplifyPath("/");
+	auto out71_1 = s.simplifyPath("/..");
+	auto out71_2 = s.simplifyPath("/...a/b");
+	auto out71_3 = s.simplifyPath("/../");
+	auto out71_4 = s.simplifyPath("/a/./b//d/../../c/");
+	auto out71_5 = s.simplifyPath("/home/");
+	auto out71_6 = s.simplifyPath("/.");
+
 	return 0;
 }
