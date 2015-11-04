@@ -1851,6 +1851,37 @@ public:
 		return false;
 	}
 
+	//-------------------------------------------------
+	// 75. https://leetcode.com/problems/sort-colors/
+	//-------------------------------------------------
+	void sortColors(vector<int>& nums) {
+		int red0 = 0, white1 = 0, blue2 = 0;
+		for (auto n : nums) {
+			switch (n)
+			{
+			case 0:
+				++red0;
+				break;
+			case 1:
+				++white1;
+				break;
+			case 2:
+				++blue2;
+				break;
+			}
+		}
+		int i = 0;
+		for (; i < red0; ++i) {
+			nums[i] = 0;
+		}
+		white1 += red0;
+		for (; i < white1; ++i) {
+			nums[i] = 1;
+		}
+		for (; i < nums.size(); ++i) {
+			nums[i] = 2;
+		}
+	}
 
 	//-------------------------------------------------
 	// 77. https://leetcode.com/problems/combinations/
@@ -1886,7 +1917,6 @@ public:
 		}
 		return combineP(nums, 0, k);
 	}
-
 
 	//-------------------------------------------------
 	// 83. https://leetcode.com/problems/remove-duplicates-from-sorted-list/
