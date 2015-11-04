@@ -42,5 +42,6 @@ int main() {
 	auto out71_5 = s.simplifyPath("/home/");
 	auto out71_6 = s.simplifyPath("/.");
 
+	auto out77_0 = s.combine(4, 5);
 	return 0;
 }

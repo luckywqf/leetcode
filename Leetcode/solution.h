@@ -1851,6 +1851,43 @@ public:
 		return false;
 	}
 
+
+	//-------------------------------------------------
+	// 77. https://leetcode.com/problems/combinations/
+	//-------------------------------------------------
+	vector<vector<int>> combineP(const vector<int>& nums, int start, int k) {
+		vector<vector<int>> out;
+		if (start >= nums.size() || k == 0) {
+			return out;
+		}
+		if (k == 1) {
+			for (int i = start; i < nums.size(); ++i) {
+				out.emplace_back(1, nums[i]);
+			}
+		}
+		else {
+			out = combineP(nums, start + 1, k - 1);
+			for (auto &o : out) {
+				o.insert(o.begin(), nums[start]);
+			}
+			auto left = combineP(nums, start + 1, k);
+			out.insert(out.end(), left.begin(), left.end());
+		}
+		return out;
+	}
+
+	vector<vector<int>> combine(int n, int k) {
+		if (k > n) {
+			k = n;
+		}
+		vector<int> nums;
+		for (int i = 1; i <= n; ++i) {
+			nums.push_back(i);
+		}
+		return combineP(nums, 0, k);
+	}
+
+
 	//-------------------------------------------------
 	// 83. https://leetcode.com/problems/remove-duplicates-from-sorted-list/
 	//-------------------------------------------------
