@@ -1977,6 +1977,20 @@ public:
 		}
 	}
 
+	//-------------------------------------------------
+	// 89. https://leetcode.com/problems/gray-code/
+	//-------------------------------------------------
+	vector<int> grayCode(int n) {
+		vector<int> result = {0};
+		int pow2 = 1;
+		for (int i = 1; i <= n; ++i) {
+			for (int j = result.size() - 1; j >= 0; --j) {
+				result.push_back(result[j] + pow2);
+			}
+			pow2 <<= 1;
+		}
+		return result;
+	}
 
 	//-------------------------------------------------
 	// 93. https://leetcode.com/problems/restore-ip-addresses/

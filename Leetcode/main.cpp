@@ -51,5 +51,10 @@ int main() {
 	auto out93_1 = s.restoreIpAddresses("0279245587303");
 	auto out93_2 = s.restoreIpAddresses("0000");
 	auto out93_3 = s.restoreIpAddresses("010010"); //["0.10.0.10","0.100.1.0"]
+
+	auto out89_0 = s.grayCode(0);
+	auto out89_1 = s.grayCode(1);
+	auto out89_2 = s.grayCode(2);
+	auto out89_3 = s.grayCode(3);
 	return 0;
 }
