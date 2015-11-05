@@ -1919,6 +1919,28 @@ public:
 	}
 
 	//-------------------------------------------------
+	// 78. https://leetcode.com/problems/subsets/
+	//-------------------------------------------------
+	vector<vector<int>> subsets(vector<int>& nums) {
+		sort(nums.begin(), nums.end());
+		vector<vector<int>> result;
+		vector<int> one;
+		int maxN = pow(2, nums.size());
+		for (int i = 0; i < maxN; ++i) {
+			int oneV = i;
+			one.clear();
+			for (int j = 0; j < nums.size(); ++j) {
+				if (oneV & 0x01) {
+					one.push_back(nums[j]);
+				}
+				oneV >>= 1;
+			}
+			result.push_back(one);
+		}
+		return result;
+	}
+
+	//-------------------------------------------------
 	// 83. https://leetcode.com/problems/remove-duplicates-from-sorted-list/
 	//-------------------------------------------------
 	ListNode* deleteDuplicates(ListNode* head) {
@@ -1953,6 +1975,53 @@ public:
 			++m;
 			++j;
 		}
+	}
+
+
+	//-------------------------------------------------
+	// 93. https://leetcode.com/problems/restore-ip-addresses/
+	//-------------------------------------------------
+	void restoreIpSecursion(string s, int start, int num, string& ip, vector<string>& out) {
+		if (num == 1) {
+			string subIp = s.substr(start);
+			if ((subIp.size() > 1 && subIp[0] == '0')
+				|| subIp.size() > 3 || subIp.size() < 0) {
+				return;
+			}
+			int iip = stoi(subIp);
+			if (iip >= 0 && iip <= 255) {
+				ip += ".";
+				ip += subIp;
+				out.push_back(ip);
+			}
+			return;
+		}
+
+		int maxLen = s.size() - start - num + 1;
+		maxLen = min(3, maxLen);
+		for (int i = 1; i <= maxLen; ++i) {
+			string subIp = s.substr(start, i);
+
+			int iip = stoi(subIp);
+			if ((subIp.size() > 1 && subIp[0] == '0')
+				||iip > 255 || iip < 0) {
+				continue;
+			}
+			int ipLen = ip.size();
+			if (!ip.empty()) {
+				ip.push_back('.');
+			}
+			ip += subIp;
+			restoreIpSecursion(s, start + i, num - 1, ip, out);
+			ip.resize(ipLen);
+		}
+	}
+
+	vector<string> restoreIpAddresses(string s) {
+		vector<string> result;
+		string ip;
+		restoreIpSecursion(s, 0, 4, ip, result);
+		return result;
 	}
 
 	//-------------------------------------------------

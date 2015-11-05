@@ -43,5 +43,13 @@ int main() {
 	auto out71_6 = s.simplifyPath("/.");
 
 	auto out77_0 = s.combine(4, 5);
+
+	vector<int> in78_0 = {1};
+	auto out78_0 = s.subsets(in78_0);
+
+	auto out93_0 = s.restoreIpAddresses("25525511135");
+	auto out93_1 = s.restoreIpAddresses("0279245587303");
+	auto out93_2 = s.restoreIpAddresses("0000");
+	auto out93_3 = s.restoreIpAddresses("010010"); //["0.10.0.10","0.100.1.0"]
 	return 0;
 }
