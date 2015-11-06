@@ -56,5 +56,12 @@ int main() {
 	auto out89_1 = s.grayCode(1);
 	auto out89_2 = s.grayCode(2);
 	auto out89_3 = s.grayCode(3);
+
+	TreeNode *in199_0 = nullptr;
+	TreeNode *in199_1 = new TreeNode(1);
+	auto out199_0 = s.rightSideView(in199_0);
+	auto out199_1 = s.rightSideView(in199_1);
+
+	auto out201_0 = s.rangeBitwiseAnd(5, 7);
 	return 0;
 }

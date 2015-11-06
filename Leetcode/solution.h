@@ -2487,6 +2487,39 @@ public:
 	}
 
 	//-------------------------------------------------
+	// 199. https://leetcode.com/problems/binary-tree-right-side-view/
+	//-------------------------------------------------
+	vector<int> rightSideView(TreeNode* root) {
+		vector<int> result;
+		if (root == nullptr) {
+			return result;
+		}
+		queue<TreeNode*> traverseQueue;
+		traverseQueue.push(root);
+		traverseQueue.push(nullptr);
+		int last;
+		while (!traverseQueue.empty()) {
+			auto elem = traverseQueue.front();
+			traverseQueue.pop();
+			if (elem == nullptr) {
+				result.push_back(last);
+				if (!traverseQueue.empty()) {
+					traverseQueue.push(nullptr);
+				}
+				continue;
+			}
+			last = elem->val;
+			if (elem->left) {
+				traverseQueue.push(elem->left);
+			}
+			if (elem->right) {
+				traverseQueue.push(elem->right);
+			}
+		}
+		return result;
+	}
+
+	//-------------------------------------------------
 	// 200. https://leetcode.com/problems/number-of-islands/
 	//-------------------------------------------------
 	int numIslands(vector<vector<char>>& grid) {
@@ -2507,6 +2540,24 @@ public:
 					}
 				}
 			}
+		}
+		return result;
+	}
+
+	//-------------------------------------------------
+	// 201. https://leetcode.com/problems/bitwise-and-of-numbers-range/
+	//-------------------------------------------------
+	int rangeBitwiseAnd(int m, int n) {
+		int result = 0;
+		uint32_t bitAnd = 0x80000000;
+		for (int i = 0; i < 32; ++i) {
+			if ((m & bitAnd) == (n & bitAnd)) {
+				result |= m & bitAnd;
+			}
+			else {
+				break;
+			}
+			bitAnd >>= 1;
 		}
 		return result;
 	}
