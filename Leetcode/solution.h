@@ -2119,6 +2119,47 @@ public:
 		return result;
 	}
 
+
+
+	//-------------------------------------------------
+	// 103. https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/
+	//-------------------------------------------------
+	vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
+		vector<vector<int>> result;
+		if (root == nullptr) {
+			return result;
+		}
+		bool direction = true;
+		vector<int> level;
+		queue<TreeNode*> treeQueue;
+		treeQueue.push(root);
+		treeQueue.push(nullptr);
+		while (!treeQueue.empty()) {
+			auto elem = treeQueue.front();
+			treeQueue.pop();
+			if (elem == nullptr) {
+				if (!treeQueue.empty()) {
+					treeQueue.push(nullptr);
+				}
+				if (!direction) {
+					std::reverse(level.begin(), level.end());
+				}
+				result.push_back(level);
+				level.clear();
+				direction = !direction;
+				continue;
+			}
+			level.push_back(elem->val);
+			if (elem->left) {
+				treeQueue.push(elem->left);
+			}
+			if (elem->right) {
+				treeQueue.push(elem->right);
+			}
+		}
+		return result;
+	}
+
 	//-------------------------------------------------
 	// 104. https://leetcode.com/problems/maximum-depth-of-binary-tree/
 	//-------------------------------------------------
