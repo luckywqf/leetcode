@@ -58,6 +58,12 @@ int main() {
 	auto out89_2 = s.grayCode(2);
 	auto out89_3 = s.grayCode(3);
 
+	TreeNode *in98_0 = nullptr;
+	TreeNode *in98_1 = new TreeNode(0);
+	in98_1->left = new TreeNode(-1);
+	auto out98_0 = s.isValidBST(in98_0);
+	auto out98_1 = s.isValidBST(in98_1);
+
 	vector<int> in179_0 = { 66, 8, 33, 1, 72, 93, 51, 88, 59, 86, 66, 39, 71, 82, 95, 77, 44, 75, 91, 4, 52, 28, 
 		20, 73, 74, 91, 87, 82, 94, 12, 69, 13, 22, 18, 45, 68, 97, 65, 4, 86, 44, 32, 36, 96, 88, 11, 21, 8, 14, 
 		4, 67, 40, 57, 90, 84, 27, 42, 9, 39, 14, 11, 79, 68, 49, 1, 51, 91, 56, 35, 10, 22, 99, 23, 8, 76, 32, 46, 

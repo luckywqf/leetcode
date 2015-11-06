@@ -2038,6 +2038,46 @@ public:
 		return result;
 	}
 
+
+	//-------------------------------------------------
+	// 98. https://leetcode.com/problems/validate-binary-search-tree/
+	//-------------------------------------------------
+	bool validAndGetBST(TreeNode* root, int& minE, int& maxE) {
+		minE = maxE = root->val;
+		if (root->left == nullptr && root->right == nullptr) {
+			return true;
+		}
+		int leftMax, leftMin, rightMax, rightMin;
+		if (root->left) {
+			if (!validAndGetBST(root->left, leftMin, leftMax)) {
+				return false;
+			}
+			if (leftMax >= root->val) {
+				return false;
+			}
+			minE = leftMin;
+		}
+
+		if (root->right) {
+			if (!validAndGetBST(root->right, rightMin, rightMax)) {
+				return false;
+			}
+			if (rightMin <= root->val) {
+				return false;
+			}
+			maxE = rightMax;
+		}
+		return true;
+	}
+	bool isValidBST(TreeNode* root) {
+		if (root == nullptr) {
+			return true;
+		}
+		int m, n;
+		return validAndGetBST(root, m, n);
+	}
+
+
 	//-------------------------------------------------
 	// 100. https://leetcode.com/problems/same-tree/
 	//-------------------------------------------------
@@ -2118,7 +2158,6 @@ public:
 		}
 		return result;
 	}
-
 
 
 	//-------------------------------------------------
