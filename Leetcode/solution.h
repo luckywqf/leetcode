@@ -2422,6 +2422,50 @@ public:
 	}
 
 	//-------------------------------------------------
+	// 179. https://leetcode.com/problems/largest-number/
+	//-------------------------------------------------
+	static bool compareStringNumber(const string& left, const string& right) {
+		if (left.size() > right.size()) {
+			return !compareStringNumber(right, left);
+		}
+		int i = 0, j = 0;
+		do {
+			if (i == left.size()) {
+				i = 0;
+			} else if (j == right.size()) {
+				j = 0;
+			}
+
+			for (; i < left.size() && j < right.size(); ++i, ++j) {
+				if (left[i] == right[j]) {
+					continue;
+				}
+				return left[i] > right[j];
+			}
+		} while (i != left.size() || j != right.size());
+
+		return false;
+	}
+	string largestNumber(vector<int>& nums) {
+		vector<string> snums;
+		for (auto n : nums) {
+			snums.push_back(to_string(n));
+		}
+		sort(snums.begin(), snums.end(), Solution::compareStringNumber);
+		string result;
+		for (auto s : snums) {
+			result += s;
+		}
+		int start = 0;
+		for (; start < result.size() - 1; ++start) {
+			if (result[start] != '0') {
+				break;
+			}
+		}
+		return result.substr(start);
+	}
+
+	//-------------------------------------------------
 	// 189. https://leetcode.com/problems/rotate-array/
 	//-------------------------------------------------
 	void rotate(vector<int>& nums, int k) {
