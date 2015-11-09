@@ -60,6 +60,17 @@ int main() {
 
 	auto out95_0 = s.generateTrees(3);
 
+	TreeNode* in94_0 = nullptr;
+	TreeNode* in94_1 = new TreeNode(1);
+	TreeNode* in94_2 = new TreeNode(1); in94_2->left = new TreeNode(2);
+	TreeNode* in94_3 = new TreeNode(1); in94_3->right = new TreeNode(3);
+	TreeNode* in94_4 = new TreeNode(1); in94_4->left = new TreeNode(2);in94_4->right = new TreeNode(3);
+	auto out94_0 = s.inorderTraversal(in94_0);
+	auto out94_1 = s.inorderTraversal(in94_1);
+	auto out94_2 = s.inorderTraversal(in94_2);
+	auto out94_3 = s.inorderTraversal(in94_3);
+	auto out94_4 = s.inorderTraversal(in94_4);
+
 	TreeNode *in98_0 = nullptr;
 	TreeNode *in98_1 = new TreeNode(0);
 	in98_1->left = new TreeNode(-1);

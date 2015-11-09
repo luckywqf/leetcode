@@ -2038,6 +2038,34 @@ public:
 		return result;
 	}
 
+
+	//-------------------------------------------------
+	// 94. https://leetcode.com/problems/binary-tree-inorder-traversal/
+	//-------------------------------------------------
+	vector<int> inorderTraversal(TreeNode *root) {
+		vector<int> result;
+		stack<TreeNode *> stack;
+		TreeNode *pCurrent = root;
+
+		while (!stack.empty() || pCurrent)
+		{
+			if (pCurrent)
+			{
+				stack.push(pCurrent);
+				pCurrent = pCurrent->left;
+			}
+			else
+			{
+				TreeNode *pNode = stack.top();
+				result.push_back(pNode->val);
+				stack.pop();
+				pCurrent = pNode->right;
+			}
+		}
+		return result;
+	}
+
+
 	//-------------------------------------------------
 	// 95. https://leetcode.com/problems/unique-binary-search-trees-ii/
 	//-------------------------------------------------
