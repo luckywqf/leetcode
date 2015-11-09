@@ -58,6 +58,8 @@ int main() {
 	auto out89_2 = s.grayCode(2);
 	auto out89_3 = s.grayCode(3);
 
+	auto out95_0 = s.generateTrees(3);
+
 	TreeNode *in98_0 = nullptr;
 	TreeNode *in98_1 = new TreeNode(0);
 	in98_1->left = new TreeNode(-1);

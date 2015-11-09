@@ -2038,6 +2038,35 @@ public:
 		return result;
 	}
 
+	//-------------------------------------------------
+	// 95. https://leetcode.com/problems/unique-binary-search-trees-ii/
+	//-------------------------------------------------
+	vector<TreeNode*> generateTrees(int start, int end) {
+		vector<TreeNode*> result;
+		if (start > end) {
+			result.push_back(nullptr);
+			return result;
+		}
+		for (int i = start; i <= end; ++i) {
+			vector<TreeNode*> left, right;
+			left = generateTrees(start, i - 1);
+			right = generateTrees(i + 1, end);
+			for (auto l : left) {
+				for (auto r : right) {
+					TreeNode *root = new TreeNode(i);
+					root->left = l;
+					root->right = r;
+					result.push_back(root);
+				}
+			}
+		}
+		return result;
+	}
+
+	vector<TreeNode*> generateTrees(int n) {
+		return generateTrees(1, n);
+	}
+
 
 	//-------------------------------------------------
 	// 96. https://leetcode.com/problems/unique-binary-search-trees/
