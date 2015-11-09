@@ -2040,6 +2040,31 @@ public:
 
 
 	//-------------------------------------------------
+	// 96. https://leetcode.com/problems/unique-binary-search-trees/
+	//-------------------------------------------------
+	int numTrees(int n) {
+		static int treeDic[4] = { 0, 1, 2, 5 };
+		if (n <= 3) {
+			return treeDic[n];
+		}
+		int sum = 0;
+		int maxRange = n / 2;
+		int i = 1;
+		for (i = 1; i <= maxRange; ++i) {
+			int left = i - 1 > 0 ? numTrees(i - 1) : 1;
+			int right = numTrees(n - i);
+			sum += left * right;
+		}
+		sum *= 2;
+		if (n % 2 == 1) {
+			int left = i - 1 > 0 ? numTrees(i - 1) : 1;
+			int right = numTrees(n - i);
+			sum += left * right;
+		}
+		return sum;
+	}
+
+	//-------------------------------------------------
 	// 98. https://leetcode.com/problems/validate-binary-search-tree/
 	//-------------------------------------------------
 	bool validAndGetBST(TreeNode* root, int& minE, int& maxE) {
