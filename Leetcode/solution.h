@@ -1992,6 +1992,29 @@ public:
 		return result;
 	}
 
+
+	//-------------------------------------------------
+	// 91. https://leetcode.com/problems/decode-ways/
+	//-------------------------------------------------
+	int numDecodings(string s) {
+		if (s.empty()) {
+			return 0;
+		}
+		vector<int> decodeArray(s.size() + 1, 0);
+		decodeArray[0] = 1;
+		for (int i = 0; i < s.size(); ++i) {
+			if (s[i] > '0') {
+				decodeArray[i + 1] = decodeArray[i];
+			}
+			if (i > 0) {
+				if (s[i - 1] == '1' || (s[i - 1] == '2' && s[i] < '7')) {
+					decodeArray[i + 1] += decodeArray[i - 1];
+				}
+			}
+		}
+		return decodeArray[s.size()];
+	}
+
 	//-------------------------------------------------
 	// 93. https://leetcode.com/problems/restore-ip-addresses/
 	//-------------------------------------------------

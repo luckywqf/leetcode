@@ -58,7 +58,11 @@ int main() {
 	auto out89_2 = s.grayCode(2);
 	auto out89_3 = s.grayCode(3);
 
-	auto out95_0 = s.generateTrees(3);
+	auto out91_0 = s.numDecodings("");
+	auto out91_1 = s.numDecodings("0");
+	auto out91_2 = s.numDecodings("12");
+	auto out91_3 = s.numDecodings("012");
+	auto out91_4 = s.numDecodings("012");
 
 	TreeNode* in94_0 = nullptr;
 	TreeNode* in94_1 = new TreeNode(1);
@@ -70,6 +74,8 @@ int main() {
 	auto out94_2 = s.inorderTraversal(in94_2);
 	auto out94_3 = s.inorderTraversal(in94_3);
 	auto out94_4 = s.inorderTraversal(in94_4);
+
+	auto out95_0 = s.generateTrees(3);
 
 	TreeNode *in98_0 = nullptr;
 	TreeNode *in98_1 = new TreeNode(0);
