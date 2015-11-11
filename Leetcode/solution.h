@@ -1940,6 +1940,22 @@ public:
 		return result;
 	}
 
+
+	//-------------------------------------------------
+	// 80. https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/
+	//-------------------------------------------------
+	int removeDuplicates(vector<int>& nums) {
+		int index = 0;
+		for (int old = 0; old < nums.size(); ++old) {
+			if (index > 1 && nums[old] == nums[index - 2]) {
+				continue;
+			}
+			nums[index++] = nums[old];
+		}
+		return index;
+	}
+
+
 	//-------------------------------------------------
 	// 83. https://leetcode.com/problems/remove-duplicates-from-sorted-list/
 	//-------------------------------------------------
