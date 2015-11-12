@@ -65,6 +65,8 @@ int main() {
 	auto in86_0 = makeList({ 1 });
 	auto out86_0 = s.partition(in86_0, 0);
 
+	auto in92_0 = makeList({ 1,2,3,4,5 });
+	auto out92_0 = s.reverseBetween(in92_0, 2, 4);
 
 	auto out93_0 = s.restoreIpAddresses("25525511135");
 	auto out93_1 = s.restoreIpAddresses("0279245587303");

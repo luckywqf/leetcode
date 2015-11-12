@@ -2094,6 +2094,38 @@ public:
 		return decodeArray[s.size()];
 	}
 
+
+	//-------------------------------------------------
+	// 92. https://leetcode.com/problems/reverse-linked-list-ii/
+	//-------------------------------------------------
+	ListNode* reverseBetween(ListNode* head, int m, int n) {
+		if (head == nullptr || m == n) {
+			return head;
+		}
+		ListNode result(0);
+		result.next = head;
+		ListNode *p = &result;
+		int i = 1;
+		for (; i < m; ++i) {
+			p = p->next;
+		}
+		ListNode *end = p->next;
+		ListNode *rend = end;
+		ListNode *rc = end->next;
+		ListNode *temp;
+		for (; rc && i < n; ++i) {
+			p->next = rc;
+			temp = rc->next;
+			rc->next = end;
+			end = rc;
+			rc = temp;
+		}
+		if (rend) {
+			rend->next = rc;
+		}
+		return result.next;
+	}
+
 	//-------------------------------------------------
 	// 93. https://leetcode.com/problems/restore-ip-addresses/
 	//-------------------------------------------------
