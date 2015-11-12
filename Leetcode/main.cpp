@@ -2,6 +2,10 @@
 
 int main() {
 	Solution s;
+
+	auto out6_0 = s.convert("PAYPALISHIRING", 3);
+	auto out6_1 = s.convert("PAYPALISHIRING", 4);
+
 	assert(s.isMatch("aa", "a") == false);
 	assert(s.isMatch("aa", "aa") == true);
 	assert(s.isMatch("aaa", "aa") == false);

@@ -213,22 +213,25 @@ public:
 	//-------------------------------------------------
 	// 6. https://leetcode.com/problems/zigzag-conversion/
 	//-------------------------------------------------
-	//?????????????????????????????????????????????????
 	string convert(string s, int numRows) {
 		if (s.empty() || numRows <= 1) {
 			return s;
 		}
 		string result;
 		int interval;
+		int interval1 = (numRows - 1) * 2;
 		for (int i = 0; i < numRows; ++i) {
 			if (i == numRows - 1) {
-				interval = numRows * 2 - 2;
+				interval = interval1;
 			}
 			else {
-				interval = (numRows - i - 1) * 2;
+				interval = i * 2;
 			}
 			for (int k = i; k < s.size(); k += interval) {
 				result.push_back(s[k]);
+				if (interval != interval1) {
+					interval = interval1 - interval;
+				}
 			}
 		}
 		return result;
@@ -354,24 +357,19 @@ public:
 	// 11. https://leetcode.com/problems/container-with-most-water/
 	//-------------------------------------------------
 	int maxArea(vector<int>& height) {
-		int maxA = 0;
-		for (int i = 1; i < height.size(); ++i) {
-			int lowH = 0;
-			for (int j = 0; j < i; ++j) {
-				if (height[j] <= lowH) {
-					continue;
-				}
-				int tempA = (i - j) * min(height[i], height[j]);
-				if (tempA > maxA) {
-					maxA = tempA;
-					lowH = height[j];
-				}
-				if (height[i] < height[j]) {
-					break;
-				}
+		int water = 0;
+		int i = 0, j = height.size() - 1;
+		while (i < j) {
+			int h = min(height[i], height[j]);
+			water = max(water, (j - i) * h);
+			while (height[i] <= h && i < j) {
+				++i;
+			}
+			while (height[j] <= h && i < j) {
+				--j;
 			}
 		}
-		return maxA;
+		return water;
 	}
 
 	//-------------------------------------------------
