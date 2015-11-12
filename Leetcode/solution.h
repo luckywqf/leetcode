@@ -2008,6 +2008,37 @@ public:
 		return head;
 	}
 
+
+	//-------------------------------------------------
+	// 86. https://leetcode.com/problems/partition-list/
+	//-------------------------------------------------
+	ListNode* partition(ListNode* head, int x) {
+		if (head == nullptr) {
+			return head;
+		}
+
+		ListNode result(0);
+		ListNode *p = &result;
+		ListNode *h = head;
+		while (h) {
+			if (h->val < x) {
+				p->next = new ListNode(h->val);
+				p = p->next;
+			}
+			h = h->next;
+		}
+		h = head;
+		while (h) {
+			if (h->val >= x) {
+				p->next = new ListNode(h->val);
+				p = p->next;
+			}
+			h = h->next;
+		}
+		return result.next;
+	}
+
+
 	//-------------------------------------------------
 	// 88. https://leetcode.com/problems/merge-sorted-array/
 	//-------------------------------------------------

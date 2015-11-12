@@ -61,6 +61,11 @@ int main() {
 	auto out82_4 = s.deleteDuplicatesii(in82_4);
 	auto out82_5 = s.deleteDuplicatesii(in82_5);
 
+
+	auto in86_0 = makeList({ 1 });
+	auto out86_0 = s.partition(in86_0, 0);
+
+
 	auto out93_0 = s.restoreIpAddresses("25525511135");
 	auto out93_1 = s.restoreIpAddresses("0279245587303");
 	auto out93_2 = s.restoreIpAddresses("0000");
