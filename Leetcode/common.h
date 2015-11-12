@@ -45,3 +45,5 @@ template<typename T>
 inline T myabs(T t) {
 	return t > 0 ? t : -t;
 }
+
+ListNode* makeList(const vector<int> &values);

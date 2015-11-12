@@ -1944,7 +1944,7 @@ public:
 	//-------------------------------------------------
 	// 80. https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/
 	//-------------------------------------------------
-	int removeDuplicates(vector<int>& nums) {
+	int removeDuplicatesii(vector<int>& nums) {
 		int index = 0;
 		for (int old = 0; old < nums.size(); ++old) {
 			if (index > 1 && nums[old] == nums[index - 2]) {
@@ -1953,6 +1953,38 @@ public:
 			nums[index++] = nums[old];
 		}
 		return index;
+	}
+
+
+	//-------------------------------------------------
+	// 82. https://leetcode.com/problems/remove-duplicates-from-sorted-list-ii/
+	//-------------------------------------------------
+	ListNode* deleteDuplicatesii(ListNode* head) {
+		if (head == nullptr) {
+			return head;
+		}
+		ListNode result(0);
+		result.next = head;
+		ListNode* last = &result;
+		ListNode *p = head->next;
+		while (p) {
+			bool lastDup = false;
+			while (p && p->val == last->next->val) {
+				p = p->next;
+				lastDup = true;
+			}
+			if (lastDup) {
+				last->next = p;
+				if (p) {
+					p = p->next;
+				}
+				continue;
+			}
+			last = last->next;
+			last->next = p;
+			p = p->next;
+		}
+		return result.next;
 	}
 
 

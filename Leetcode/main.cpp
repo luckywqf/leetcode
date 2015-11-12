@@ -48,6 +48,19 @@ int main() {
 	vector<int> in78_0 = {1};
 	auto out78_0 = s.subsets(in78_0);
 
+	auto in82_0 = makeList({1, 2, 3});
+	auto in82_1 = makeList({ 1, 2, 3, 3, 4, 4, 5 });
+	auto in82_2 = makeList({ 1, 2, 2, 2, 3 });
+	auto in82_3 = makeList({ 1, 1, 2, 3 });
+	auto in82_4 = makeList({ 1, 2, 3, 3 });
+	auto in82_5 = makeList({ 3, 3 });
+	auto out82_0 = s.deleteDuplicatesii(in82_0);
+	auto out82_1 = s.deleteDuplicatesii(in82_1);
+	auto out82_2 = s.deleteDuplicatesii(in82_2);
+	auto out82_3 = s.deleteDuplicatesii(in82_3);
+	auto out82_4 = s.deleteDuplicatesii(in82_4);
+	auto out82_5 = s.deleteDuplicatesii(in82_5);
+
 	auto out93_0 = s.restoreIpAddresses("25525511135");
 	auto out93_1 = s.restoreIpAddresses("0279245587303");
 	auto out93_2 = s.restoreIpAddresses("0000");
