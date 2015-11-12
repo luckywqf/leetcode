@@ -1829,6 +1829,32 @@ public:
 
 
 	//-------------------------------------------------
+	// 73. https://leetcode.com/problems/set-matrix-zeroes/
+	//-------------------------------------------------
+	void setZeroes(vector<vector<int> > &matrix) {
+		//把信息保存在首行和首列，他们只影响所在行和所在列，行影响行，列影响列
+		int col0 = 1, rows = matrix.size(), cols = matrix[0].size();
+
+		for (int i = 0; i < rows; i++) {
+			if (matrix[i][0] == 0) col0 = 0;
+			for (int j = 1; j < cols; j++) {
+				if (matrix[i][j] == 0) {
+					matrix[i][0] = matrix[0][j] = 0;
+				}
+			}
+		}
+
+		for (int i = rows - 1; i >= 0; i--) {
+			for (int j = cols - 1; j >= 1; j--) {
+				if (matrix[i][0] == 0 || matrix[0][j] == 0)
+					matrix[i][j] = 0;
+			}
+			if (col0 == 0) matrix[i][0] = 0;
+		}
+	}
+
+
+	//-------------------------------------------------
 	// 74. https://leetcode.com/problems/search-a-2d-matrix/
 	//-------------------------------------------------
 	bool searchMatrix(vector<vector<int>>& matrix, int target) {
