@@ -6,21 +6,23 @@ int main() {
 	auto out6_0 = s.convert("PAYPALISHIRING", 3);
 	auto out6_1 = s.convert("PAYPALISHIRING", 4);
 
-	assert(s.isMatch("aa", "a") == false);
-	assert(s.isMatch("aa", "aa") == true);
-	assert(s.isMatch("aaa", "aa") == false);
-	assert(s.isMatch("aa", "a*") == true);
-	assert(s.isMatch("aa", ".*") == true);
-	assert(s.isMatch("ab", ".*") == true);
-	assert(s.isMatch("aab", "c*a*b") == true);
-	assert(s.isMatch("ab", ".*c") == false);
-	assert(s.isMatch("aaa", "a.a") == true);
-	assert(s.isMatch("aaa", "a*a") == true);
-	assert(s.isMatch("aaa", "ab*a*c*a") == true);
-	//auto s29 = s.divide(-1060849722, 99958928);
-	vector<vector<char>> in = { {'1','0','1','1','0','1','1'} };
-	auto v = s.numIslands(in);
-	cout << v << endl;
+	auto out10_0 = s.isMatch("aa", "a");    //false
+	auto out10_1 = s.isMatch("aa", "aa");    //true
+	auto out10_2 = s.isMatch("aaa", "aa");    //false
+	auto out10_3 = s.isMatch("aa", "a*");    //true
+	auto out10_4 = s.isMatch("aa", ".*");    //true
+	auto out10_5 = s.isMatch("ab", ".*");    //true
+	auto out10_6 = s.isMatch("aab", "c*a*b");    //true
+	auto out10_7 = s.isMatch("ab", ".*c");    //false
+	auto out10_8 = s.isMatch("aaa", "a.a");    //true
+	auto out10_9 = s.isMatch("aaa", "a*a");    //true
+	auto out10_10 = s.isMatch("aaa", "ab*a*c*a");    //true
+
+	auto out29_0 = s.divide(-1060849722, 99958928);		//-10
+	auto out29_1 = s.divide(INT_MIN, 265681027);		//-8 
+	auto out29_2 = s.divide(INT_MIN, -1017100424);	//2
+	auto out29_3 = s.divide(INT_MIN, -1);			//INT_MAX
+	auto out29_4 = s.divide(1, -1);						//-1
 
 	//A = [2, 3, 1, 1, 4], return true.
 	//A = [3, 2, 1, 0, 4], return false.
@@ -33,8 +35,6 @@ int main() {
 
 	auto out60 = s.getPermutation(4, 4);
 
-	ListNode *head = new ListNode(1);
-	head->next = new ListNode(2);
 	auto out61 = s.rotateRight(nullptr, 0);
 
 	auto out69 = s.mySqrt(2147395599);
@@ -121,6 +121,9 @@ int main() {
 	TreeNode *in199_1 = new TreeNode(1);
 	auto out199_0 = s.rightSideView(in199_0);
 	auto out199_1 = s.rightSideView(in199_1);
+
+	vector<vector<char>> in200_0 = { { '1','0','1','1','0','1','1' } };
+	auto out200_0 = s.numIslands(in200_0);
 
 	auto out201_0 = s.rangeBitwiseAnd(5, 7);
 	return 0;

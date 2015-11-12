@@ -909,32 +909,33 @@ public:
 		if (divisor == 0) {
 			return INT_MAX;
 		}
-		string result = "0";
-		if ((dividend < 0 && divisor > 0) || (dividend > 0 && divisor < 0)) {
-			result = "-0";
-		}
 		int64_t i1 = myabs((int64_t)dividend);
 		int64_t i2 = myabs((int64_t)divisor);
+		if (i1 < i2) {
+			return 0;
+		}
+
+		string result;
+		if ((dividend < 0 && divisor > 0) || (dividend > 0 && divisor < 0)) {
+			result = "-";
+		}
 		string d1 = to_string(i1);
 		string d2 = to_string(i2);
 
+		int len1 = d1.size();
 		int len2 = d2.size();
-		while (d1.size() >= len2) {
-			int64_t step = stoll(d1.substr(0, len2));
+		string minuend = d1.substr(0, len2);
+		int divIndex = len2 - 1;
+		while (divIndex < len1) {
+			int64_t step = stoll(minuend);
+			while (step < i2 && divIndex + 1 < len1) {
+				minuend.push_back(d1[++divIndex]);
+				step = stoll(minuend);
+				result.push_back('0');
+			}
 			if (step < i2) {
-				if (d1.size() == len2) {
-					int64_t v = stoll(result);
-					if (v > INT_MAX || v < INT_MIN)
-						return INT_MAX;
-					return v;
-				}
-				else {
-					int len = std::min(len2 + 1, (int)d1.size());
-					step = stoll(d1.substr(0, len));
-					d1 = d1.substr(len);
-				}
-			} else {
-				d1 = d1.substr(len2);
+				result.push_back('0');
+				break;
 			}
 
 			int bit = 0;
@@ -943,9 +944,15 @@ public:
 				++bit;
 			}
 			result += bit + '0';
-			d1 = to_string(step) + d1;
+			if (++divIndex >= len1) {
+				break;
+			}
+			minuend = to_string(step) + d1[divIndex];
 		}
-		return stoi(result);
+		int64_t v = stoll(result);
+		if (v > INT_MAX || v < INT_MIN)
+			return INT_MAX;
+		return v;
 	}
 
 	//-------------------------------------------------
