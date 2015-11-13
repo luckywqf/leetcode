@@ -2552,6 +2552,49 @@ public:
 		return result;
 	}
 
+
+	//-------------------------------------------------
+	// 108. https://leetcode.com/problems/convert-sorted-array-to-binary-search-tree/
+	//-------------------------------------------------
+	TreeNode* sortedArrayToBSTRecursion(vector<int>& nums, int begin, int end) {
+		if (begin >= end) {
+			return nullptr;
+		}
+		int mid = (begin + end) / 2;
+		TreeNode *root = new TreeNode(nums[mid]);
+		root->left = sortedArrayToBSTRecursion(nums, begin, mid);
+		root->right = sortedArrayToBSTRecursion(nums, mid + 1, end);
+		return root;
+	}
+
+	TreeNode* sortedArrayToBST(vector<int>& nums) {
+		return sortedArrayToBSTRecursion(nums, 0, nums.size());
+	}
+
+	//-------------------------------------------------
+	// 109. https://leetcode.com/problems/convert-sorted-list-to-binary-search-tree/
+	//-------------------------------------------------
+	TreeNode* sortedListToBST(ListNode* head) {
+		int len = GetListLength(head);
+		if (len == 0) {
+			return nullptr;
+		}
+		ListNode pre(0); 
+		pre.next = head;
+		ListNode *p = &pre;
+		int mid = (len + 1) / 2;
+		for (int i = 1; i < mid; ++i) {
+			p = p->next;
+		}
+		ListNode *mp = p->next;
+		p->next = nullptr;
+		TreeNode *root = new TreeNode(mp->val);
+		root->left = sortedListToBST(pre.next);
+		root->right = sortedListToBST(mp->next);
+		return root;
+	}
+
+
 	//-------------------------------------------------
 	// 110. https://leetcode.com/problems/balanced-binary-tree/
 	//-------------------------------------------------
