@@ -47,3 +47,4 @@ inline T myabs(T t) {
 }
 
 ListNode* makeList(const vector<int> &values);
+TreeNode* makeBinaryTree(const string &strs);

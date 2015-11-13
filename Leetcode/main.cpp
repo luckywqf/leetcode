@@ -2,7 +2,6 @@
 
 int main() {
 	Solution s;
-
 	auto out6_0 = s.convert("PAYPALISHIRING", 3);
 	auto out6_1 = s.convert("PAYPALISHIRING", 4);
 
@@ -102,10 +101,16 @@ int main() {
 	auto out95_0 = s.generateTrees(3);
 
 	TreeNode *in98_0 = nullptr;
-	TreeNode *in98_1 = new TreeNode(0);
+	TreeNode *in98_1 = new TreeNode(1);
 	in98_1->left = new TreeNode(-1);
 	auto out98_0 = s.isValidBST(in98_0);
 	auto out98_1 = s.isValidBST(in98_1);
+
+	TreeNode *in113_0 = makeBinaryTree("1,-2,3");
+	TreeNode *in113_1 = makeBinaryTree("5,4,8,11,null,13,4,7,2,null,null,5,1");
+	auto out113_0 = s.pathSum(in113_0, 1);
+	auto out113_1 = s.pathSum(in113_1, 22);
+
 
 	vector<int> in179_0 = { 66, 8, 33, 1, 72, 93, 51, 88, 59, 86, 66, 39, 71, 82, 95, 77, 44, 75, 91, 4, 52, 28, 
 		20, 73, 74, 91, 87, 82, 94, 12, 69, 13, 22, 18, 45, 68, 97, 65, 4, 86, 44, 32, 36, 96, 88, 11, 21, 8, 14, 

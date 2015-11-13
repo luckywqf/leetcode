@@ -2546,6 +2546,58 @@ public:
 		return hasPathSum(root->left, sum - root->val) || hasPathSum(root->right, sum - root->val);
 	}
 
+
+	//-------------------------------------------------
+	// 113. https://leetcode.com/problems/path-sum-ii/
+	//-------------------------------------------------
+	vector<vector<int>> pathSum(TreeNode* root, int sum) {
+		vector<vector<int>> result;
+		if (root == nullptr) {
+			return result;
+		}
+		list<TreeNode*> treeStack;
+		treeStack.push_back(root);
+		sum -= root->val;
+		while (!treeStack.empty()) {
+			auto elem = treeStack.back();
+			while (elem->left || elem->right) {
+				if (elem->left) {
+					treeStack.push_back(elem->left);
+					elem = elem->left;
+				}
+				else if (elem->right) {
+					treeStack.push_back(elem->right);
+					elem = elem->right;
+				}
+				sum -= elem->val;
+			}
+			if (sum == 0) {
+				vector<int> path;
+				for (auto e : treeStack) {
+					path.push_back(e->val);
+				}
+				result.push_back(path);
+			}
+			
+			TreeNode* e = nullptr;
+			do {
+				e = treeStack.back();
+				sum += e->val;
+				treeStack.pop_back();
+				if (!treeStack.empty()) {
+					e = treeStack.back();
+					if (e->left) {
+						e->left = nullptr;
+					}
+					else if (e->right) {
+						e->right = nullptr;
+					}
+				}
+			} while (!treeStack.empty() && !e->left && !e->right);
+		}
+		return result;
+	}
+
 	//-------------------------------------------------
 	// 118. https://leetcode.com/problems/pascals-triangle/
 	//-------------------------------------------------
