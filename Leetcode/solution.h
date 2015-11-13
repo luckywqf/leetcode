@@ -2459,6 +2459,62 @@ public:
 		return max(maxDepth(root->left), maxDepth(root->right)) + 1;
 	}
 
+
+	//-------------------------------------------------
+	// 105. https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/
+	//-------------------------------------------------
+	TreeNode* buildTreeRecursion(vector<int>& preorder, int pbegin, int pend, 
+								vector<int>& inorder, int ibegin, int iend) {
+		if (pbegin >= pend) {
+			return nullptr;
+		}
+		TreeNode *root = new TreeNode(preorder[pbegin]);
+		int index = ibegin;
+		for (; index < iend; ++index) {
+			if (inorder[index] == preorder[pbegin]) {
+				break;
+			}
+		}
+		index -= ibegin;
+		root->left = buildTreeRecursion(preorder, pbegin + 1, pbegin + 1 + index, 
+										inorder, ibegin, ibegin + index);
+		root->right = buildTreeRecursion(preorder, pbegin + 1 + index, pend,
+										inorder, ibegin + index + 1, iend);
+		return root;
+	}
+
+	TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+		return buildTreeRecursion(preorder, 0, preorder.size(), inorder, 0, inorder.size());
+	}
+
+
+	//-------------------------------------------------
+	// 106. https://leetcode.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/
+	//-------------------------------------------------
+	TreeNode* buildTreeRecursionii(vector<int>& postorder, int pbegin, int pend,
+		vector<int>& inorder, int ibegin, int iend) {
+		if (pbegin >= pend) {
+			return nullptr;
+		}
+		TreeNode *root = new TreeNode(postorder[pend - 1]);
+		int index = ibegin;
+		for (; index < iend; ++index) {
+			if (inorder[index] == root->val) {
+				break;
+			}
+		}
+		index -= ibegin;
+		root->left = buildTreeRecursionii(postorder, pbegin, pbegin + index,
+			inorder, ibegin, ibegin + index);
+		root->right = buildTreeRecursionii(postorder, pbegin + index, pend - 1,
+			inorder, ibegin + index + 1, iend);
+		return root;
+	}
+	TreeNode* buildTreeii(vector<int>& inorder, vector<int>& postorder) {
+		return buildTreeRecursionii(postorder, 0, postorder.size(), inorder, 0, inorder.size());
+	}
+
+
 	//-------------------------------------------------
 	// 107. https://leetcode.com/problems/binary-tree-level-order-traversal-ii/
 	//-------------------------------------------------

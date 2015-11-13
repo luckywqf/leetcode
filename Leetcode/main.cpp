@@ -88,10 +88,10 @@ int main() {
 	auto out91_4 = s.numDecodings("012");
 
 	TreeNode* in94_0 = nullptr;
-	TreeNode* in94_1 = new TreeNode(1);
-	TreeNode* in94_2 = new TreeNode(1); in94_2->left = new TreeNode(2);
-	TreeNode* in94_3 = new TreeNode(1); in94_3->right = new TreeNode(3);
-	TreeNode* in94_4 = new TreeNode(1); in94_4->left = new TreeNode(2);in94_4->right = new TreeNode(3);
+	TreeNode* in94_1 = makeBinaryTree("1");
+	TreeNode* in94_2 = makeBinaryTree("1,2");
+	TreeNode* in94_3 = makeBinaryTree("1,null,3");
+	TreeNode* in94_4 = makeBinaryTree("1,2,3");
 	auto out94_0 = s.inorderTraversal(in94_0);
 	auto out94_1 = s.inorderTraversal(in94_1);
 	auto out94_2 = s.inorderTraversal(in94_2);
