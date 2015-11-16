@@ -2818,6 +2818,51 @@ public:
 		return true;
 	}
 
+
+	//-------------------------------------------------
+	// 160. https://leetcode.com/problems/sum-root-to-leaf-numbers/
+	//-------------------------------------------------
+	int sumNumbers(TreeNode* root) {
+		if (root == nullptr) {
+			return 0;
+		}
+		int sum = 0;
+		list<TreeNode*> treeStack;
+		treeStack.push_back(root);
+		while (!treeStack.empty()) {
+			auto e = treeStack.back();
+			while (e->left || e->right) {
+				if (e->left) {
+					treeStack.push_back(e->left);
+					e = e->left;
+				} else {
+					treeStack.push_back(e->right);
+					e = e->right;
+				}
+			}
+			string path;
+			for (auto t : treeStack) {
+				path += t->val + '0';
+			}
+			sum += stoi(path);
+
+			do {
+				e = treeStack.back();
+				treeStack.pop_back();
+				if (!treeStack.empty()) {
+					e = treeStack.back();
+					if (e->left) {
+						e->left = nullptr;
+					}
+					else if (e->right) {
+						e->right = nullptr;
+					}
+				}
+			} while (!treeStack.empty() && !e->left && !e->right);
+		}
+		return sum;
+	}
+
 	//-------------------------------------------------
 	// 160. https://leetcode.com/problems/intersection-of-two-linked-lists/
 	//-------------------------------------------------
