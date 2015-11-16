@@ -2459,6 +2459,62 @@ public:
 		return max(maxDepth(root->left), maxDepth(root->right)) + 1;
 	}
 
+
+	//-------------------------------------------------
+	// 105. https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/
+	//-------------------------------------------------
+	TreeNode* buildTreeRecursion(vector<int>& preorder, int pbegin, int pend, 
+								vector<int>& inorder, int ibegin, int iend) {
+		if (pbegin >= pend) {
+			return nullptr;
+		}
+		TreeNode *root = new TreeNode(preorder[pbegin]);
+		int index = ibegin;
+		for (; index < iend; ++index) {
+			if (inorder[index] == preorder[pbegin]) {
+				break;
+			}
+		}
+		index -= ibegin;
+		root->left = buildTreeRecursion(preorder, pbegin + 1, pbegin + 1 + index, 
+										inorder, ibegin, ibegin + index);
+		root->right = buildTreeRecursion(preorder, pbegin + 1 + index, pend,
+										inorder, ibegin + index + 1, iend);
+		return root;
+	}
+
+	TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+		return buildTreeRecursion(preorder, 0, preorder.size(), inorder, 0, inorder.size());
+	}
+
+
+	//-------------------------------------------------
+	// 106. https://leetcode.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/
+	//-------------------------------------------------
+	TreeNode* buildTreeRecursionii(vector<int>& postorder, int pbegin, int pend,
+		vector<int>& inorder, int ibegin, int iend) {
+		if (pbegin >= pend) {
+			return nullptr;
+		}
+		TreeNode *root = new TreeNode(postorder[pend - 1]);
+		int index = ibegin;
+		for (; index < iend; ++index) {
+			if (inorder[index] == root->val) {
+				break;
+			}
+		}
+		index -= ibegin;
+		root->left = buildTreeRecursionii(postorder, pbegin, pbegin + index,
+			inorder, ibegin, ibegin + index);
+		root->right = buildTreeRecursionii(postorder, pbegin + index, pend - 1,
+			inorder, ibegin + index + 1, iend);
+		return root;
+	}
+	TreeNode* buildTreeii(vector<int>& inorder, vector<int>& postorder) {
+		return buildTreeRecursionii(postorder, 0, postorder.size(), inorder, 0, inorder.size());
+	}
+
+
 	//-------------------------------------------------
 	// 107. https://leetcode.com/problems/binary-tree-level-order-traversal-ii/
 	//-------------------------------------------------
@@ -2495,6 +2551,49 @@ public:
 		std::reverse(result.begin(), result.end());
 		return result;
 	}
+
+
+	//-------------------------------------------------
+	// 108. https://leetcode.com/problems/convert-sorted-array-to-binary-search-tree/
+	//-------------------------------------------------
+	TreeNode* sortedArrayToBSTRecursion(vector<int>& nums, int begin, int end) {
+		if (begin >= end) {
+			return nullptr;
+		}
+		int mid = (begin + end) / 2;
+		TreeNode *root = new TreeNode(nums[mid]);
+		root->left = sortedArrayToBSTRecursion(nums, begin, mid);
+		root->right = sortedArrayToBSTRecursion(nums, mid + 1, end);
+		return root;
+	}
+
+	TreeNode* sortedArrayToBST(vector<int>& nums) {
+		return sortedArrayToBSTRecursion(nums, 0, nums.size());
+	}
+
+	//-------------------------------------------------
+	// 109. https://leetcode.com/problems/convert-sorted-list-to-binary-search-tree/
+	//-------------------------------------------------
+	TreeNode* sortedListToBST(ListNode* head) {
+		int len = GetListLength(head);
+		if (len == 0) {
+			return nullptr;
+		}
+		ListNode pre(0); 
+		pre.next = head;
+		ListNode *p = &pre;
+		int mid = (len + 1) / 2;
+		for (int i = 1; i < mid; ++i) {
+			p = p->next;
+		}
+		ListNode *mp = p->next;
+		p->next = nullptr;
+		TreeNode *root = new TreeNode(mp->val);
+		root->left = sortedListToBST(pre.next);
+		root->right = sortedListToBST(mp->next);
+		return root;
+	}
+
 
 	//-------------------------------------------------
 	// 110. https://leetcode.com/problems/balanced-binary-tree/
