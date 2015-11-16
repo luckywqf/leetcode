@@ -2772,6 +2772,30 @@ public:
 		return maxPro;
 	}
 
+
+	//-------------------------------------------------
+	// 122. https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/
+	//-------------------------------------------------
+	int maxProfitii(vector<int>& prices) {
+		if (prices.size() <= 1) {
+			return 0;
+		}
+		int high(prices[0]), low(prices[0]), maxPro(0), sum(0);
+		for (int i = 1; i < prices.size(); ++i) {
+			if (prices[i] > high) {
+				high = prices[i];
+				maxPro = max(high - low, maxPro);
+			}
+			else if (prices[i] < high) {
+				high = low = prices[i];
+				sum += maxPro;
+				maxPro = 0;
+			}
+		}
+
+		return maxPro + sum;
+	}
+
 	//-------------------------------------------------
 	// 125. https://leetcode.com/problems/valid-palindrome/
 	//-------------------------------------------------
