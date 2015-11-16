@@ -2635,6 +2635,24 @@ public:
 	}
 
 	//-------------------------------------------------
+	// 120. https://leetcode.com/problems/triangle/
+	//-------------------------------------------------
+	int minimumTotal(vector<vector<int>>& triangle) {
+		if (triangle.empty()) {
+			return 0;
+		}
+		vector<int> path(triangle.size(), INT_MAX);
+		path[0] = triangle[0][0];
+		for (int row = 1; row < triangle.size(); row++) {
+			for (int i = row; i > 0; --i) {
+				path[i] = std::min(path[i - 1], path[i]) + triangle[row][i];
+			}
+			path[0] += triangle[row][0];
+		}
+		return *std::min_element(path.begin(), path.end());
+	}
+
+	//-------------------------------------------------
 	// 125. https://leetcode.com/problems/valid-palindrome/
 	//-------------------------------------------------
 	bool isPalindrome(string s) {
