@@ -114,6 +114,15 @@ int main() {
 	vector<vector<int>> in120_0 = { {-1}, {-2,-3} };
 	auto out120_0 = s.minimumTotal(in120_0);
 	
+	string in151_0 = "was isi iiis";
+	string in151_1 = "was isi    iiis";
+	string in151_2 = "wasiiis";
+	string in151_3 = " was isi iiis ";
+	s.reverseWords(in151_0);
+	s.reverseWords(in151_1);
+	s.reverseWords(in151_2);
+	s.reverseWords(in151_3);
+
 	vector<int> in179_0 = { 66, 8, 33, 1, 72, 93, 51, 88, 59, 86, 66, 39, 71, 82, 95, 77, 44, 75, 91, 4, 52, 28, 
 		20, 73, 74, 91, 87, 82, 94, 12, 69, 13, 22, 18, 45, 68, 97, 65, 4, 86, 44, 32, 36, 96, 88, 11, 21, 8, 14, 
 		4, 67, 40, 57, 90, 84, 27, 42, 9, 39, 14, 11, 79, 68, 49, 1, 51, 91, 56, 35, 10, 22, 99, 23, 8, 76, 32, 46, 

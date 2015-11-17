@@ -2820,7 +2820,7 @@ public:
 
 
 	//-------------------------------------------------
-	// 160. https://leetcode.com/problems/sum-root-to-leaf-numbers/
+	// 129. https://leetcode.com/problems/sum-root-to-leaf-numbers/
 	//-------------------------------------------------
 	int sumNumbers(TreeNode* root) {
 		if (root == nullptr) {
@@ -2861,6 +2861,47 @@ public:
 			} while (!treeStack.empty() && !e->left && !e->right);
 		}
 		return sum;
+	}
+
+
+	//-------------------------------------------------
+	// 151. https://leetcode.com/problems/reverse-words-in-a-string/
+	//-------------------------------------------------
+	void reverseWords(string &s) {
+		int src = 0, des = 0;
+		while (src < s.size() && isspace(s[src])) {
+			++src;
+		}
+		while (src < s.size()) {
+			while (src < s.size() && !isspace(s[src])) {
+				s[des++] = s[src++];
+			}
+			if (src < s.size() && isspace(s[src])) {
+				s[des++] = s[src++];
+			}
+			while (src < s.size() && isspace(s[src])) {
+				++src;
+			}
+		}
+		--des;
+		while (des >= 0 && isspace(s[des])) {
+			--des;
+		}
+		s.resize(des + 1);
+		
+		std::reverse(s.begin(), s.end());
+		auto itStart = s.begin();
+		auto itEnd = s.begin();
+		while (itStart != s.end()) {
+			while (itEnd != s.end() && !isspace(*itEnd)) {
+				++itEnd;
+			}
+			std::reverse(itStart, itEnd);
+			if (itEnd == s.end()) {
+				break;
+			}
+			itStart = ++itEnd;
+		}
 	}
 
 	//-------------------------------------------------
