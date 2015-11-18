@@ -2938,6 +2938,43 @@ public:
 		return sum;
 	}
 
+	//-------------------------------------------------
+	// 133. https://leetcode.com/problems/clone-graph/
+	//-------------------------------------------------
+	UndirectedGraphNode *cloneGraph(UndirectedGraphNode *node) {
+		if (node == nullptr) {
+			return nullptr;
+		}
+		unordered_map<UndirectedGraphNode*, UndirectedGraphNode*> srcDes;
+		return cloneGraphDFS(node, srcDes);
+	}
+	UndirectedGraphNode *cloneGraphDFS(UndirectedGraphNode *node, unordered_map<UndirectedGraphNode*, UndirectedGraphNode*> &srcDes) {
+		auto it = srcDes.find(node);
+		if (it == srcDes.end()) {
+			UndirectedGraphNode *result = new UndirectedGraphNode(node->label);
+			srcDes[node] = result;
+			for (auto ne : node->neighbors) {
+				result->neighbors.push_back(cloneGraphDFS(ne, srcDes));
+			}
+			return result;
+		}
+		else {
+			return it->second;
+		}
+	}
+
+
+	//-------------------------------------------------
+	// 136. https://leetcode.com/problems/single-number/
+	//-------------------------------------------------
+	int singleNumber(vector<int>& nums) {
+		int result = 0;
+		for (int i = 0; i < nums.size(); ++i) {
+			result ^= nums[i];
+		}
+		return result;
+	}
+
 
 	//-------------------------------------------------
 	// 151. https://leetcode.com/problems/reverse-words-in-a-string/
