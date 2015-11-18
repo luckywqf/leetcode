@@ -42,6 +42,12 @@ struct TreeNode {
 	TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
 
+struct TreeLinkNode {
+	int val;
+	TreeLinkNode *left, *right, *next;
+	TreeLinkNode(int x) : val(x), left(NULL), right(NULL), next(NULL) {}
+};
+
 template<typename T>
 inline T myabs(T t) {
 	return t > 0 ? t : -t;

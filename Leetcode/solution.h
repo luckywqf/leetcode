@@ -2748,6 +2748,30 @@ public:
 		return result;
 	}
 
+
+	//-------------------------------------------------
+	// 116. https://leetcode.com/problems/populating-next-right-pointers-in-each-node/
+	//-------------------------------------------------
+	void connect(TreeLinkNode *root) {
+		if (root == nullptr) {
+			return;
+		}
+		TreeLinkNode *p = root;
+		while (p->left) {
+			auto pre = p;
+			auto follow = pre->next;
+			pre->left->next = pre->right;
+			while (follow) {
+				pre->right->next = follow->left;
+				pre = follow;
+				pre->left->next = pre->right;
+				follow = pre->next;
+			}
+			p = p->left;
+		}
+	}
+
+
 	//-------------------------------------------------
 	// 118. https://leetcode.com/problems/pascals-triangle/
 	//-------------------------------------------------
