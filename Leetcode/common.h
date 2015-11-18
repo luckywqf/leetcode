@@ -13,6 +13,7 @@
 #include <algorithm>
 #include <functional>
 #include <memory>
+#include <tuple>
 #include <cstdint>
 #include <cstring>
 #include <cassert>

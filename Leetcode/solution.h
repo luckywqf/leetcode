@@ -1971,6 +1971,34 @@ public:
 		return result;
 	}
 
+	//-------------------------------------------------
+	// 79. https://leetcode.com/problems/word-search/
+	//-------------------------------------------------
+	bool exist(vector<vector<char>> &board, string word) {
+		int m = board.size();
+		int n = board[0].size();
+		for (int x = 0; x < m; x++) {
+			for (int y = 0; y < n; y++) {
+				if (isFoundBoard(board, m, n, word.c_str(), x, y))
+					return true;
+			}
+		}
+		return false;
+	}
+	bool isFoundBoard(vector<vector<char>> &board, int m, int n, const char* w, int x, int y)
+	{
+		if (x < 0 || y<0 || x >= m || y >= n || board[x][y] == '\0' || *w != board[x][y])
+			return false;
+		if (*(w + 1) == '\0')
+			return true;
+		char t = board[x][y];
+		board[x][y] = '\0';
+		if (isFoundBoard(board, m, n, w + 1, x - 1, y) || isFoundBoard(board, m, n, w + 1, x + 1, y) ||
+			isFoundBoard(board, m, n, w + 1, x, y - 1) || isFoundBoard(board, m, n, w + 1, x, y + 1))
+			return true;
+		board[x][y] = t;
+		return false;
+	}
 
 	//-------------------------------------------------
 	// 80. https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/
