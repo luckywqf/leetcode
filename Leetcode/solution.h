@@ -2977,6 +2977,26 @@ public:
 
 
 	//-------------------------------------------------
+	// 141. https://leetcode.com/problems/linked-list-cycle/
+	//-------------------------------------------------
+	bool hasCycle(ListNode *head) {
+		ListNode *one = head;
+		ListNode *two = head;
+		while (two) {
+			one = one->next;
+			two = two->next;
+			if (two == nullptr) {
+				break;
+			}
+			two = two->next;
+			if (one == two) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	//-------------------------------------------------
 	// 151. https://leetcode.com/problems/reverse-words-in-a-string/
 	//-------------------------------------------------
 	void reverseWords(string &s) {
