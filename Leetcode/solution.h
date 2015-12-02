@@ -3256,6 +3256,23 @@ public:
 	}
 
 	//-------------------------------------------------
+	// 187. https://leetcode.com/problems/repeated-dna-sequences/
+	//-------------------------------------------------
+	vector<string> findRepeatedDnaSequences(string s) {
+		unordered_map<string, int> sequeences;
+		for (int i = 0; i + 10 <= s.size(); ++i) {
+			sequeences[s.substr(i, 10)]++;
+		}
+		vector<string> result;
+		for (auto v : sequeences) {
+			if (v.second > 1) {
+				result.push_back(v.first);
+			}
+		}
+		return result;
+	}
+
+	//-------------------------------------------------
 	// 189. https://leetcode.com/problems/rotate-array/
 	//-------------------------------------------------
 	void rotate(vector<int>& nums, int k) {
