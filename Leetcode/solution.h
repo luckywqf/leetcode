@@ -2977,6 +2977,19 @@ public:
 
 
 	//-------------------------------------------------
+	// 137. https://leetcode.com/problems/single-number-ii/
+	//-------------------------------------------------
+	int singleNumberii(vector<int>& nums) {
+		int ones = 0, twos = 0;
+		for (int i = 0; i < nums.size(); i++) {
+			ones = (ones ^ nums[i]) & ~twos;
+			twos = (twos ^ nums[i]) & ~ones;
+		}
+		return ones;
+	}
+
+
+	//-------------------------------------------------
 	// 151. https://leetcode.com/problems/reverse-words-in-a-string/
 	//-------------------------------------------------
 	void reverseWords(string &s) {
@@ -3325,25 +3338,30 @@ public:
 	// 200. https://leetcode.com/problems/number-of-islands/
 	//-------------------------------------------------
 	int numIslands(vector<vector<char>>& grid) {
-		int result = 0;
-		if (grid.empty()) {
-			return result;
-		}
-		for (int i = 0; i < grid.size(); ++i) {
-			grid[i].insert(grid[i].begin(), '0');
-		}
-		grid.insert(grid.begin(), vector<char>(grid[0].size(), '0'));
+		if (grid.empty())
+			return 0;
 
-		for (int i = 1; i < grid.size(); ++i) {
-			for (int j = 1; j < grid[i].size(); ++j) {
+		int res = 0;
+		for (int i = 0; i < grid.size(); ++i) {
+			for (int j = 0; j < grid[0].size(); ++j) {
 				if (grid[i][j] == '1') {
-					if (grid[i - 1][j] == '0' && grid[i][j - 1] == '0'){
-						result++;
-					}
+					++res;
+					DFS(grid, i, j);
 				}
 			}
 		}
-		return result;
+		return res;
+	}
+	void DFS(vector<vector<char>> &grid, int x, int y) {
+		grid[x][y] = '0';
+		if (x > 0 && grid[x - 1][y] == '1')
+			DFS(grid, x - 1, y);
+		if (x < grid.size() - 1 && grid[x + 1][y] == '1')
+			DFS(grid, x + 1, y);
+		if (y > 0 && grid[x][y - 1] == '1')
+			DFS(grid, x, y - 1);
+		if (y < grid[0].size() - 1 && grid[x][y + 1] == '1')
+			DFS(grid, x, y + 1);
 	}
 
 	//-------------------------------------------------
