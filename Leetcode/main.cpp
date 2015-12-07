@@ -114,6 +114,23 @@ int main() {
 	vector<vector<int>> in120_0 = { {-1}, {-2,-3} };
 	auto out120_0 = s.minimumTotal(in120_0);
 	
+
+	auto in142_0 = makeList({ 1 });
+	auto in142_1 = makeList({ 3, 2, 0, 4 });
+	auto in142_1_0 = in142_1;
+	while (in142_1_0->next) {
+		in142_1_0 = in142_1_0->next;
+	}
+	in142_1_0->next = in142_1->next;
+	vector<int> in142_2_0;
+	for (int i = 0; i < 200000; ++i) {
+		in142_2_0.push_back(rand());
+	}
+	auto in142_2 = makeList({ 1 });
+	auto out142_0 = s.detectCycle(in142_0);
+	auto out142_1 = s.detectCycle(in142_1);
+	auto out142_2 = s.detectCycle(in142_2);
+
 	string in151_0 = "was isi iiis";
 	string in151_1 = "was isi    iiis";
 	string in151_2 = "wasiiis";

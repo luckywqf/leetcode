@@ -2996,6 +2996,34 @@ public:
 		return false;
 	}
 
+
+	//-------------------------------------------------
+	// 142. https://leetcode.com/problems/linked-list-cycle-ii/
+	//-------------------------------------------------
+	ListNode *detectCycle(ListNode *head) {
+		ListNode *p = head;
+		while (p) {
+			ListNode *pc1 = p->next;
+			ListNode *pc2 = p->next;
+			while (pc1) {
+				if (pc1 == p) {
+					return p;
+				}
+				pc1 = pc1->next;
+				pc2 = pc2->next;
+				if (pc2 == nullptr) {
+					return nullptr;
+				}
+				pc2 = pc2->next;
+				if (pc1 == pc2)
+					break;
+			}
+			p = p->next;
+		}
+		return nullptr;
+	}
+
+
 	//-------------------------------------------------
 	// 151. https://leetcode.com/problems/reverse-words-in-a-string/
 	//-------------------------------------------------
