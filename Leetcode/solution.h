@@ -3049,6 +3049,46 @@ public:
 	}
 
 	//-------------------------------------------------
+	// 152. https://leetcode.com/problems/maximum-product-subarray/
+	//-------------------------------------------------
+	int maxProduct(vector<int>& nums) {
+		vector<int> productMax(nums.size());
+		vector<int> productMin(nums.size());
+		productMax[0] = productMin[0] = nums[0];
+
+		int len = nums.size();
+		int result = nums[0];
+		for (int i = 1; i < len; ++i) {
+			productMax[i] = std::max(nums[i], std::max(productMax[i - 1] * nums[i], productMin[i - 1] * nums[i]));
+			productMin[i] = std::min(nums[i], std::min(productMax[i - 1] * nums[i], productMin[i - 1] * nums[i]));
+			if (result < productMax[i]) {
+				result = productMax[i];
+			}
+		}
+		return result;
+	}
+
+	//-------------------------------------------------
+	// 153. https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/
+	//-------------------------------------------------
+	int findMin(vector<int>& nums) {
+		int low = 0;
+		int high = nums.size() - 1;
+		while (low < high) {
+			if (nums[low] < nums[high]) {
+				break;
+			}
+			int mid = (low + high) / 2;
+			if (nums[mid] >= nums[low]) {
+				low = mid + 1;
+			} else {
+				high = mid;
+			}
+		}
+		return nums[low];
+	}
+
+	//-------------------------------------------------
 	// 160. https://leetcode.com/problems/intersection-of-two-linked-lists/
 	//-------------------------------------------------
 	ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
@@ -3153,6 +3193,45 @@ public:
 			}
 		}
 		return 0;
+	}
+
+	//-------------------------------------------------
+	// 166. https://leetcode.com/problems/fraction-to-recurring-decimal/
+	//-------------------------------------------------
+	string fractionToDecimal(int numerator, int denominator) {
+		int64_t num = numerator;
+		int64_t den = denominator;
+		string result;
+		if (num < 0 && den > 0 || num > 0 && den < 0) {
+			result = "-";
+		}
+		if (num < 0) {
+			num = -num;
+		}
+		if(den < 0) {
+			den = -den;
+		}
+		result += to_string(num / den);
+		uint64_t remainder = num % den;
+		if (remainder == 0) {
+			return result;
+		}
+		result += ".";
+		unordered_map<uint64_t, int> remainderMap;
+		int index = result.size();//小数位数
+		while (remainder != 0) {
+			if (remainderMap.count(remainder)) {
+				result.insert(remainderMap[remainder], "(");
+				result.push_back(')');
+				break;
+			}
+			remainderMap[remainder] = index++;
+			remainder *= 10;
+			result += to_string(remainder / den);
+			remainder = remainder % den;
+		}
+
+		return result;
 	}
 
 	//-------------------------------------------------
