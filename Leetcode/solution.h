@@ -2977,6 +2977,19 @@ public:
 
 
 	//-------------------------------------------------
+	// 137. https://leetcode.com/problems/single-number-ii/
+	//-------------------------------------------------
+	int singleNumberii(vector<int>& nums) {
+		int ones = 0, twos = 0;
+		for (int i = 0; i < nums.size(); i++) {
+			ones = (ones ^ nums[i]) & ~twos;
+			twos = (twos ^ nums[i]) & ~ones;
+		}
+		return ones;
+	}
+
+
+	//-------------------------------------------------
 	// 141. https://leetcode.com/problems/linked-list-cycle/
 	//-------------------------------------------------
 	bool hasCycle(ListNode *head) {
@@ -3025,6 +3038,94 @@ public:
 
 
 	//-------------------------------------------------
+	// 148. https://leetcode.com/problems/sort-list/
+	//-------------------------------------------------
+	ListNode* sortList(ListNode* head) {
+		if (head == nullptr || head->next == nullptr)
+			return head;
+		ListNode* p1 = head;
+		ListNode* p2 = head->next->next;
+		while (p2 != nullptr && p2->next != nullptr) {
+			p1 = p1->next;
+			p2 = p2->next->next;
+		}
+		ListNode *l2 = sortList(p1->next);
+		p1->next = nullptr;
+		return mergeSortedList(sortList(head), l2);
+	}
+	ListNode* mergeSortedList(ListNode *l1, ListNode *l2) {
+		ListNode head(0);
+		ListNode *p = &head;
+		while (l1 != nullptr && l2 != nullptr) {
+			if (l1->val < l2->val) {
+				p->next = l1;
+				l1 = l1->next;
+			} else {
+				p->next = l2;
+				l2 = l2->next;
+			}
+			p = p->next;
+		}
+		if (l1 != nullptr)
+			p->next = l1;
+		if (l2 != nullptr)
+			p->next = l2;
+		return head.next;
+	}
+
+	//-------------------------------------------------
+	// 150. https://leetcode.com/problems/evaluate-reverse-polish-notation/
+	//-------------------------------------------------
+	int evalRPN(vector<string>& tokens) {
+		stack<int> nums;
+		int result, t1, t2;
+		for (auto t : tokens) {
+			if (t == "+") {
+				t1 = nums.top(); nums.pop();
+				t2 = nums.top(); nums.pop();
+				nums.push(t2 + t1);
+			} else if (t == "-") {
+				t1 = nums.top(); nums.pop();
+				t2 = nums.top(); nums.pop();
+				nums.push(t2 - t1);
+			} else if (t == "*") {
+				t1 = nums.top(); nums.pop();
+				t2 = nums.top(); nums.pop();
+				nums.push(t2 * t1);
+			} else if (t == "/") {
+				t1 = nums.top(); nums.pop();
+				t2 = nums.top(); nums.pop();
+				nums.push(t2 / t1);
+			} else {
+				nums.push(stoi(t));
+			}
+		}
+		return nums.top();
+	}
+
+	int evalRPNii(vector<string>& tokens) {
+		stack<int> nums;
+		unordered_map<string, function<int(int, int)>> operators = {
+			{"+", std::plus<int>() },
+			{ "-", std::minus<int>() },
+			{ "*", std::multiplies<int>() },
+			{ "/", std::divides<int>() }
+		};
+
+		int result, t1, t2;
+		for (auto t : tokens) {
+			if (operators.count(t)) {
+				t1 = nums.top(); nums.pop();
+				t2 = nums.top(); nums.pop();
+				nums.push(operators[t](t2, t1));
+			} else {
+				nums.push(stoi(t));
+			}
+		}
+		return nums.top();
+	}
+
+	//-------------------------------------------------
 	// 151. https://leetcode.com/problems/reverse-words-in-a-string/
 	//-------------------------------------------------
 	void reverseWords(string &s) {
@@ -3062,6 +3163,48 @@ public:
 			}
 			itStart = ++itEnd;
 		}
+	}
+
+	//-------------------------------------------------
+	// 152. https://leetcode.com/problems/maximum-product-subarray/
+	//-------------------------------------------------
+	int maxProduct(vector<int>& nums) {
+		vector<int> productMax(nums.size());
+		vector<int> productMin(nums.size());
+		productMax[0] = productMin[0] = nums[0];
+
+		int len = nums.size();
+		int result = nums[0];
+		for (int i = 1; i < len; ++i) {
+			productMax[i] = std::max(nums[i], 
+				std::max(productMax[i - 1] * nums[i], productMin[i - 1] * nums[i]));
+			productMin[i] = std::min(nums[i], 
+				std::min(productMax[i - 1] * nums[i], productMin[i - 1] * nums[i]));
+			if (result < productMax[i]) {
+				result = productMax[i];
+			}
+		}
+		return result;
+	}
+
+	//-------------------------------------------------
+	// 153. https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/
+	//-------------------------------------------------
+	int findMin(vector<int>& nums) {
+		int low = 0;
+		int high = nums.size() - 1;
+		while (low < high) {
+			if (nums[low] < nums[high]) {
+				break;
+			}
+			int mid = (low + high) / 2;
+			if (nums[mid] >= nums[low]) {
+				low = mid + 1;
+			} else {
+				high = mid;
+			}
+		}
+		return nums[low];
 	}
 
 	//-------------------------------------------------
@@ -3172,6 +3315,45 @@ public:
 	}
 
 	//-------------------------------------------------
+	// 166. https://leetcode.com/problems/fraction-to-recurring-decimal/
+	//-------------------------------------------------
+	string fractionToDecimal(int numerator, int denominator) {
+		int64_t num = numerator;
+		int64_t den = denominator;
+		string result;
+		if (num < 0 && den > 0 || num > 0 && den < 0) {
+			result = "-";
+		}
+		if (num < 0) {
+			num = -num;
+		}
+		if(den < 0) {
+			den = -den;
+		}
+		result += to_string(num / den);
+		uint64_t remainder = num % den;
+		if (remainder == 0) {
+			return result;
+		}
+		result += ".";
+		unordered_map<uint64_t, int> remainderMap;
+		int index = result.size();//小数位数
+		while (remainder != 0) {
+			if (remainderMap.count(remainder)) {
+				result.insert(remainderMap[remainder], "(");
+				result.push_back(')');
+				break;
+			}
+			remainderMap[remainder] = index++;
+			remainder *= 10;
+			result += to_string(remainder / den);
+			remainder = remainder % den;
+		}
+
+		return result;
+	}
+
+	//-------------------------------------------------
 	// 168. https://leetcode.com/problems/excel-sheet-column-title/
 	//-------------------------------------------------
 	string convertToTitle(int n) {
@@ -3269,6 +3451,23 @@ public:
 			}
 		}
 		return result.substr(start);
+	}
+
+	//-------------------------------------------------
+	// 187. https://leetcode.com/problems/repeated-dna-sequences/
+	//-------------------------------------------------
+	vector<string> findRepeatedDnaSequences(string s) {
+		unordered_map<string, int> sequeences;
+		for (int i = 0; i + 10 <= s.size(); ++i) {
+			sequeences[s.substr(i, 10)]++;
+		}
+		vector<string> result;
+		for (auto v : sequeences) {
+			if (v.second > 1) {
+				result.push_back(v.first);
+			}
+		}
+		return result;
 	}
 
 	//-------------------------------------------------
@@ -3613,5 +3812,34 @@ public:
 			}
 		}
 		return to_string(bull) + "A" + to_string(cows) + "B";
+	}
+};
+
+//-------------------------------------------------
+// 173. https://leetcode.com/problems/binary-search-tree-iterator/
+//-------------------------------------------------
+class BSTIterator {
+	stack<TreeNode *> myStack;
+public:
+	BSTIterator(TreeNode *root) {
+		pushAll(root);
+	}
+
+	/** @return whether we have a next smallest number */
+	bool hasNext() {
+		return !myStack.empty();
+	}
+
+	/** @return the next smallest number */
+	int next() {
+		TreeNode *tmpNode = myStack.top();
+		myStack.pop();
+		pushAll(tmpNode->right);
+		return tmpNode->val;
+	}
+
+private:
+	void pushAll(TreeNode *node) {
+		for (; node != NULL; myStack.push(node), node = node->left);
 	}
 };
