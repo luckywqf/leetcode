@@ -3009,6 +3009,59 @@ public:
 		return false;
 	}
 
+	//-------------------------------------------------
+	// 141. https://leetcode.com/problems/evaluate-reverse-polish-notation/
+	//-------------------------------------------------
+	int evalRPN(vector<string>& tokens) {
+		stack<int> nums;
+		int result, t1, t2;
+		for (auto t : tokens) {
+			if (t == "+") {
+				t1 = nums.top(); nums.pop();
+				t2 = nums.top(); nums.pop();
+				nums.push(t2 + t1);
+			} else if (t == "-") {
+				t1 = nums.top(); nums.pop();
+				t2 = nums.top(); nums.pop();
+				nums.push(t2 - t1);
+			} else if (t == "*") {
+				t1 = nums.top(); nums.pop();
+				t2 = nums.top(); nums.pop();
+				nums.push(t2 * t1);
+			} else if (t == "/") {
+				t1 = nums.top(); nums.pop();
+				t2 = nums.top(); nums.pop();
+				nums.push(t2 / t1);
+			} else {
+				nums.push(stoi(t));
+			}
+		}
+		return nums.top();
+	}
+
+	int evalRPNii(vector<string>& tokens) {
+		stack<int> nums;
+		unordered_map<string, function<int(int, int)>> operators = {
+			{"+", std::plus<int>() },
+			{ "-", std::minus<int>() },
+			{ "*", std::multiplies<int>() },
+			{ "/", std::divides<int>() }
+		};
+
+		int result, t1, t2;
+		for (auto t : tokens) {
+			if (operators.count(t)) {
+				t1 = nums.top(); nums.pop();
+				t2 = nums.top(); nums.pop();
+				nums.push(operators[t](t2, t1));
+			} else {
+				nums.push(stoi(t));
+			}
+		}
+		return nums.top();
+	}
+
+	//-------------------------------------------------
 	// 151. https://leetcode.com/problems/reverse-words-in-a-string/
 	//-------------------------------------------------
 	void reverseWords(string &s) {
@@ -3059,8 +3112,10 @@ public:
 		int len = nums.size();
 		int result = nums[0];
 		for (int i = 1; i < len; ++i) {
-			productMax[i] = std::max(nums[i], std::max(productMax[i - 1] * nums[i], productMin[i - 1] * nums[i]));
-			productMin[i] = std::min(nums[i], std::min(productMax[i - 1] * nums[i], productMin[i - 1] * nums[i]));
+			productMax[i] = std::max(nums[i], 
+				std::max(productMax[i - 1] * nums[i], productMin[i - 1] * nums[i]));
+			productMin[i] = std::min(nums[i], 
+				std::min(productMax[i - 1] * nums[i], productMin[i - 1] * nums[i]));
 			if (result < productMax[i]) {
 				result = productMax[i];
 			}
