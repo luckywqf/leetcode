@@ -3010,7 +3010,43 @@ public:
 	}
 
 	//-------------------------------------------------
-	// 141. https://leetcode.com/problems/evaluate-reverse-polish-notation/
+	// 148. https://leetcode.com/problems/sort-list/
+	//-------------------------------------------------
+	ListNode* sortList(ListNode* head) {
+		if (head == nullptr || head->next == nullptr)
+			return head;
+		ListNode* p1 = head;
+		ListNode* p2 = head->next->next;
+		while (p2 != nullptr && p2->next != nullptr) {
+			p1 = p1->next;
+			p2 = p2->next->next;
+		}
+		ListNode *l2 = sortList(p1->next);
+		p1->next = nullptr;
+		return mergeSortedList(sortList(head), l2);
+	}
+	ListNode* mergeSortedList(ListNode *l1, ListNode *l2) {
+		ListNode head(0);
+		ListNode *p = &head;
+		while (l1 != nullptr && l2 != nullptr) {
+			if (l1->val < l2->val) {
+				p->next = l1;
+				l1 = l1->next;
+			} else {
+				p->next = l2;
+				l2 = l2->next;
+			}
+			p = p->next;
+		}
+		if (l1 != nullptr)
+			p->next = l1;
+		if (l2 != nullptr)
+			p->next = l2;
+		return head.next;
+	}
+
+	//-------------------------------------------------
+	// 150. https://leetcode.com/problems/evaluate-reverse-polish-notation/
 	//-------------------------------------------------
 	int evalRPN(vector<string>& tokens) {
 		stack<int> nums;
