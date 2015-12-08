@@ -3010,6 +3010,31 @@ public:
 	}
 
 	//-------------------------------------------------
+	// 143. https://leetcode.com/problems/reorder-list/
+	//-------------------------------------------------
+	void reorderList(ListNode* head) {
+		if (head == nullptr || head->next == nullptr) {
+			return;
+		}
+		ListNode *p1 = head;
+		ListNode *p2 = head->next;
+		while (p2 && p2->next) {
+			p1 = p1->next;
+			p2 = p2->next->next;
+		}
+		auto l2 = reverseList(p1->next);
+		p1->next = nullptr;
+		auto l1 = head;
+		while (l1 && l2) {
+			auto temp = l2->next;
+			l2->next = l1->next;
+			l1->next = l2;
+			l1 = l2->next;
+			l2 = temp;
+		}
+	}
+
+	//-------------------------------------------------
 	// 144. https://leetcode.com/problems/binary-tree-preorder-traversal/
 	//-------------------------------------------------
 	vector<int> preorderTraversal(TreeNode* root) {
