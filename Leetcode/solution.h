@@ -3010,6 +3010,57 @@ public:
 	}
 
 	//-------------------------------------------------
+	// 144. https://leetcode.com/problems/binary-tree-preorder-traversal/
+	//-------------------------------------------------
+	vector<int> preorderTraversal(TreeNode* root) {
+		vector<int> result;
+		auto p = root;
+		stack<TreeNode*> rightStack;
+		while (p) {
+			result.push_back(p->val);
+			if (p->right) {
+				rightStack.push(p->right);
+			}
+			p = p->left;
+
+			if (p == nullptr && !rightStack.empty()) {
+				p = rightStack.top();
+				rightStack.pop();
+			}
+		}
+		return result;
+	}
+
+	//-------------------------------------------------
+	// 147. https://leetcode.com/problems/insertion-sort-list/
+	//-------------------------------------------------
+	ListNode* insertionSortList(ListNode* head) {
+		if (head == nullptr) {
+			return head;
+		}
+		ListNode preHead(0);
+		preHead.next = head;
+		ListNode *pre = head, *p = head->next, *rightPos;
+		while (p) {
+			if (p->val >= pre->val) {
+				pre = p;
+				p = p->next;
+				continue;
+			}
+			rightPos = &preHead;
+			while (rightPos->next && p->val > rightPos->next->val) {
+				rightPos = rightPos->next;
+			}
+			auto temp = rightPos->next;
+			rightPos->next = p;
+			pre->next = p->next;
+			p->next = temp;
+			p = pre->next;
+		}
+		return preHead.next;
+	}
+
+	//-------------------------------------------------
 	// 148. https://leetcode.com/problems/sort-list/
 	//-------------------------------------------------
 	ListNode* sortList(ListNode* head) {
