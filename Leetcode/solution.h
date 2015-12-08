@@ -3038,6 +3038,82 @@ public:
 
 
 	//-------------------------------------------------
+	// 143. https://leetcode.com/problems/reorder-list/
+	//-------------------------------------------------
+	void reorderList(ListNode* head) {
+		if (head == nullptr || head->next == nullptr) {
+			return;
+		}
+		ListNode *p1 = head;
+		ListNode *p2 = head->next;
+		while (p2 && p2->next) {
+			p1 = p1->next;
+			p2 = p2->next->next;
+		}
+		auto l2 = reverseList(p1->next);
+		p1->next = nullptr;
+		auto l1 = head;
+		while (l1 && l2) {
+			auto temp = l2->next;
+			l2->next = l1->next;
+			l1->next = l2;
+			l1 = l2->next;
+			l2 = temp;
+		}
+	}
+
+	//-------------------------------------------------
+	// 144. https://leetcode.com/problems/binary-tree-preorder-traversal/
+	//-------------------------------------------------
+	vector<int> preorderTraversal(TreeNode* root) {
+		vector<int> result;
+		auto p = root;
+		stack<TreeNode*> rightStack;
+		while (p) {
+			result.push_back(p->val);
+			if (p->right) {
+				rightStack.push(p->right);
+			}
+			p = p->left;
+
+			if (p == nullptr && !rightStack.empty()) {
+				p = rightStack.top();
+				rightStack.pop();
+			}
+		}
+		return result;
+	}
+
+	//-------------------------------------------------
+	// 147. https://leetcode.com/problems/insertion-sort-list/
+	//-------------------------------------------------
+	ListNode* insertionSortList(ListNode* head) {
+		if (head == nullptr) {
+			return head;
+		}
+		ListNode preHead(0);
+		preHead.next = head;
+		ListNode *pre = head, *p = head->next, *rightPos;
+		while (p) {
+			if (p->val >= pre->val) {
+				pre = p;
+				p = p->next;
+				continue;
+			}
+			rightPos = &preHead;
+			while (rightPos->next && p->val > rightPos->next->val) {
+				rightPos = rightPos->next;
+			}
+			auto temp = rightPos->next;
+			rightPos->next = p;
+			pre->next = p->next;
+			p->next = temp;
+			p = pre->next;
+		}
+		return preHead.next;
+	}
+
+	//-------------------------------------------------
 	// 148. https://leetcode.com/problems/sort-list/
 	//-------------------------------------------------
 	ListNode* sortList(ListNode* head) {
