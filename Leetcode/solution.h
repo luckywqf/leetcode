@@ -2750,6 +2750,37 @@ public:
 
 
 	//-------------------------------------------------
+	// 114. https://leetcode.com/problems/flatten-binary-tree-to-linked-list/
+	//-------------------------------------------------
+	void flatten(TreeNode* root) {
+		if (root == nullptr) {
+			return;
+		}
+		flattenTree(root);
+	}
+	TreeNode* flattenTree(TreeNode* root) {
+		if (root->left == nullptr && root->right == nullptr) {
+			return root;
+		}
+		TreeNode *rightEnd;
+		if (root->left) {
+			auto right = root->right;
+			root->right = root->left;
+			rightEnd = flattenTree(root->left);
+			if (right) {
+				rightEnd->right = right;
+				rightEnd = flattenTree(right);
+			}
+			root->left = nullptr;
+		}
+		else if (root->right) {
+			rightEnd = flattenTree(root->right);
+		}
+		return rightEnd;
+	}
+
+
+	//-------------------------------------------------
 	// 116. https://leetcode.com/problems/populating-next-right-pointers-in-each-node/
 	//-------------------------------------------------
 	void connect(TreeLinkNode *root) {

@@ -111,6 +111,11 @@ int main() {
 	auto out113_0 = s.pathSum(in113_0, 1);
 	auto out113_1 = s.pathSum(in113_1, 22);
 
+	TreeNode *in114_0 = makeBinaryTree("1,-2,3");
+	TreeNode *in114_1 = makeBinaryTree("5,4,8,11,null,13,4,7,2,null,null,5,1");
+	s.flatten(in114_0);
+	s.flatten(in114_1);
+
 	vector<vector<int>> in120_0 = { {-1}, {-2,-3} };
 	auto out120_0 = s.minimumTotal(in120_0);
 	
