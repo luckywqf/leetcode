@@ -2750,6 +2750,37 @@ public:
 
 
 	//-------------------------------------------------
+	// 114. https://leetcode.com/problems/flatten-binary-tree-to-linked-list/
+	//-------------------------------------------------
+	void flatten(TreeNode* root) {
+		if (root == nullptr) {
+			return;
+		}
+		flattenTree(root);
+	}
+	TreeNode* flattenTree(TreeNode* root) {
+		if (root->left == nullptr && root->right == nullptr) {
+			return root;
+		}
+		TreeNode *rightEnd;
+		if (root->left) {
+			auto right = root->right;
+			root->right = root->left;
+			rightEnd = flattenTree(root->left);
+			if (right) {
+				rightEnd->right = right;
+				rightEnd = flattenTree(right);
+			}
+			root->left = nullptr;
+		}
+		else if (root->right) {
+			rightEnd = flattenTree(root->right);
+		}
+		return rightEnd;
+	}
+
+
+	//-------------------------------------------------
 	// 116. https://leetcode.com/problems/populating-next-right-pointers-in-each-node/
 	//-------------------------------------------------
 	void connect(TreeLinkNode *root) {
@@ -3893,6 +3924,275 @@ public:
 	}
 
 	//-------------------------------------------------
+	// 228. https://leetcode.com/problems/summary-ranges/
+	//-------------------------------------------------
+	vector<string> summaryRanges(vector<int>& nums) {
+		vector<string> result;
+		if (nums.empty()) {
+			return result;
+		}
+		int start(0), end(0);
+		for (int i = 1; i < nums.size(); ++i) {
+			if (nums[i] != nums[i - 1] + 1) {
+				end = i - 1;
+				if (start == end) {
+					result.push_back( to_string(nums[start]) );
+				} else {
+					string str = to_string(nums[start]);
+					str += "->";
+					str += to_string(nums[end]);
+					result.push_back(str);
+				}
+				start = end = i;
+			}
+		}
+		end = nums.size() - 1;
+		if (start == end) {
+			result.push_back(to_string(nums[start]));
+		} else {
+			string str = to_string(nums[start]);
+			str += "->";
+			str += to_string(nums[end]);
+			result.push_back(str);
+		}
+		return result;
+	}
+
+	//-------------------------------------------------
+	// 231. https://leetcode.com/problems/power-of-two/
+	//-------------------------------------------------
+	bool isPowerOfTwo(int n) {
+		if (n <= 0) {
+			return false;
+		}
+		while (n != 1) {
+			if (n % 2 != 0) {
+				return false;
+			}
+			n /= 2;
+		}
+		return true;
+	}
+
+
+	//-------------------------------------------------
+	// 234. https://leetcode.com/problems/palindrome-linked-list/
+	//-------------------------------------------------
+	bool isPalindrome(ListNode* head) {
+		if (head == nullptr || head->next == nullptr) {
+			return true;
+		}
+		ListNode *p1 = head;
+		ListNode *p2 = head->next;
+		while (p2 && p2->next) {
+			p1 = p1->next;
+			p2 = p2->next->next;
+		}
+		auto l2 = reverseList(p1->next);
+		p1->next = nullptr;
+
+		auto l1 = head;
+		while (l1 && l2) {
+			if (l1->val != l2->val) {
+				return false;
+			}
+			l1 = l1->next;
+			l2 = l2->next;
+		}
+		return true;
+	}
+
+	//-------------------------------------------------
+	// 237. https://leetcode.com/problems/delete-node-in-a-linked-list/
+	//-------------------------------------------------
+	void deleteNode(ListNode* node) {
+		auto p = node->next;
+		node->val = p->val;
+		node->next = p->next;
+	}
+
+	//-------------------------------------------------
+	// 242. https://leetcode.com/problems/valid-anagram/
+	//-------------------------------------------------
+	bool isAnagram(string s, string t) {
+		unordered_map<char, int> smap, tmap;
+		for (auto v : s) {
+			smap[v]++;
+		}
+		for (auto v : t) {
+			tmap[v]++;
+		}
+		return smap == tmap;
+	}
+
+
+	//-------------------------------------------------
+	// 257. https://leetcode.com/problems/binary-tree-paths/
+	//-------------------------------------------------
+	vector<string> binaryTreePaths(TreeNode* root) {
+		vector<string> result;
+		if (root == nullptr) {
+			return result;
+		}
+		vector<string> curr;
+		binaryTreePaths(root, curr, result);
+	}
+
+	void binaryTreePaths(TreeNode* root, vector<string> &curr, vector<string> &vs) {
+		curr.push_back(to_string(root->val));
+		if (root->left == nullptr && root->right == nullptr) {
+			string temp;
+			for (int i = 0; i < curr.size(); ++i) {
+				if (i != 0) {
+					temp += "->";
+				}
+				temp += curr[i];
+			}
+			vs.push_back(temp);
+		}
+		if (root->left) {
+			binaryTreePaths(root->left, curr, vs);
+		}
+		if (root->right) {
+			binaryTreePaths(root->right, curr, vs);
+		}
+		curr.pop_back();
+	}
+
+	//-------------------------------------------------
+	// 258. https://leetcode.com/problems/add-digits/
+	//-------------------------------------------------
+	int addDigits(int num) {
+		if (num < 10) {
+			return num;
+		} else {
+			return num % 9 == 0 ? 9 : num % 9;
+		}
+	}
+
+
+	//-------------------------------------------------
+	// 278. https://leetcode.com/problems/add-digits/
+	//-------------------------------------------------
+	int firstBadVersion(int n) {
+		int64_t low = 1, high = n;
+		while (low < high) {
+			int64_t mid = (low + high) / 2;
+			if (isBadVersion(mid)) {
+				high = mid;
+			}
+			else {
+				low = mid + 1;
+			}
+		}
+		return low;
+	}
+	//for test, 2126753390 versions, 1702766719 is the first bad version.
+	bool isBadVersion(int version) {
+		if (version >= 1702766719) {
+			return true;
+		}
+		return false;
+	}
+
+
+	//-------------------------------------------------
+	// 283. https://leetcode.com/problems/ugly-number/
+	//-------------------------------------------------
+	bool isUgly(int num) {
+		if (num == 0) {
+			return false;
+		}
+		vector<int> factors = { 2, 3, 4, 5, 6, 8, 9 };
+		while (num != 1) {
+			bool hasFactor = false;
+			for (auto v : factors) {
+				if (num % v == 0) {
+					num /= v;
+					hasFactor = true;
+				}
+			}
+			if (num != 1 && !hasFactor) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	//-------------------------------------------------
+	// 283. https://leetcode.com/problems/move-zeroes/
+	//-------------------------------------------------
+	void moveZeroes(vector<int>& nums) {
+		int j = 0;
+		for (int i = 0; i < nums.size(); ++i) {
+			if (nums[i] == 0) {
+				continue;
+			}
+			nums[j++] = nums[i];
+		}
+		while (j < nums.size()) {
+			nums[j++] = 0;
+		}
+	}
+
+
+	//-------------------------------------------------
+	// 292. https://leetcode.com/problems/word-pattern/
+	//-------------------------------------------------
+	bool wordPattern(string pattern, string str) {
+		unordered_map<char, int> pmap;
+		unordered_map<string, int> strMap;
+		for (int i = 0; i < pattern.size(); ++i) {
+			if (pmap.count(pattern[i])) {
+				continue;
+			}
+			pmap[pattern[i]] = i;
+		}
+
+		size_t p(0), start(0);
+		string sub;
+		int index = 0;
+		while (start != -1) {
+			p = str.find(' ', start);
+			if (p != string::npos) {
+				sub = str.substr(start, p - start);
+				start = p + 1;
+			} else {
+				sub = str.substr(start);
+				start = -1;
+			}
+
+			if (strMap.count(sub)) {
+				if (strMap[sub] != pmap[pattern[index]]) {
+					return false;
+				}
+			} else {
+				if (pmap[pattern[index]] != index) {
+					return false;
+				}
+				strMap[sub] = index;
+			}
+			index++;
+			if (start != -1 && index >= pattern.size()) {
+				return false;
+			}
+		}
+		return index == pattern.size();
+	}
+
+	//-------------------------------------------------
+	// 292. https://leetcode.com/problems/nim-game/
+	//-------------------------------------------------
+	bool canWinNim(int n) {
+		if (n <= 3 || n % 4 != 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+
+	//-------------------------------------------------
 	// 299. https://leetcode.com/problems/bulls-and-cows/
 	//-------------------------------------------------
 	string getHint(string secret, string guess) {
@@ -3971,4 +4271,129 @@ private:
 	void pushAll(TreeNode *node) {
 		for (; node != NULL; myStack.push(node), node = node->left);
 	}
+};
+
+//-------------------------------------------------
+// 225. https://leetcode.com/problems/implement-stack-using-queues/
+//-------------------------------------------------
+class Stack {
+public:
+	// Push element x onto stack.
+	void push(int x) {
+		qe.push(x);
+	}
+
+	// Removes the element on top of the stack.
+	void pop() {
+		queue<int> temp;
+		while (qe.size() > 1) {
+			temp.push(qe.front());
+			qe.pop();
+		}
+		temp.swap(qe);
+	}
+
+	// Get the top element.
+	int top() {
+		queue<int> temp;
+		while (qe.size() > 1) {
+			temp.push(qe.front());
+			qe.pop();
+		}
+		int result = qe.front();
+		temp.push(qe.front());
+		temp.swap(qe);
+		return result;
+	}
+
+	// Return whether the stack is empty.
+	bool empty() {
+		return qe.empty();
+	}
+
+private:
+	queue<int> qe;
+};
+
+//-------------------------------------------------
+// 232. https://leetcode.com/problems/implement-queue-using-stacks/
+//-------------------------------------------------
+class Queue {
+public:
+	// Push element x to the back of queue.
+	void push(int x) {
+		st.push(x);
+	}
+
+	// Removes the element from in front of queue.
+	void pop(void) {
+		stack<int> temp;
+		while (st.size() > 1) {
+			temp.push(st.top());
+			st.pop();
+		}
+		while (!st.empty()) {
+			st.pop();
+		}
+		while (!temp.empty()) {
+			st.push(temp.top());
+			temp.pop();
+		}
+	}
+
+	// Get the front element.
+	int peek(void) {
+		int result;
+		stack<int> temp;
+		while (st.size() > 1) {
+			temp.push(st.top());
+			st.pop();
+		}
+		result = st.top();
+		while (!st.empty()) {
+			temp.push(st.top());
+			st.pop();
+		}
+		while (!temp.empty()) {
+			st.push(temp.top());
+			temp.pop();
+		}
+		return result;
+	}
+
+	// Return whether the queue is empty.
+	bool empty(void) {
+		return st.empty();
+	}
+
+private:
+	stack<int> st;
+};
+
+
+//-------------------------------------------------
+// 303. https://leetcode.com/problems/range-sum-query-immutable/
+//-------------------------------------------------
+class NumArray {
+public:
+	NumArray(vector<int> &nums) {
+		this->nums = nums;
+		for (int i = 1; i < nums.size(); ++i) {
+			this->nums[i] += this->nums[i - 1];
+		}
+	}
+
+	int sumRange(int i, int j) {
+		int sum = nums[j] - nums[i];
+		if (i != 0) {
+			sum += nums[i] - nums[i - 1];
+		}
+		else {
+			sum += nums[i];
+		}
+		return sum;
+	}
+
+private:
+	vector<int> nums;
 };
