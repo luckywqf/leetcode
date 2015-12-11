@@ -3923,6 +3923,20 @@ public:
 		return root;
 	}
 
+
+
+	//-------------------------------------------------
+	// 292. https://leetcode.com/problems/nim-game/
+	//-------------------------------------------------
+	bool canWinNim(int n) {
+		if (n <= 3 || n % 4 != 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+
 	//-------------------------------------------------
 	// 299. https://leetcode.com/problems/bulls-and-cows/
 	//-------------------------------------------------
