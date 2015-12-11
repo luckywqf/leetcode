@@ -175,6 +175,7 @@ int main() {
 	auto out234_0 = s.isPalindrome(makeList({ 1, 1, 2, 1 }));
 
 	auto out278_0 = s.firstBadVersion(2126753390);
+
 	auto out283_0 = s.isUgly(-2147483648);
 
 	auto out292_0 = s.wordPattern("abba", "dog dog dog dog");
