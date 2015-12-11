@@ -3925,7 +3925,7 @@ public:
 
 
 	//-------------------------------------------------
-	// 237. https://leetcode.com/problems/power-of-two/
+	// 231. https://leetcode.com/problems/power-of-two/
 	//-------------------------------------------------
 	bool isPowerOfTwo(int n) {
 		if (n <= 0) {
@@ -3936,6 +3936,34 @@ public:
 				return false;
 			}
 			n /= 2;
+		}
+		return true;
+	}
+
+
+	//-------------------------------------------------
+	// 234. https://leetcode.com/problems/palindrome-linked-list/
+	//-------------------------------------------------
+	bool isPalindrome(ListNode* head) {
+		if (head == nullptr || head->next == nullptr) {
+			return true;
+		}
+		ListNode *p1 = head;
+		ListNode *p2 = head->next;
+		while (p2 && p2->next) {
+			p1 = p1->next;
+			p2 = p2->next->next;
+		}
+		auto l2 = reverseList(p1->next);
+		p1->next = nullptr;
+
+		auto l1 = head;
+		while (l1 && l2) {
+			if (l1->val != l2->val) {
+				return false;
+			}
+			l1 = l1->next;
+			l2 = l2->next;
 		}
 		return true;
 	}
@@ -4178,4 +4206,46 @@ public:
 
 private:
 	stack<int> st;
+};
+
+//-------------------------------------------------
+// 232. https://leetcode.com/problems/implement-stack-using-queues/
+//-------------------------------------------------
+class Stack {
+public:
+	// Push element x onto stack.
+	void push(int x) {
+		qe.push(x);
+	}
+
+	// Removes the element on top of the stack.
+	void pop() {
+		queue<int> temp;
+		while (qe.size() > 1) {
+			temp.push(qe.front());
+			qe.pop();
+		}
+		temp.swap(qe);
+	}
+
+	// Get the top element.
+	int top() {
+		queue<int> temp;
+		while (qe.size() > 1) {
+			temp.push(qe.front());
+			qe.pop();
+		}
+		int result = qe.front();
+		temp.push(qe.front());
+		temp.swap(qe);
+		return result;
+	}
+
+	// Return whether the stack is empty.
+	bool empty() {
+		return qe.empty();
+	}
+
+private:
+	queue<int> qe;
 };

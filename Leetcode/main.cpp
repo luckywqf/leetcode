@@ -172,6 +172,8 @@ int main() {
 
 	auto out201_0 = s.rangeBitwiseAnd(5, 7);
 
+	auto out234_0 = s.isPalindrome(makeList({ 1, 1, 2, 1 }));
+
 	auto out283_0 = s.isUgly(-2147483648);
 
 	auto out292_0 = s.wordPattern("abba", "dog dog dog dog");
