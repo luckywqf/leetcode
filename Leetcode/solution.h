@@ -3923,7 +3923,42 @@ public:
 		return root;
 	}
 
+	//-------------------------------------------------
+	// 237. https://leetcode.com/problems/delete-node-in-a-linked-list/
+	//-------------------------------------------------
+	void deleteNode(ListNode* node) {
+		auto p = node->next;
+		node->val = p->val;
+		node->next = p->next;
+	}
 
+	//-------------------------------------------------
+	// 258. https://leetcode.com/problems/add-digits/
+	//-------------------------------------------------
+	int addDigits(int num) {
+		if (num < 10) {
+			return num;
+		} else {
+			return num % 9 == 0 ? 9 : num % 9;
+		}
+	}
+
+
+	//-------------------------------------------------
+	// 283. https://leetcode.com/problems/move-zeroes/
+	//-------------------------------------------------
+	void moveZeroes(vector<int>& nums) {
+		int j = 0;
+		for (int i = 0; i < nums.size(); ++i) {
+			if (nums[i] == 0) {
+				continue;
+			}
+			nums[j++] = nums[i];
+		}
+		while (j < nums.size()) {
+			nums[j++] = 0;
+		}
+	}
 
 	//-------------------------------------------------
 	// 292. https://leetcode.com/problems/nim-game/
