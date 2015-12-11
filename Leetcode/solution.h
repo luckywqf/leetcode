@@ -3991,6 +3991,40 @@ public:
 		return smap == tmap;
 	}
 
+
+	//-------------------------------------------------
+	// 257. https://leetcode.com/problems/binary-tree-paths/
+	//-------------------------------------------------
+	vector<string> binaryTreePaths(TreeNode* root) {
+		vector<string> result;
+		if (root == nullptr) {
+			return result;
+		}
+		vector<string> curr;
+		binaryTreePaths(root, curr, result);
+	}
+
+	void binaryTreePaths(TreeNode* root, vector<string> &curr, vector<string> &vs) {
+		curr.push_back(to_string(root->val));
+		if (root->left == nullptr && root->right == nullptr) {
+			string temp;
+			for (int i = 0; i < curr.size(); ++i) {
+				if (i != 0) {
+					temp += "->";
+				}
+				temp += curr[i];
+			}
+			vs.push_back(temp);
+		}
+		if (root->left) {
+			binaryTreePaths(root->left, curr, vs);
+		}
+		if (root->right) {
+			binaryTreePaths(root->right, curr, vs);
+		}
+		curr.pop_back();
+	}
+
 	//-------------------------------------------------
 	// 258. https://leetcode.com/problems/add-digits/
 	//-------------------------------------------------
