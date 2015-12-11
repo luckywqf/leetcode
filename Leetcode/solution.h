@@ -3923,6 +3923,40 @@ public:
 		return root;
 	}
 
+	//-------------------------------------------------
+	// 228. https://leetcode.com/problems/summary-ranges/
+	//-------------------------------------------------
+	vector<string> summaryRanges(vector<int>& nums) {
+		vector<string> result;
+		if (nums.empty()) {
+			return result;
+		}
+		int start(0), end(0);
+		for (int i = 1; i < nums.size(); ++i) {
+			if (nums[i] != nums[i - 1] + 1) {
+				end = i - 1;
+				if (start == end) {
+					result.push_back( to_string(nums[start]) );
+				} else {
+					string str = to_string(nums[start]);
+					str += "->";
+					str += to_string(nums[end]);
+					result.push_back(str);
+				}
+				start = end = i;
+			}
+		}
+		end = nums.size() - 1;
+		if (start == end) {
+			result.push_back(to_string(nums[start]));
+		} else {
+			string str = to_string(nums[start]);
+			str += "->";
+			str += to_string(nums[end]);
+			result.push_back(str);
+		}
+		return result;
+	}
 
 	//-------------------------------------------------
 	// 231. https://leetcode.com/problems/power-of-two/
@@ -4035,6 +4069,32 @@ public:
 			return num % 9 == 0 ? 9 : num % 9;
 		}
 	}
+
+
+	//-------------------------------------------------
+	// 278. https://leetcode.com/problems/add-digits/
+	//-------------------------------------------------
+	int firstBadVersion(int n) {
+		int64_t low = 1, high = n;
+		while (low < high) {
+			int64_t mid = (low + high) / 2;
+			if (isBadVersion(mid)) {
+				high = mid;
+			}
+			else {
+				low = mid + 1;
+			}
+		}
+		return low;
+	}
+	//for test, 2126753390 versions, 1702766719 is the first bad version.
+	bool isBadVersion(int version) {
+		if (version >= 1702766719) {
+			return true;
+		}
+		return false;
+	}
+
 
 	//-------------------------------------------------
 	// 283. https://leetcode.com/problems/ugly-number/
@@ -4186,6 +4246,47 @@ private:
 	}
 };
 
+//-------------------------------------------------
+// 225. https://leetcode.com/problems/implement-stack-using-queues/
+//-------------------------------------------------
+class Stack {
+public:
+	// Push element x onto stack.
+	void push(int x) {
+		qe.push(x);
+	}
+
+	// Removes the element on top of the stack.
+	void pop() {
+		queue<int> temp;
+		while (qe.size() > 1) {
+			temp.push(qe.front());
+			qe.pop();
+		}
+		temp.swap(qe);
+	}
+
+	// Get the top element.
+	int top() {
+		queue<int> temp;
+		while (qe.size() > 1) {
+			temp.push(qe.front());
+			qe.pop();
+		}
+		int result = qe.front();
+		temp.push(qe.front());
+		temp.swap(qe);
+		return result;
+	}
+
+	// Return whether the stack is empty.
+	bool empty() {
+		return qe.empty();
+	}
+
+private:
+	queue<int> qe;
+};
 
 //-------------------------------------------------
 // 232. https://leetcode.com/problems/implement-queue-using-stacks/
@@ -4242,44 +4343,30 @@ private:
 	stack<int> st;
 };
 
+
 //-------------------------------------------------
-// 232. https://leetcode.com/problems/implement-stack-using-queues/
+// 303. https://leetcode.com/problems/range-sum-query-immutable/
 //-------------------------------------------------
-class Stack {
+class NumArray {
 public:
-	// Push element x onto stack.
-	void push(int x) {
-		qe.push(x);
-	}
-
-	// Removes the element on top of the stack.
-	void pop() {
-		queue<int> temp;
-		while (qe.size() > 1) {
-			temp.push(qe.front());
-			qe.pop();
+	NumArray(vector<int> &nums) {
+		this->nums = nums;
+		for (int i = 1; i < nums.size(); ++i) {
+			this->nums[i] += this->nums[i - 1];
 		}
-		temp.swap(qe);
 	}
 
-	// Get the top element.
-	int top() {
-		queue<int> temp;
-		while (qe.size() > 1) {
-			temp.push(qe.front());
-			qe.pop();
+	int sumRange(int i, int j) {
+		int sum = nums[j] - nums[i];
+		if (i != 0) {
+			sum += nums[i] - nums[i - 1];
 		}
-		int result = qe.front();
-		temp.push(qe.front());
-		temp.swap(qe);
-		return result;
-	}
-
-	// Return whether the stack is empty.
-	bool empty() {
-		return qe.empty();
+		else {
+			sum += nums[i];
+		}
+		return sum;
 	}
 
 private:
-	queue<int> qe;
+	vector<int> nums;
 };
