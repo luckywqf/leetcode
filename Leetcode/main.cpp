@@ -171,5 +171,10 @@ int main() {
 	auto out200_0 = s.numIslands(in200_0);
 
 	auto out201_0 = s.rangeBitwiseAnd(5, 7);
+
+	auto out283_0 = s.isUgly(-2147483648);
+
+	auto out292_0 = s.wordPattern("abba", "dog dog dog dog");
+	
 	return 0;
 }

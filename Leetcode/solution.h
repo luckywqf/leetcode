@@ -3923,6 +3923,23 @@ public:
 		return root;
 	}
 
+
+	//-------------------------------------------------
+	// 237. https://leetcode.com/problems/power-of-two/
+	//-------------------------------------------------
+	bool isPowerOfTwo(int n) {
+		if (n <= 0) {
+			return false;
+		}
+		while (n != 1) {
+			if (n % 2 != 0) {
+				return false;
+			}
+			n /= 2;
+		}
+		return true;
+	}
+
 	//-------------------------------------------------
 	// 237. https://leetcode.com/problems/delete-node-in-a-linked-list/
 	//-------------------------------------------------
@@ -3930,6 +3947,20 @@ public:
 		auto p = node->next;
 		node->val = p->val;
 		node->next = p->next;
+	}
+
+	//-------------------------------------------------
+	// 242. https://leetcode.com/problems/valid-anagram/
+	//-------------------------------------------------
+	bool isAnagram(string s, string t) {
+		unordered_map<char, int> smap, tmap;
+		for (auto v : s) {
+			smap[v]++;
+		}
+		for (auto v : t) {
+			tmap[v]++;
+		}
+		return smap == tmap;
 	}
 
 	//-------------------------------------------------
@@ -3943,6 +3974,28 @@ public:
 		}
 	}
 
+	//-------------------------------------------------
+	// 283. https://leetcode.com/problems/ugly-number/
+	//-------------------------------------------------
+	bool isUgly(int num) {
+		if (num == 0) {
+			return false;
+		}
+		vector<int> factors = { 2, 3, 4, 5, 6, 8, 9 };
+		while (num != 1) {
+			bool hasFactor = false;
+			for (auto v : factors) {
+				if (num % v == 0) {
+					num /= v;
+					hasFactor = true;
+				}
+			}
+			if (num != 1 && !hasFactor) {
+				return false;
+			}
+		}
+		return true;
+	}
 
 	//-------------------------------------------------
 	// 283. https://leetcode.com/problems/move-zeroes/
@@ -3958,6 +4011,51 @@ public:
 		while (j < nums.size()) {
 			nums[j++] = 0;
 		}
+	}
+
+
+	//-------------------------------------------------
+	// 292. https://leetcode.com/problems/word-pattern/
+	//-------------------------------------------------
+	bool wordPattern(string pattern, string str) {
+		unordered_map<char, int> pmap;
+		unordered_map<string, int> strMap;
+		for (int i = 0; i < pattern.size(); ++i) {
+			if (pmap.count(pattern[i])) {
+				continue;
+			}
+			pmap[pattern[i]] = i;
+		}
+
+		size_t p(0), start(0);
+		string sub;
+		int index = 0;
+		while (start != -1) {
+			p = str.find(' ', start);
+			if (p != string::npos) {
+				sub = str.substr(start, p - start);
+				start = p + 1;
+			} else {
+				sub = str.substr(start);
+				start = -1;
+			}
+
+			if (strMap.count(sub)) {
+				if (strMap[sub] != pmap[pattern[index]]) {
+					return false;
+				}
+			} else {
+				if (pmap[pattern[index]] != index) {
+					return false;
+				}
+				strMap[sub] = index;
+			}
+			index++;
+			if (start != -1 && index >= pattern.size()) {
+				return false;
+			}
+		}
+		return index == pattern.size();
 	}
 
 	//-------------------------------------------------
@@ -4024,4 +4122,60 @@ private:
 	void pushAll(TreeNode *node) {
 		for (; node != NULL; myStack.push(node), node = node->left);
 	}
+};
+
+
+//-------------------------------------------------
+// 232. https://leetcode.com/problems/implement-queue-using-stacks/
+//-------------------------------------------------
+class Queue {
+public:
+	// Push element x to the back of queue.
+	void push(int x) {
+		st.push(x);
+	}
+
+	// Removes the element from in front of queue.
+	void pop(void) {
+		stack<int> temp;
+		while (st.size() > 1) {
+			temp.push(st.top());
+			st.pop();
+		}
+		while (!st.empty()) {
+			st.pop();
+		}
+		while (!temp.empty()) {
+			st.push(temp.top());
+			temp.pop();
+		}
+	}
+
+	// Get the front element.
+	int peek(void) {
+		int result;
+		stack<int> temp;
+		while (st.size() > 1) {
+			temp.push(st.top());
+			st.pop();
+		}
+		result = st.top();
+		while (!st.empty()) {
+			temp.push(st.top());
+			st.pop();
+		}
+		while (!temp.empty()) {
+			st.push(temp.top());
+			temp.pop();
+		}
+		return result;
+	}
+
+	// Return whether the queue is empty.
+	bool empty(void) {
+		return st.empty();
+	}
+
+private:
+	stack<int> st;
 };
