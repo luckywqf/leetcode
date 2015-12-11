@@ -166,5 +166,9 @@ int main() {
 	auto out200_0 = s.numIslands(in200_0);
 
 	auto out201_0 = s.rangeBitwiseAnd(5, 7);
+
+
+	auto out315_0 = s.removeDuplicateLetters("bcabc");
+	auto out315_1 = s.removeDuplicateLetters("cbacdcbc");
 	return 0;
 }
