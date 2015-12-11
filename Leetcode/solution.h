@@ -4002,6 +4002,47 @@ public:
 		return true;
 	}
 
+
+	//-------------------------------------------------
+	// 235. https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/
+	//-------------------------------------------------
+	TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+		if (!root || root == p || root == q) {
+			return root;
+		}
+		TreeNode* left = lowestCommonAncestor(root->left, p, q);
+		TreeNode* right = lowestCommonAncestor(root->right, p, q);
+		if (left == nullptr) {
+			return right;
+		}
+		else if (right == nullptr) {
+			return left;
+		}
+		else {
+			return root;
+		}
+	}
+
+	//-------------------------------------------------
+	// 236. https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/
+	//-------------------------------------------------
+	TreeNode* lowestCommonAncestorii(TreeNode* root, TreeNode* p, TreeNode* q) {
+		if (!root || root == p || root == q) {
+			return root;
+		}
+		TreeNode* left = lowestCommonAncestor(root->left, p, q);
+		TreeNode* right = lowestCommonAncestor(root->right, p, q);
+		if (left == nullptr) {
+			return right;
+		}
+		else if (right == nullptr) {
+			return left;
+		}
+		else {
+			return root;
+		}
+	}
+
 	//-------------------------------------------------
 	// 237. https://leetcode.com/problems/delete-node-in-a-linked-list/
 	//-------------------------------------------------
