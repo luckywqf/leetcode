@@ -2,48 +2,6 @@
 
 #include "common.h"
 
-//-------------------------------------------------
-// 155. https://leetcode.com/problems/min-stack/
-//-------------------------------------------------
-class MinStack {
-public:
-	void push(int x) {
-		if (data.empty()) {
-			data.push(make_pair(x, x));
-		}
-		else {
-			if (data.top().second > x) {
-				data.push(make_pair(x, x));
-			}
-			else {
-				data.push(make_pair(x, data.top().second));
-			}
-		}
-	}
-
-	void pop() {
-		if (!data.empty()) {
-			data.pop();
-		}
-	}
-
-	int top() {
-		if (data.empty()) {
-			throw runtime_error("Stack is empty.");
-		}
-		return data.top().first;
-	}
-
-	int getMin() {
-		if (data.empty()) {
-			throw runtime_error("Stack is empty.");
-		}
-		return data.top().second;
-	}
-private:
-	stack<pair<int, int>> data;
-};
-
 class Solution {
 public:
 	//=================================================
@@ -4293,6 +4251,75 @@ public:
 		}
 		return to_string(bull) + "A" + to_string(cows) + "B";
 	}
+
+	//-------------------------------------------------
+	// 315. https://leetcode.com/problems/remove-duplicate-letters/
+	//-------------------------------------------------
+	string removeDuplicateLetters(string s) {
+		if (s.size() <= 1) {
+			return s;
+		}
+		string result;
+		unordered_map<char, int> letterMap;
+		unordered_map<char, int>::iterator it;
+		for (int i = 0; i < s.size(); ++i) {
+			if ((it = letterMap.find(s[i])) == letterMap.end()) {
+				result.push_back(s[i]);
+				letterMap[s[i]] = result.size() - 1;
+			}
+			else {
+				if (it->second == result.size() - 1 || s[it->second] < s[it->second + 1]) {
+					continue;
+				}
+				result.erase(it->second, 1);
+				result.push_back(it->first);
+				it->second = result.size() - 1;
+			}
+		}
+		return result;
+	}
+};
+
+//-------------------------------------------------
+// 155. https://leetcode.com/problems/min-stack/
+//-------------------------------------------------
+class MinStack {
+public:
+	void push(int x) {
+		if (data.empty()) {
+			data.push(make_pair(x, x));
+		}
+		else {
+			if (data.top().second > x) {
+				data.push(make_pair(x, x));
+			}
+			else {
+				data.push(make_pair(x, data.top().second));
+			}
+		}
+	}
+
+	void pop() {
+		if (!data.empty()) {
+			data.pop();
+		}
+	}
+
+	int top() {
+		if (data.empty()) {
+			throw runtime_error("Stack is empty.");
+		}
+		return data.top().first;
+	}
+
+	int getMin() {
+		if (data.empty()) {
+			throw runtime_error("Stack is empty.");
+		}
+		return data.top().second;
+	}
+private:
+	stack<pair<int, int>> data;
 };
 
 //-------------------------------------------------

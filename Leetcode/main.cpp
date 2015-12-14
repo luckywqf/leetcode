@@ -180,5 +180,7 @@ int main() {
 
 	auto out292_0 = s.wordPattern("abba", "dog dog dog dog");
 	
+	auto out315_0 = s.removeDuplicateLetters("bcabc");
+	auto out315_1 = s.removeDuplicateLetters("cbacdcbc");
 	return 0;
 }
