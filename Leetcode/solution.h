@@ -4,10 +4,6 @@
 
 class Solution {
 public:
-	//=================================================
-	//                     Easy
-	//=================================================
-
 	//-------------------------------------------------
 	// 1. https://leetcode.com/problems/two-sum/
 	//-------------------------------------------------
@@ -4106,6 +4102,19 @@ public:
 		}
 	}
 
+
+	//-------------------------------------------------
+	// 268. https://leetcode.com/problems/missing-number/
+	//-------------------------------------------------
+	int missingNumber(vector<int>& nums) {
+		int sum = 0;
+		for (auto v : nums) {
+			sum += v;
+		}
+
+		int guess = nums.size() * (nums.size() + 1) / 2;
+		return guess - sum;
+	}
 
 	//-------------------------------------------------
 	// 278. https://leetcode.com/problems/add-digits/
