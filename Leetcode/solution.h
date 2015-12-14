@@ -2,48 +2,6 @@
 
 #include "common.h"
 
-//-------------------------------------------------
-// 155. https://leetcode.com/problems/min-stack/
-//-------------------------------------------------
-class MinStack {
-public:
-	void push(int x) {
-		if (data.empty()) {
-			data.push(make_pair(x, x));
-		}
-		else {
-			if (data.top().second > x) {
-				data.push(make_pair(x, x));
-			}
-			else {
-				data.push(make_pair(x, data.top().second));
-			}
-		}
-	}
-
-	void pop() {
-		if (!data.empty()) {
-			data.pop();
-		}
-	}
-
-	int top() {
-		if (data.empty()) {
-			throw runtime_error("Stack is empty.");
-		}
-		return data.top().first;
-	}
-
-	int getMin() {
-		if (data.empty()) {
-			throw runtime_error("Stack is empty.");
-		}
-		return data.top().second;
-	}
-private:
-	stack<pair<int, int>> data;
-};
-
 class Solution {
 public:
 	//=================================================
@@ -4283,6 +4241,48 @@ public:
 		}
 		return result;
 	}
+};
+
+//-------------------------------------------------
+// 155. https://leetcode.com/problems/min-stack/
+//-------------------------------------------------
+class MinStack {
+public:
+	void push(int x) {
+		if (data.empty()) {
+			data.push(make_pair(x, x));
+		}
+		else {
+			if (data.top().second > x) {
+				data.push(make_pair(x, x));
+			}
+			else {
+				data.push(make_pair(x, data.top().second));
+			}
+		}
+	}
+
+	void pop() {
+		if (!data.empty()) {
+			data.pop();
+		}
+	}
+
+	int top() {
+		if (data.empty()) {
+			throw runtime_error("Stack is empty.");
+		}
+		return data.top().first;
+	}
+
+	int getMin() {
+		if (data.empty()) {
+			throw runtime_error("Stack is empty.");
+		}
+		return data.top().second;
+	}
+private:
+	stack<pair<int, int>> data;
 };
 
 //-------------------------------------------------
