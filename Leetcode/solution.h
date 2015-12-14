@@ -4053,6 +4053,43 @@ public:
 	}
 
 	//-------------------------------------------------
+	// 238. https://leetcode.com/problems/product-of-array-except-self/
+	//-------------------------------------------------
+	vector<int> productExceptSelf(vector<int>& nums) {
+		int zeros = 0;
+		int64_t products = 1;
+		vector<int> result(nums.size(), 0);
+		for (int i = 0; i < nums.size(); ++i) {
+			if (nums[i] == 0) {
+				++zeros;
+				result[i] = 1;
+			}
+			else {
+				products *= nums[i];
+			}
+		}
+		for (int i = 0; i < nums.size(); ++i) {
+			if (result[i] == 1) {
+				if (zeros > 1) {
+					result[i] = 0;
+				}
+				else {
+					result[i] = products;
+				}
+			}
+			else {
+				if (zeros > 0) {
+					result[i] = 0;
+				}
+				else {
+					result[i] = products / nums[i];
+				}
+			}
+		}
+		return result;
+	}
+
+	//-------------------------------------------------
 	// 242. https://leetcode.com/problems/valid-anagram/
 	//-------------------------------------------------
 	bool isAnagram(string s, string t) {
