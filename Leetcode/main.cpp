@@ -183,6 +183,18 @@ int main() {
 
 	auto out292_0 = s.wordPattern("abba", "dog dog dog dog");
 	
+	vector<vector<int>> matrix = {
+		{3, 0, 1, 4, 2},
+		{5, 6, 3, 2, 1}, 
+		{1, 2, 0, 1, 5}, 
+		{4, 1, 0, 1, 7}, 
+		{1, 0, 3, 0, 5}
+	};
+	NumMatrix numMatrix(matrix);
+	auto out304_0 = numMatrix.sumRegion(2, 1, 4, 3);
+	auto out304_1 = numMatrix.sumRegion(1, 1, 2, 2);
+	auto out304_2 = numMatrix.sumRegion(1, 2, 2, 4);
+
 	auto out315_0 = s.removeDuplicateLetters("bcabc");
 	auto out315_1 = s.removeDuplicateLetters("cbacdcbc");
 	return 0;

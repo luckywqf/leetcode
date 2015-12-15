@@ -4605,10 +4605,36 @@ private:
 class NumMatrix {
 public:
 	NumMatrix(vector<vector<int>> &matrix) {
+		if (matrix.empty() || matrix[0].empty()) {
+			return;
+		}
+		int m = matrix.size() + 1;
+		int n = matrix[0].size() + 1;
 
+		_matrix.emplace_back(n, 0);
+
+		for (int i = 0; i < matrix.size(); ++i) {
+			vector<int> row(n, 0);
+			for (int j = 1; j < n; ++j) {
+				row[j] = matrix[i][j - 1];
+			}
+			_matrix.push_back(row);
+		}
+
+		for (int i = 1; i < m; ++i) {
+			for (int j = 1; j < n; ++j) {
+				_matrix[i][j] += _matrix[i - 1][j] + _matrix[i][j - 1];
+				_matrix[i][j] -= _matrix[i - 1][j - 1];
+			}
+		}
 	}
 
 	int sumRegion(int row1, int col1, int row2, int col2) {
-
+		int result = _matrix[row2 + 1][col2 + 1] + _matrix[row1][col1];
+		result -= _matrix[row2 + 1][col1] + _matrix[row1][col2 + 1];
+		return result;
 	}
+
+private:
+	vector<vector<int>> _matrix;
 };
