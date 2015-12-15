@@ -4520,6 +4520,58 @@ private:
 };
 
 
+
+//-------------------------------------------------
+// 284. https://leetcode.com/problems/peeking-iterator/
+//-------------------------------------------------
+//class Iterator {
+//	struct Data;
+//	Data* data;
+//public:
+//	Iterator(const vector<int>& nums);
+//	Iterator(const Iterator& iter);
+//	virtual ~Iterator();
+//	// Returns the next element in the iteration.
+//	int next();
+//	// Returns true if the iteration has more elements.
+//	bool hasNext() const;
+//};
+//class PeekingIterator : public Iterator {
+//public:
+//	PeekingIterator(const vector<int>& nums) : Iterator(nums) {
+//		// Initialize any member here.
+//		// **DO NOT** save a copy of nums and manipulate it directly.
+//		// You should only use the Iterator interface methods.
+//		data = nullptr;
+//	}
+//
+//	// Returns the next element in the iteration without advancing the iterator.
+//	int peek() {
+//		if (data != nullptr) {
+//			return *data;
+//		} else {
+//			*data = Iterator::next();
+//			return *data;
+//		}
+//	}
+//
+//	// hasNext() and next() should behave the same as in the Iterator interface.
+//	// Override them if needed.
+//	int next() {
+//		if (data != nullptr) {
+//			int result = *data;
+//			data = nullptr;
+//			return result;
+//		} else {
+//			return Iterator::next();
+//		}
+//	}
+//
+//	bool hasNext() const {
+//		return data != null || Iterator::hasNext();
+//	}
+//};
+
 //-------------------------------------------------
 // 303. https://leetcode.com/problems/range-sum-query-immutable/
 //-------------------------------------------------
@@ -4545,4 +4597,18 @@ public:
 
 private:
 	vector<int> nums;
+};
+
+//-------------------------------------------------
+// 304. https://leetcode.com/problems/range-sum-query-2d-immutable/
+//-------------------------------------------------
+class NumMatrix {
+public:
+	NumMatrix(vector<vector<int>> &matrix) {
+
+	}
+
+	int sumRegion(int row1, int col1, int row2, int col2) {
+
+	}
 };
