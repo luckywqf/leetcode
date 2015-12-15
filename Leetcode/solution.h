@@ -3812,6 +3812,33 @@ public:
 	}
 
 	//-------------------------------------------------
+	// 216. https://leetcode.com/problems/combination-sum-iii/
+	//-------------------------------------------------
+	vector<vector<int>> combinationSum3(int k, int n) {
+		vector<vector<int>> result;
+		vector<int> curr;
+		combinationSum3(n, k, 0, curr, result);
+		return result;
+	}
+
+	bool combinationSum3(int n, int k, int start, vector<int>& curr, vector<vector<int>>& all) {
+		const static vector<int> nums = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+		if (k == 0) {
+			if (n == 0 && !curr.empty()) {
+				all.push_back(curr);
+				return true;
+			}
+			return false;
+		}
+		int end = 10 - k;
+		for (int i = start; i < end; ++i) {
+			curr.push_back(nums[i]);
+			combinationSum3(n - nums[i], k - 1, i + 1, curr, all);
+			curr.pop_back();
+		}
+	}
+
+	//-------------------------------------------------
 	// 217. https://leetcode.com/problems/contains-duplicate/
 	//-------------------------------------------------
 	bool containsDuplicate(vector<int>& nums) {
@@ -3910,6 +3937,41 @@ public:
 			result.push_back(str);
 		}
 		return result;
+	}
+
+
+	//-------------------------------------------------
+	// 230. https://leetcode.com/problems/power-of-two/
+	//-------------------------------------------------
+	int kthSmallest(TreeNode* root, int k) {
+		int count(0);
+		return kthSmallestRecursion(root, k, count);
+	}
+
+	int kthSmallestRecursion(TreeNode* root, int k, int &count) {
+		int val = 0;
+		count = 0;
+		if (root->left) {
+			val = kthSmallestRecursion(root->left, k, count);
+		}
+		if (k <= count) {
+			count = count + 1;
+			return val;
+		}
+		else if (k == count + 1) {
+			count = count + 1;
+			return root->val;
+		}
+		else if (root->right) {
+			int right;
+			val = kthSmallestRecursion(root->right, k - count - 1, right);
+			count += 1 + right;
+			return val;
+		}
+		else {
+			count += 1;
+			return 0;
+		}
 	}
 
 	//-------------------------------------------------
