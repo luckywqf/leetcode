@@ -179,6 +179,8 @@ int main() {
 
 	auto out278_0 = s.firstBadVersion(2126753390);
 
+	auto out279_0 = s.numSquares(12);
+
 	auto out283_0 = s.isUgly(-2147483648);
 
 	auto out292_0 = s.wordPattern("abba", "dog dog dog dog");

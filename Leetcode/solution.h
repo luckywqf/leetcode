@@ -4105,6 +4105,27 @@ public:
 		return result;
 	}
 
+
+	//-------------------------------------------------
+	// 240. https://leetcode.com/problems/search-a-2d-matrix-ii/
+	//-------------------------------------------------
+	bool searchMatrixii(vector<vector<int>>& matrix, int target) {
+		for (auto &row : matrix) {
+			int low = 0, high = row.size() - 1;
+			while (low <= high) {
+				int mid = (low + high) / 2;
+				if (row[mid] == target) {
+					return true;
+				} else if (row[mid] < target) {
+					low = mid + 1;
+				} else {
+					high = mid - 1;
+				}
+			}
+		}
+		return false;
+	}
+
 	//-------------------------------------------------
 	// 242. https://leetcode.com/problems/valid-anagram/
 	//-------------------------------------------------
@@ -4164,6 +4185,28 @@ public:
 		}
 	}
 
+	//-------------------------------------------------
+	// 263. https://leetcode.com/problems/ugly-number/
+	//-------------------------------------------------
+	bool isUgly(int num) {
+		if (num == 0) {
+			return false;
+		}
+		vector<int> factors = { 2, 3, 4, 5, 6, 8, 9 };
+		while (num != 1) {
+			bool hasFactor = false;
+			for (auto v : factors) {
+				if (num % v == 0) {
+					num /= v;
+					hasFactor = true;
+				}
+			}
+			if (num != 1 && !hasFactor) {
+				return false;
+			}
+		}
+		return true;
+	}
 
 	//-------------------------------------------------
 	// 268. https://leetcode.com/problems/missing-number/
@@ -4202,29 +4245,36 @@ public:
 		return false;
 	}
 
-
 	//-------------------------------------------------
-	// 283. https://leetcode.com/problems/ugly-number/
+	// 279. https://leetcode.com/problems/perfect-squares/
 	//-------------------------------------------------
-	bool isUgly(int num) {
-		if (num == 0) {
-			return false;
+	int numSquares(int n) {
+		if (n <= 0) {
+			return 0;
 		}
-		vector<int> factors = { 2, 3, 4, 5, 6, 8, 9 };
-		while (num != 1) {
-			bool hasFactor = false;
-			for (auto v : factors) {
-				if (num % v == 0) {
-					num /= v;
-					hasFactor = true;
+		int maxNum = (int)sqrt(n);
+		vector<int> squares;
+		for (int i = maxNum; i > 0; --i) {
+			squares.push_back(i * i);
+		}
+		return numSquares(n, squares);
+	}
+
+	int numSquares(int n, const vector<int>& squares) {
+		if (n == 0) {
+			return 0;
+		}
+		for (int i = 0; i < squares.size(); ++i) {
+			if (n >= squares[i]) {
+				int k = numSquares(n - squares[i], squares);
+				if (k >= 0) {
+					return k + 1;
 				}
 			}
-			if (num != 1 && !hasFactor) {
-				return false;
-			}
 		}
-		return true;
+		return -1;
 	}
+
 
 	//-------------------------------------------------
 	// 283. https://leetcode.com/problems/move-zeroes/
@@ -4420,6 +4470,73 @@ private:
 	void pushAll(TreeNode *node) {
 		for (; node != NULL; myStack.push(node), node = node->left);
 	}
+};
+
+
+//-------------------------------------------------
+// 208. https://leetcode.com/problems/implement-stack-using-queues/
+//-------------------------------------------------
+class TrieNode {
+public:
+	// Initialize your data structure here.
+	TrieNode() {
+		for (auto &v : child) {
+			v = nullptr;
+		}
+		isKey = false;
+	}
+	bool isKey;
+	TrieNode* child[26];
+};
+
+class Trie {
+public:
+	Trie() {
+		root = new TrieNode();
+	}
+
+	// Inserts a word into the trie.
+	void insert(string word) {
+		TrieNode *p = root;
+		for (auto c : word) {
+			c -= 'a';
+			if (p->child[c] == nullptr) {
+				p->child[c] = new TrieNode();
+			}
+			p = p->child[c];
+		}
+		p->isKey = true;
+	}
+
+	// Returns if the word is in the trie.
+	bool search(string word) {
+		TrieNode *p = root;
+		for (auto c : word) {
+			c -= 'a';
+			if (p->child[c] == nullptr) {
+				return false;
+			}
+			p = p->child[c];
+		}
+		return p->isKey;
+	}
+
+	// Returns if there is any word in the trie
+	// that starts with the given prefix.
+	bool startsWith(string prefix) {
+		TrieNode *p = root;
+		for (auto c : prefix) {
+			c -= 'a';
+			if (p->child[c] == nullptr) {
+				return false;
+			}
+			p = p->child[c];
+		}
+		return true;
+	}
+
+private:
+	TrieNode* root;
 };
 
 //-------------------------------------------------
