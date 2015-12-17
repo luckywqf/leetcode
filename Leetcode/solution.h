@@ -4540,6 +4540,56 @@ private:
 };
 
 //-------------------------------------------------
+// 211. https://leetcode.com/problems/implement-stack-using-queues/
+//-------------------------------------------------
+class WordDictionary {
+public:
+	WordDictionary() {
+		root = new TrieNode();
+	}
+	// Adds a word into the data structure.
+	void addWord(string word) {
+		TrieNode *p = root;
+		for (auto c : word) {
+			c -= 'a';
+			if (p->child[c] == nullptr) {
+				p->child[c] = new TrieNode();
+			}
+			p = p->child[c];
+		}
+		p->isKey = true;
+	}
+
+	// Returns if the word is in the data structure. A word could
+	// contain the dot character '.' to represent any one letter.
+	bool search(string word) {
+		return searchTree(root, word, 0);
+	}
+
+	bool searchTree(TrieNode* r, string &word, int start) {
+		if (start == word.size()) {
+			return r->isKey;
+		}
+		for (int i = start; i < word.size(); ++i) {
+			if (word[i] == '.') {
+				for (auto v : r->child) {
+					if (v && searchTree(v, word, start + 1)) {
+						return true;
+					}
+				}
+				return false;
+			}
+			else {
+				return r->child[word[i] - 'a'] == nullptr ? false : searchTree(r->child[word[i] - 'a'], word, start + 1);
+			}
+		}
+	}
+
+private:
+	TrieNode* root;
+};
+
+//-------------------------------------------------
 // 225. https://leetcode.com/problems/implement-stack-using-queues/
 //-------------------------------------------------
 class Stack {

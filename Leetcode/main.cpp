@@ -172,6 +172,16 @@ int main() {
 
 	auto out201_0 = s.rangeBitwiseAnd(5, 7);
 
+	WordDictionary wordDictionary;
+	wordDictionary.addWord("a");
+	wordDictionary.addWord("a");
+	wordDictionary.search(".");
+	wordDictionary.search("a");
+	wordDictionary.search("aa");
+	wordDictionary.search("a");
+	wordDictionary.search(".a");
+	wordDictionary.search("a.");
+
 	auto out230_0 = s.kthSmallest(makeBinaryTree("3,1,4,null,2"), 2);
 	auto out230_1 = s.kthSmallest(makeBinaryTree("3,2,4,1"), 3);
 
