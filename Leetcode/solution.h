@@ -3812,6 +3812,28 @@ public:
 	}
 
 	//-------------------------------------------------
+	// 213. https://leetcode.com/problems/house-robber-ii/
+	//-------------------------------------------------
+	int robii(vector<int>& nums) {
+		if (nums.empty()) {
+			return 0;
+		}
+
+		vector<int> bests1 = { 0, 0 }; //without first
+		vector<int> bests2 = { 0, nums[0] }; // with first
+		for (int i = 1; i < nums.size(); ++i) {
+			int best = max(nums[i] + bests1[i - 1], bests1[i]);
+			bests1.push_back(best);
+		}
+		for (int i = 1; i < nums.size() - 1; ++i) {
+			int best = max(nums[i] + bests2[i - 1], bests2[i]);
+			bests2.push_back(best);
+		}
+		return std::max(bests1.back(), bests2.back());
+	}
+
+
+	//-------------------------------------------------
 	// 216. https://leetcode.com/problems/combination-sum-iii/
 	//-------------------------------------------------
 	vector<vector<int>> combinationSum3(int k, int n) {
