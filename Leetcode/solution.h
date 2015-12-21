@@ -3892,6 +3892,48 @@ public:
 	}
 
 	//-------------------------------------------------
+	// 224. https://leetcode.com/problems/basic-calculator/
+	//-------------------------------------------------
+	int calculate(string s) {
+		stack<int> expressions;
+		int result = 0;
+		int number = 0;
+		int sign = 1;
+		for (int i = 0; i < s.length(); i++) {
+			if (isdigit(s[i])) {
+				number = 10 * number + (int)(s[i] - '0');
+			}
+			else if (s[i] == '+') {
+				result += sign * number;
+				number = 0;
+				sign = 1;
+			}
+			else if (s[i] == '-') {
+				result += sign * number;
+				number = 0;
+				sign = -1;
+			}
+			else if (s[i] == '(') {
+				expressions.push(result);
+				expressions.push(sign);
+				sign = 1;
+				result = 0;
+			}
+			else if (s[i] == ')') {
+				result += sign * number;
+				number = 0;
+				result *= expressions.top();    //stack.pop() is the sign before the parenthesis
+				expressions.pop();
+				result += expressions.top();   //stack.pop() now is the result calculated before the parenthesis
+				expressions.pop();
+			}
+		}
+		if (number != 0) 
+			result += sign * number;
+		return result;
+	}
+
+	//-------------------------------------------------
 	// 226. https://leetcode.com/problems/invert-binary-tree/
 	//-------------------------------------------------
 	TreeNode* invertTree(TreeNode* root) {
