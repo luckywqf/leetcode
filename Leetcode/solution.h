@@ -3990,6 +3990,21 @@ public:
 		return true;
 	}
 
+	//-------------------------------------------------
+	// 233. https://leetcode.com/problems/number-of-digit-one/
+	//-------------------------------------------------
+	int countDigitOne(int n) {
+		int ones = 0;
+		for (int64_t i = 1; i <= n; i *= 10) {
+			int bit = n / i;
+			int left = n % i;
+			ones += (bit + 8) / 10 * i;
+			if (bit % 10 == 1) {
+				ones += left + 1;
+			}
+		}
+		return ones;
+	}
 
 	//-------------------------------------------------
 	// 234. https://leetcode.com/problems/palindrome-linked-list/
