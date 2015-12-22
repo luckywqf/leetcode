@@ -3812,6 +3812,28 @@ public:
 	}
 
 	//-------------------------------------------------
+	// 213. https://leetcode.com/problems/house-robber-ii/
+	//-------------------------------------------------
+	int robii(vector<int>& nums) {
+		if (nums.empty()) {
+			return 0;
+		}
+
+		vector<int> bests1 = { 0, 0 }; //without first
+		vector<int> bests2 = { 0, nums[0] }; // with first
+		for (int i = 1; i < nums.size(); ++i) {
+			int best = max(nums[i] + bests1[i - 1], bests1[i]);
+			bests1.push_back(best);
+		}
+		for (int i = 1; i < nums.size() - 1; ++i) {
+			int best = max(nums[i] + bests2[i - 1], bests2[i]);
+			bests2.push_back(best);
+		}
+		return std::max(bests1.back(), bests2.back());
+	}
+
+
+	//-------------------------------------------------
 	// 216. https://leetcode.com/problems/combination-sum-iii/
 	//-------------------------------------------------
 	vector<vector<int>> combinationSum3(int k, int n) {
@@ -3872,6 +3894,60 @@ public:
 		return false;
 	}
 
+
+	//-------------------------------------------------
+	// 221. https://leetcode.com/problems/maximal-square/
+	//-------------------------------------------------
+	int maximalSquare(vector<vector<char>>& matrix) {
+		int m = matrix.size();
+		if (m == 0) {
+			return 0;
+		}
+		int n = matrix[0].size();
+		vector<vector<int>> size(m, vector<int>(n, 0));
+		int maxsize = 0;
+		for (int j = 0; j < n; j++) {
+			size[0][j] = matrix[0][j] - '0';
+			maxsize = max(maxsize, size[0][j]);
+		}
+		for (int i = 1; i < m; i++) {
+			size[i][0] = matrix[i][0] - '0';
+			maxsize = max(maxsize, size[i][0]);
+		}
+		for (int i = 1; i < m; i++) {
+			for (int j = 1; j < n; j++) {
+				if (matrix[i][j] == '1') {
+					size[i][j] = min(size[i - 1][j - 1], min(size[i - 1][j], size[i][j - 1])) + 1;
+					maxsize = max(maxsize, size[i][j]);
+				}
+			}
+		}
+		return maxsize * maxsize;
+	}
+
+
+	//-------------------------------------------------
+	// 222. https://leetcode.com/problems/count-complete-tree-nodes/
+	//-------------------------------------------------
+	int countNodes(TreeNode* root) {
+		if (!root) {
+			return 0;
+		}
+		int hl = 0, hr = 0;
+		TreeNode *l = root, *r = root;
+		while (l) { 
+			hl++; l = l->left; 
+		}
+		while (r) { 
+			hr++; r = r->right; 
+		}
+		if (hl == hr) {
+			return pow(2, hl) - 1;
+		}
+		return 1 + countNodes(root->left) + countNodes(root->right);
+	}
+
+
 	//-------------------------------------------------
 	// 223. https://leetcode.com/problems/rectangle-area/
 	//-------------------------------------------------
@@ -3889,6 +3965,48 @@ public:
 		}
 
 		return (C - A) * (D - B) + (G - E) * (H - F) - common;
+	}
+
+	//-------------------------------------------------
+	// 224. https://leetcode.com/problems/basic-calculator/
+	//-------------------------------------------------
+	int calculate(string s) {
+		stack<int> expressions;
+		int result = 0;
+		int number = 0;
+		int sign = 1;
+		for (int i = 0; i < s.length(); i++) {
+			if (isdigit(s[i])) {
+				number = 10 * number + (int)(s[i] - '0');
+			}
+			else if (s[i] == '+') {
+				result += sign * number;
+				number = 0;
+				sign = 1;
+			}
+			else if (s[i] == '-') {
+				result += sign * number;
+				number = 0;
+				sign = -1;
+			}
+			else if (s[i] == '(') {
+				expressions.push(result);
+				expressions.push(sign);
+				sign = 1;
+				result = 0;
+			}
+			else if (s[i] == ')') {
+				result += sign * number;
+				number = 0;
+				result *= expressions.top();    //stack.pop() is the sign before the parenthesis
+				expressions.pop();
+				result += expressions.top();   //stack.pop() now is the result calculated before the parenthesis
+				expressions.pop();
+			}
+		}
+		if (number != 0) 
+			result += sign * number;
+		return result;
 	}
 
 	//-------------------------------------------------

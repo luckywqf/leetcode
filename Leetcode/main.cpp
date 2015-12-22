@@ -172,15 +172,18 @@ int main() {
 
 	auto out201_0 = s.rangeBitwiseAnd(5, 7);
 
-	WordDictionary wordDictionary;
-	wordDictionary.addWord("a");
-	wordDictionary.addWord("a");
-	wordDictionary.search(".");
-	wordDictionary.search("a");
-	wordDictionary.search("aa");
-	wordDictionary.search("a");
-	wordDictionary.search(".a");
-	wordDictionary.search("a.");
+	WordDictionary in211;
+	in211.addWord("a");
+	in211.addWord("a");
+	in211.search(".");
+	in211.search("a");
+	in211.search("aa");
+	in211.search("a");
+	in211.search(".a");
+	in211.search("a.");
+
+	vector<vector<char>> in221_0 = { { '0', '1' } };
+	auto out221_0 = s.maximalSquare(in221_0);
 
 	auto out230_0 = s.kthSmallest(makeBinaryTree("3,1,4,null,2"), 2);
 	auto out230_1 = s.kthSmallest(makeBinaryTree("3,2,4,1"), 3);
