@@ -4388,6 +4388,24 @@ public:
 
 
 	//-------------------------------------------------
+	// 274. https://leetcode.com/problems/h-index/
+	//-------------------------------------------------
+	int hIndex(vector<int>& citations) {
+		int hindex = 0;
+		std::sort(citations.begin(), citations.end(), std::greater<int>());
+		for (int i = 0; i < citations.size(); ++i) {
+			int h = min(i + 1, citations[i]);
+			if (h > hindex) {
+				hindex = h;
+			} else {
+				break;
+			}
+		}
+		return hindex;
+	}
+
+
+	//-------------------------------------------------
 	// 278. https://leetcode.com/problems/add-digits/
 	//-------------------------------------------------
 	int firstBadVersion(int n) {
