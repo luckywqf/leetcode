@@ -16,6 +16,7 @@ int main() {
 	auto out10_8 = s.isMatch("aaa", "a.a");    //true
 	auto out10_9 = s.isMatch("aaa", "a*a");    //true
 	auto out10_10 = s.isMatch("aaa", "ab*a*c*a");    //true
+	auto out10_11 = s.isMatch("aab", "a*c");    //false
 
 	auto out29_0 = s.divide(-1060849722, 99958928);		//-10
 	auto out29_1 = s.divide(INT_MIN, 265681027);		//-8 

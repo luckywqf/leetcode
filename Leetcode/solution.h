@@ -110,7 +110,7 @@ public:
 		int N2 = nums2.size();
 		if (N1 < N2) return findMedianSortedArrays(nums2, nums1);   // Make sure A2 is the shorter one.
 
-		if (N2 == 0) return (nums1[(N1 - 1) / 2] + nums1[N1 / 2]) / 2;  // If A2 is empty
+		if (N2 == 0) return ((double)nums1[(N1-1)/2] + (double)nums1[N1/2])/2;  // If A2 is empty
 
 		int lo = 0, hi = N2 * 2;
 		while (lo <= hi) {
@@ -283,28 +283,22 @@ public:
 	bool matchFirst(const char *s, const char *p) {
 		return (*p == *s || (*p == '.' && *s != '\0'));
 	}
-
 	bool isMatch(const char *s, const char *p) {
-		if (*p == '\0') {
-			return *s == '\0';  //empty
-		}
+		if (*p == '\0') return *s == '\0';  //empty
 
 		if (*(p + 1) != '*') {//without *
-			if (!matchFirst(s, p)) {
-				return false;
-			}
+			if (!matchFirst(s, p)) return false;
 			return isMatch(s + 1, p + 1);
 		}
 		else { //next: with a *
-			if (isMatch(s, p + 2)) {
-				return true;    //try the length of 0
-			}
-			while (matchFirst(s, p)) {      //try all possible lengths 
-				if (isMatch(++s, p + 2)) {
-					return true;
-				}
-			}
+			if (isMatch(s, p + 2)) return true;    //try the length of 0
+			while (matchFirst(s, p))       //try all possible lengths 
+				if (isMatch(++s, p + 2))return true;
 		}
+		return false;
+	}
+	bool isMatch(string s, string p) {
+		return isMatch(s.c_str(), p.c_str());
 	}
 
 	//-------------------------------------------------
