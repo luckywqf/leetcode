@@ -190,6 +190,10 @@ int main() {
 
 	auto out234_0 = s.isPalindrome(makeList({ 1, 1, 2, 1 }));
 
+	vector<int> in275_0 = { 2, 3, 3, 3, 5, 5, 6, 8, 10, 10, 10 };
+	auto out275_0 = s.hIndexii(in275_0);
+
+
 	auto out278_0 = s.firstBadVersion(2126753390);
 
 	auto out279_0 = s.numSquares(12);

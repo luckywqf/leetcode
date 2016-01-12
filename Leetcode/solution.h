@@ -4406,6 +4406,34 @@ public:
 
 
 	//-------------------------------------------------
+	// 275. https://leetcode.com/problems/h-index-ii/
+	//-------------------------------------------------
+	int hIndexii(vector<int>& citations) {
+		if (citations.empty()) {
+			return 0;
+		}
+		int hindex = 0;
+		int len = citations.size();
+		int low = 0, high = len - 1;
+		while (low < high) {
+			int mid1 = (low + high) / 2;
+			int h1 = std::min(len - mid1, citations[mid1]);
+			int mid2 = mid1;
+			int h2;
+			do {
+				++mid2;
+				h2 = std::min(len - mid2, citations[mid2]);
+			} while (h1 == h2);
+			if (h1 < h2) {
+				low = mid2;
+			} else {
+				high = mid1;
+			}
+		}
+		return std::min(len - low, citations[low]);
+	}
+
+	//-------------------------------------------------
 	// 278. https://leetcode.com/problems/add-digits/
 	//-------------------------------------------------
 	int firstBadVersion(int n) {
