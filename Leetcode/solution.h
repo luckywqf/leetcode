@@ -712,6 +712,23 @@ public:
 		return generateP("", 0, n * 2);
 	}
 
+	//-------------------------------------------------
+	// 23. https://leetcode.com/problems/merge-k-sorted-lists/
+	//-------------------------------------------------
+	ListNode* mergeKLists(vector<ListNode*>& lists) {
+		return mergeKLists(lists, 0, lists.size());
+	}
+
+	ListNode* mergeKLists(vector<ListNode*>& lists, int start, int len) {
+		if (len == 0) {
+			return nullptr;
+		} else if (len == 1) {
+			return lists[start];
+		} else {
+			return mergeTwoLists(mergeKLists(lists, start, len / 2), 
+				mergeKLists(lists, start + len / 2, len - len / 2));
+		}
+	}
 
 	//-------------------------------------------------
 	// 24. https://leetcode.com/problems/swap-nodes-in-pairs/
