@@ -16,6 +16,7 @@ int main(int argc, char *argv[]) {
 	auto out10_8 = s.isMatch("aaa", "a.a");    //true
 	auto out10_9 = s.isMatch("aaa", "a*a");    //true
 	auto out10_10 = s.isMatch("aaa", "ab*a*c*a");    //true
+	auto out10_11 = s.isMatch("aab", "a*c");    //false
 
 	auto out29_0 = s.divide(-1060849722, 99958928);		//-10
 	auto out29_1 = s.divide(INT_MIN, 265681027);		//-8 
@@ -189,6 +190,10 @@ int main(int argc, char *argv[]) {
 	auto out230_1 = s.kthSmallest(makeBinaryTree("3,2,4,1"), 3);
 
 	auto out234_0 = s.isPalindrome(makeList({ 1, 1, 2, 1 }));
+
+	vector<int> in275_0 = { 2, 3, 3, 3, 5, 5, 6, 8, 10, 10, 10 };
+	auto out275_0 = s.hIndexii(in275_0);
+
 
 	auto out278_0 = s.firstBadVersion(2126753390);
 

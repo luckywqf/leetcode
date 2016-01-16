@@ -110,7 +110,7 @@ public:
 		int N2 = nums2.size();
 		if (N1 < N2) return findMedianSortedArrays(nums2, nums1);   // Make sure A2 is the shorter one.
 
-		if (N2 == 0) return (nums1[(N1 - 1) / 2] + nums1[N1 / 2]) / 2;  // If A2 is empty
+		if (N2 == 0) return ((double)nums1[(N1-1)/2] + (double)nums1[N1/2])/2;  // If A2 is empty
 
 		int lo = 0, hi = N2 * 2;
 		while (lo <= hi) {
@@ -283,28 +283,22 @@ public:
 	bool matchFirst(const char *s, const char *p) {
 		return (*p == *s || (*p == '.' && *s != '\0'));
 	}
-
 	bool isMatch(const char *s, const char *p) {
-		if (*p == '\0') {
-			return *s == '\0';  //empty
-		}
+		if (*p == '\0') return *s == '\0';  //empty
 
 		if (*(p + 1) != '*') {//without *
-			if (!matchFirst(s, p)) {
-				return false;
-			}
+			if (!matchFirst(s, p)) return false;
 			return isMatch(s + 1, p + 1);
 		}
 		else { //next: with a *
-			if (isMatch(s, p + 2)) {
-				return true;    //try the length of 0
-			}
-			while (matchFirst(s, p)) {      //try all possible lengths 
-				if (isMatch(++s, p + 2)) {
-					return true;
-				}
-			}
+			if (isMatch(s, p + 2)) return true;    //try the length of 0
+			while (matchFirst(s, p))       //try all possible lengths 
+				if (isMatch(++s, p + 2))return true;
 		}
+		return false;
+	}
+	bool isMatch(string s, string p) {
+		return isMatch(s.c_str(), p.c_str());
 	}
 
 	//-------------------------------------------------
@@ -718,6 +712,23 @@ public:
 		return generateP("", 0, n * 2);
 	}
 
+	//-------------------------------------------------
+	// 23. https://leetcode.com/problems/merge-k-sorted-lists/
+	//-------------------------------------------------
+	ListNode* mergeKLists(vector<ListNode*>& lists) {
+		return mergeKLists(lists, 0, lists.size());
+	}
+
+	ListNode* mergeKLists(vector<ListNode*>& lists, int start, int len) {
+		if (len == 0) {
+			return nullptr;
+		} else if (len == 1) {
+			return lists[start];
+		} else {
+			return mergeTwoLists(mergeKLists(lists, start, len / 2), 
+				mergeKLists(lists, start + len / 2, len - len / 2));
+		}
+	}
 
 	//-------------------------------------------------
 	// 24. https://leetcode.com/problems/swap-nodes-in-pairs/
@@ -746,6 +757,34 @@ public:
 		last->next = next;
 
 		return result;
+	}
+
+	//-------------------------------------------------
+	// 25. https://leetcode.com/problems/remove-duplicates-from-sorted-array/
+	//-------------------------------------------------
+	ListNode *reverseKGroup(ListNode *head, int k) {
+		if (head == NULL || k == 1) {
+			return head;
+		}
+		int num = 0;
+		ListNode preheader(-1);
+		preheader.next = head;
+		ListNode *cur = &preheader, *nex, *pre = &preheader;
+		while (cur = cur->next)
+			num++;
+		while (num >= k) {
+			cur = pre->next;
+			nex = cur->next;
+			for (int i = 1; i < k; ++i) {
+				cur->next = nex->next;
+				nex->next = pre->next;
+				pre->next = nex;
+				nex = cur->next;
+			}
+			pre = cur;
+			num -= k;
+		}
+		return preheader.next;
 	}
 
 	//-------------------------------------------------
@@ -907,6 +946,38 @@ public:
 		if (v > INT_MAX || v < INT_MIN)
 			return INT_MAX;
 		return v;
+	}
+
+	//-------------------------------------------------
+	// 30. https://leetcode.com/problems/substring-with-concatenation-of-all-words/
+	//-------------------------------------------------
+	set<string> makePermutation(vector<string>& words) {
+		set<string> result;
+		auto pers = permute(words);
+		for (auto pv : pers) {
+			string str;
+			for (auto s : pv) {
+				str += s;
+			}
+			result.insert(str);
+		}
+		return result;
+	}
+
+	vector<int> findSubstring(string s, vector<string>& words) {
+		vector<int> result;
+		if (s.empty() || words.empty()) {
+			return result;
+		}
+		int len = words[0].size() * words.size();
+		int compares = s.size() - len;
+		auto pers = makePermutation(words);
+		for (int i = 0; i <= compares; ++i) {
+			if (pers.count(s.substr(i, len))) {
+				result.push_back(i);
+			}
+		}
+		return result;
 	}
 
 	//-------------------------------------------------
@@ -1245,6 +1316,31 @@ public:
 	//-------------------------------------------------
 	// 46. https://leetcode.com/problems/permutations/
 	//-------------------------------------------------
+	template <class T> 
+	vector<vector<T>> permute(vector<T>& nums) {
+		vector<vector<T>> result;
+		if (nums.empty()) {
+			return result;
+		}
+		if (nums.size() == 1) {
+			result.push_back(nums);
+			return result;
+		}
+		else {
+			auto last = nums.back();
+			nums.pop_back();
+			auto lefts = permute(nums);
+			for (auto v : lefts) {
+				for (int i = 0; i <= v.size(); ++i) {
+					auto temp = v;
+					temp.insert(temp.begin() + i, last);
+					result.push_back(temp);
+				}
+			}
+			return result;
+		}
+	}
+
 	vector<vector<int>> permute(vector<int>& nums) {
 		vector<vector<int>> result;
 		if (nums.empty()) {
@@ -4108,6 +4204,21 @@ public:
 		return true;
 	}
 
+	//-------------------------------------------------
+	// 233. https://leetcode.com/problems/number-of-digit-one/
+	//-------------------------------------------------
+	int countDigitOne(int n) {
+		int ones = 0;
+		for (int64_t i = 1; i <= n; i *= 10) {
+			int bit = n / i;
+			int left = n % i;
+			ones += (bit + 8) / 10 * i;
+			if (bit % 10 == 1) {
+				ones += left + 1;
+			}
+		}
+		return ones;
+	}
 
 	//-------------------------------------------------
 	// 234. https://leetcode.com/problems/palindrome-linked-list/
@@ -4337,6 +4448,85 @@ public:
 
 		int guess = nums.size() * (nums.size() + 1) / 2;
 		return guess - sum;
+	}
+
+
+	//-------------------------------------------------
+	// 273. https://leetcode.com/problems/integer-to-english-words/
+	//-------------------------------------------------
+	string numberToWords(int n) {
+		if (n == 0) {
+			return "Zero";
+		} else {
+			return int_string(n).substr(1);
+		}
+	}
+	string int_string(int n) {
+		const char * const below_20[] = { "One", "Two", "Three", "Four","Five","Six","Seven","Eight","Nine","Ten", 
+			"Eleven","Twelve","Thirteen","Fourteen","Fifteen","Sixteen","Seventeen","Eighteen","Nineteen" };
+		const char * const below_100[] = { "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety" };
+		if (n >= 1000000000) {
+			return int_string(n / 1000000000) + " Billion" + int_string(n - 1000000000 * (n / 1000000000));
+		} else if (n >= 1000000) {
+			return int_string(n / 1000000) + " Million" + int_string(n - 1000000 * (n / 1000000));
+		} else if (n >= 1000) {
+			return int_string(n / 1000) + " Thousand" + int_string(n - 1000 * (n / 1000));
+		} else if (n >= 100) {
+			return int_string(n / 100) + " Hundred" + int_string(n - 100 * (n / 100));
+		} else if (n >= 20) {
+			return string(" ") + below_100[n / 10 - 2] + int_string(n - 10 * (n / 10));
+		} else if (n >= 1) {
+			return string(" ") + below_20[n - 1];
+		} else {
+			return "";
+		}
+	}
+
+
+	//-------------------------------------------------
+	// 274. https://leetcode.com/problems/h-index/
+	//-------------------------------------------------
+	int hIndex(vector<int>& citations) {
+		int hindex = 0;
+		std::sort(citations.begin(), citations.end(), std::greater<int>());
+		for (int i = 0; i < citations.size(); ++i) {
+			int h = min(i + 1, citations[i]);
+			if (h > hindex) {
+				hindex = h;
+			} else {
+				break;
+			}
+		}
+		return hindex;
+	}
+
+
+	//-------------------------------------------------
+	// 275. https://leetcode.com/problems/h-index-ii/
+	//-------------------------------------------------
+	int hIndexii(vector<int>& citations) {
+		if (citations.empty()) {
+			return 0;
+		}
+		int hindex = 0;
+		int len = citations.size();
+		int low = 0, high = len - 1;
+		while (low < high) {
+			int mid1 = (low + high) / 2;
+			int h1 = std::min(len - mid1, citations[mid1]);
+			int mid2 = mid1;
+			int h2;
+			do {
+				++mid2;
+				h2 = std::min(len - mid2, citations[mid2]);
+			} while (h1 == h2);
+			if (h1 < h2) {
+				low = mid2;
+			} else {
+				high = mid1;
+			}
+		}
+		return std::min(len - low, citations[low]);
 	}
 
 	//-------------------------------------------------
