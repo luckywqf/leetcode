@@ -1,6 +1,6 @@
 #include "solution.h"
 
-int main() {
+int main(int argc, char *argv[]) {
 	Solution s;
 	auto out6_0 = s.convert("PAYPALISHIRING", 3);
 	auto out6_1 = s.convert("PAYPALISHIRING", 4);
