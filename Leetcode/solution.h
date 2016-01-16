@@ -951,29 +951,30 @@ public:
 	//-------------------------------------------------
 	// 30. https://leetcode.com/problems/substring-with-concatenation-of-all-words/
 	//-------------------------------------------------
-	set<string> makePermutation(vector<string>& words) {
-		set<string> result;
-		auto pers = permute(words);
-		for (auto pv : pers) {
-			string str;
-			for (auto s : pv) {
-				str += s;
-			}
-			result.insert(str);
-		}
-		return result;
-	}
-
 	vector<int> findSubstring(string s, vector<string>& words) {
 		vector<int> result;
 		if (s.empty() || words.empty()) {
 			return result;
 		}
-		int len = words[0].size() * words.size();
+		unordered_map<string, int> wmap;
+		for (auto w : words) {
+			wmap[w]++;
+		}
+		int wc = words[0].size();
+		int len = wc * words.size();
 		int compares = s.size() - len;
-		auto pers = makePermutation(words);
 		for (int i = 0; i <= compares; ++i) {
-			if (pers.count(s.substr(i, len))) {
+			unordered_map<string, int> smap;
+			for (int count = 0; count < words.size(); count++) {
+				string sone = s.substr(i + count * wc, wc);
+				if (wmap.count(sone)) {
+					smap[sone]++;
+				}
+				else {
+					break;
+				}
+			}
+			if (smap == wmap) {
 				result.push_back(i);
 			}
 		}

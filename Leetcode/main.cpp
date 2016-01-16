@@ -24,6 +24,9 @@ int main(int argc, char *argv[]) {
 	auto out29_3 = s.divide(INT_MIN, -1);			//INT_MAX
 	auto out29_4 = s.divide(1, -1);						//-1
 
+	vector<string> in30_0 = { "foo", "bar" };
+	auto out30_0 = s.findSubstring("barfoothefoobarman", in30_0);
+
 	//A = [2, 3, 1, 1, 4], return true.
 	//A = [3, 2, 1, 0, 4], return false.
 	vector<int> in55_1 = { 2, 3, 1, 1, 4 };
