@@ -760,6 +760,34 @@ public:
 	}
 
 	//-------------------------------------------------
+	// 25. https://leetcode.com/problems/remove-duplicates-from-sorted-array/
+	//-------------------------------------------------
+	ListNode *reverseKGroup(ListNode *head, int k) {
+		if (head == NULL || k == 1) {
+			return head;
+		}
+		int num = 0;
+		ListNode preheader(-1);
+		preheader.next = head;
+		ListNode *cur = &preheader, *nex, *pre = &preheader;
+		while (cur = cur->next)
+			num++;
+		while (num >= k) {
+			cur = pre->next;
+			nex = cur->next;
+			for (int i = 1; i < k; ++i) {
+				cur->next = nex->next;
+				nex->next = pre->next;
+				pre->next = nex;
+				nex = cur->next;
+			}
+			pre = cur;
+			num -= k;
+		}
+		return preheader.next;
+	}
+
+	//-------------------------------------------------
 	// 26. https://leetcode.com/problems/remove-duplicates-from-sorted-array/
 	//-------------------------------------------------
 	int removeDuplicates(vector<int>& nums) {
@@ -918,6 +946,38 @@ public:
 		if (v > INT_MAX || v < INT_MIN)
 			return INT_MAX;
 		return v;
+	}
+
+	//-------------------------------------------------
+	// 30. https://leetcode.com/problems/substring-with-concatenation-of-all-words/
+	//-------------------------------------------------
+	set<string> makePermutation(vector<string>& words) {
+		set<string> result;
+		auto pers = permute(words);
+		for (auto pv : pers) {
+			string str;
+			for (auto s : pv) {
+				str += s;
+			}
+			result.insert(str);
+		}
+		return result;
+	}
+
+	vector<int> findSubstring(string s, vector<string>& words) {
+		vector<int> result;
+		if (s.empty() || words.empty()) {
+			return result;
+		}
+		int len = words[0].size() * words.size();
+		int compares = s.size() - len;
+		auto pers = makePermutation(words);
+		for (int i = 0; i <= compares; ++i) {
+			if (pers.count(s.substr(i, len))) {
+				result.push_back(i);
+			}
+		}
+		return result;
 	}
 
 	//-------------------------------------------------
@@ -1256,6 +1316,31 @@ public:
 	//-------------------------------------------------
 	// 46. https://leetcode.com/problems/permutations/
 	//-------------------------------------------------
+	template <class T> 
+	vector<vector<T>> permute(vector<T>& nums) {
+		vector<vector<T>> result;
+		if (nums.empty()) {
+			return result;
+		}
+		if (nums.size() == 1) {
+			result.push_back(nums);
+			return result;
+		}
+		else {
+			auto last = nums.back();
+			nums.pop_back();
+			auto lefts = permute(nums);
+			for (auto v : lefts) {
+				for (int i = 0; i <= v.size(); ++i) {
+					auto temp = v;
+					temp.insert(temp.begin() + i, last);
+					result.push_back(temp);
+				}
+			}
+			return result;
+		}
+	}
+
 	vector<vector<int>> permute(vector<int>& nums) {
 		vector<vector<int>> result;
 		if (nums.empty()) {
