@@ -27,6 +27,12 @@ int main(int argc, char *argv[]) {
 	vector<string> in30_0 = { "foo", "bar" };
 	auto out30_0 = s.findSubstring("barfoothefoobarman", in30_0);
 
+	vector<int> in33_0 = { 1, 3 };
+	vector<int> in33_1 = { 1 };
+	auto out33_0 = s.search(in33_0, 1);
+	auto out33_1 = s.search(in33_1, 1);
+	auto out33_2 = s.search(in33_0, 3);
+
 	//A = [2, 3, 1, 1, 4], return true.
 	//A = [3, 2, 1, 0, 4], return false.
 	vector<int> in55_1 = { 2, 3, 1, 1, 4 };

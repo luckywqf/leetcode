@@ -1013,7 +1013,42 @@ public:
 		}
 	}
 
+	//-------------------------------------------------
+	// 33. https://leetcode.com/problems/search-in-rotated-sorted-array/
+	//-------------------------------------------------
+	int search(vector<int>& nums, int target) {
+		int low = 0, high = nums.size() - 1;
+		// find the index of the smallest value using binary search.
+		while (low < high ) {
+			int mid = (low + high) / 2;
+			if (nums[mid] > nums[high]) {
+				low = mid + 1;
+			} else {
+				high = mid;
+			}
+		}
 
+		// lo==hi is the index of the smallest value and also the number of places rotated.
+		int rot = low;
+		int len = nums.size();
+		low = 0; 
+		high = len - 1;
+		
+		// The usual binary search and accounting for rotation.
+		while (low <= high) {
+			int mid = (low + high) / 2;
+			int realmid = (mid + rot) % len;
+			if (nums[realmid] == target) {
+				return realmid;
+			}
+			if (nums[realmid] < target) {
+				low = mid + 1;
+			} else {
+				high = mid - 1;
+			}
+		}
+		return -1;
+	}
 
 	//-------------------------------------------------
 	// 34. https://leetcode.com/problems/search-for-a-range/
@@ -2065,6 +2100,18 @@ public:
 		return index;
 	}
 
+
+	//-------------------------------------------------
+	// 81. https://leetcode.com/problems/search-in-rotated-sorted-array-ii/
+	//-------------------------------------------------
+	bool searchii(vector<int>& nums, int target) {
+		for (auto n : nums) {
+			if (target == n) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	//-------------------------------------------------
 	// 82. https://leetcode.com/problems/remove-duplicates-from-sorted-list-ii/
