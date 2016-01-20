@@ -1130,7 +1130,7 @@ public:
 	}
 
 	//-------------------------------------------------
-	// 38. https://leetcode.com/problems/valid-sudoku/
+	// 36. https://leetcode.com/problems/valid-sudoku/
 	//-------------------------------------------------
 	bool isValidSudoku(vector<vector<char>>& board) {
 		int row[9][10] = { 0 };
@@ -1151,6 +1151,86 @@ public:
 			}
 		}
 		return true;
+	}
+
+	//-------------------------------------------------
+	// 37. https://leetcode.com/problems/sudoku-solver/
+	//-------------------------------------------------
+	set<int> getCandidate(int r, int c, int row[9][10], int column[9][10], int box[9][10]) {
+		set<int> candidate = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+		for (int i = 1; i < 10; ++i) {
+			if (row[r][i]) {
+				candidate.erase(i);
+			}
+		}
+		for (int i = 1; i < 10; ++i) {
+			if (column[c][i]) {
+				candidate.erase(i);
+			}
+		}
+		int boxP = r / 3 * 3 + c / 3;
+		for (int i = 1; i < 10; ++i) {
+			if (box[boxP][i]) {
+				candidate.erase(i);
+			}
+		}
+		return candidate;
+	}
+
+	bool solveSudokuRecursion(vector<vector<char>>& board, int i, int j, int row[9][10], int column[9][10], int box[9][10]) {
+		if (i == 9) {
+			return true;
+		}
+		if (board[i][j] == '.') {
+			auto candidate = getCandidate(i, j, row, column, box);
+			if (candidate.size() == 0) {
+				return false;
+			}
+			int boxP = i / 3 * 3 + j / 3;
+			for (auto k : candidate) {
+				board[i][j] = k + '0';
+				row[i][k] = 1;
+				column[j][k] = 1;
+				box[boxP][k] = 1;
+				int r = (j == 8) ? i + 1 : i;
+				int c = (j == 8) ? 0 : j + 1;
+				if (solveSudokuRecursion(board, r, c, row, column, box)) {
+					return true;
+				}
+				board[i][j] = '.';
+				row[i][k] = 0;
+				column[j][k] = 0;
+				box[boxP][k] = 0;
+			}
+			return false;
+		} else {
+			if (j == 8) {
+				++i; j = 0;
+			}
+			else {
+				++j;
+			}
+			return solveSudokuRecursion(board, i, j, row, column, box);
+		}
+	}
+
+	void solveSudoku(vector<vector<char>>& board) {
+		int row[9][10] = { 0 };
+		int column[9][10] = { 0 };
+		int box[9][10] = { 0 };
+		for (int i = 0; i < board.size(); ++i) {
+			for (int j = 0; j < board[i].size(); ++j) {
+				if (board[i][j] != '.') {
+					char c = board[i][j] - '0';
+					int boxP = i / 3 * 3 + j / 3;
+					row[i][c] = 1;
+					column[j][c] = 1;
+					box[boxP][c] = 1;
+				}
+			}
+		}
+
+		solveSudokuRecursion(board, 0, 0, row, column, box);
 	}
 
 	//-------------------------------------------------
