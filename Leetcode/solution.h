@@ -1659,6 +1659,33 @@ public:
 		return i == nums.size();
 	}
 
+
+	//-------------------------------------------------
+	// 56. https://leetcode.com/problems/merge-intervals/
+	//-------------------------------------------------
+	vector<Interval> merge(vector<Interval>& intervals) {
+		if (intervals.size() <= 1) {
+			return intervals;
+		}
+		sort(intervals.begin(), intervals.end(), 
+			[](const Interval &f, const Interval &s) {
+			return f.start < s.start;
+		});
+		vector<Interval> result;
+		Interval interval = intervals[0];
+		for (int i = 1; i < intervals.size(); ++i) {
+			if (intervals[i].start > interval.end) {
+				result.push_back(interval);
+				interval = intervals[i];
+			} else if (intervals[i].end > interval.end) {
+				interval.end = intervals[i].end;
+			}
+		}
+		result.push_back(interval);
+		return result;
+	}
+
+
 	//-------------------------------------------------
 	// 58. https://leetcode.com/problems/length-of-last-word/
 	//-------------------------------------------------
