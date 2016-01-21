@@ -1687,6 +1687,15 @@ public:
 
 
 	//-------------------------------------------------
+	// 57. https://leetcode.com/problems/insert-interval/
+	//-------------------------------------------------
+	vector<Interval> insert(vector<Interval>& intervals, Interval newInterval) {
+		intervals.push_back(newInterval);
+		return merge(intervals);
+	}
+
+
+	//-------------------------------------------------
 	// 58. https://leetcode.com/problems/length-of-last-word/
 	//-------------------------------------------------
 	int lengthOfLastWord(string s) {
