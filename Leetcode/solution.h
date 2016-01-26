@@ -1479,6 +1479,30 @@ public:
 	}
 
 	//-------------------------------------------------
+	// 45. https://leetcode.com/problems/jump-game-ii/
+	//-------------------------------------------------
+	int jump(vector<int>& nums) {
+		int maxReach = nums[0];
+		int edge = 0;
+		int minstep = 0;
+
+		for (int i = 1; i < nums.size(); i++) {
+			if (i > edge) {
+				minstep += 1;
+				edge = maxReach;
+				if (edge > nums.size() - 1)
+					return minstep;
+			}
+			maxReach = std::max(maxReach, nums[i] + i);
+			if (maxReach == i && i < nums.size() - 1)
+				return -1;
+		}
+
+		return minstep;
+	}
+
+
+	//-------------------------------------------------
 	// 46. https://leetcode.com/problems/permutations/
 	//-------------------------------------------------
 	template <class T> 

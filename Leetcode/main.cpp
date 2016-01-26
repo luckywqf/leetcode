@@ -47,6 +47,9 @@ int main(int argc, char *argv[]) {
 	s.solveSudoku(in37_0);
 
 
+	vector<int> in45_0 = { 5,9,3,2,1,0,2,3,3,1,0,0 };
+	auto out45_0 = s.jump(in45_0);
+
 	//A = [2, 3, 1, 1, 4], return true.
 	//A = [3, 2, 1, 0, 4], return false.
 	vector<int> in55_1 = { 2, 3, 1, 1, 4 };
