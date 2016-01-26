@@ -1479,6 +1479,33 @@ public:
 	}
 
 	//-------------------------------------------------
+	// 44. https://leetcode.com/problems/wildcard-matching/
+	//-------------------------------------------------
+	bool isMatchii(string &s, int ss, string &p, int ps) {
+		if (p.size() <= ps) {
+			return s.size() <= ss;
+		}
+		if (p[ps] != '*') {
+			if (s.size() > ss && (s[ss] == p[ps] || p[ps] == '?')) {
+				return isMatchii(s, ss + 1, p, ps + 1);
+			} else {
+				return false;
+			}
+		} else {
+			int i = ss;
+			int next = ps + 1;
+			while (next != p.size() && p[next] == '*') next++;
+			while (i <= s.size()) {
+				if (isMatchii(s, i++, p, next)) {
+					return true;
+				}
+			}
+			return false;
+		}
+	}
+	
+	
+	//-------------------------------------------------
 	// 45. https://leetcode.com/problems/jump-game-ii/
 	//-------------------------------------------------
 	int jump(vector<int>& nums) {
@@ -1500,9 +1527,8 @@ public:
 
 		return minstep;
 	}
-
-
-	//-------------------------------------------------
+	
+	
 	// 46. https://leetcode.com/problems/permutations/
 	//-------------------------------------------------
 	template <class T> 
