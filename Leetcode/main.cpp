@@ -229,6 +229,14 @@ int main(int argc, char *argv[]) {
 
 	auto out292_0 = s.wordPattern("abba", "dog dog dog dog");
 	
+	MedianFinder mf;
+	mf.addNum(1);
+	mf.addNum(2);
+	auto out295_0 = mf.findMedian();
+	mf.addNum(3);
+	auto out295_1 = mf.findMedian();
+
+
 	vector<vector<int>> matrix = {
 		{3, 0, 1, 4, 2},
 		{5, 6, 3, 2, 1}, 

@@ -5339,6 +5339,46 @@ private:
 //};
 
 //-------------------------------------------------
+// 295. https://leetcode.com/problems/find-median-from-data-stream/
+//-------------------------------------------------
+class MedianFinder {
+public:
+	// Adds a number into the data structure.
+	void addNum(int num) {
+		if (smaller_.size() == biger_.size()) {
+			if (smaller_.empty() || num <= smaller_.top()) {
+				smaller_.push(num);
+			} else {
+				biger_.push(num);
+				smaller_.push(biger_.top());
+				biger_.pop();
+			}
+		} else {
+			if (num > smaller_.top()) {
+				biger_.push(num);
+			} else {
+				smaller_.push(num);
+				biger_.push(smaller_.top());
+				smaller_.pop();
+			}
+		}
+	}
+
+	// Returns the median of current data stream
+	double findMedian() {
+		if (smaller_.size() > biger_.size()) {
+			return static_cast<double>(smaller_.top());
+		} else {
+			return (smaller_.top() + biger_.top()) / 2.0;
+		}
+	}
+
+private:
+	priority_queue<int> smaller_;
+	priority_queue<int, std::vector<int>, std::greater<int>> biger_;
+};
+
+//-------------------------------------------------
 // 303. https://leetcode.com/problems/range-sum-query-immutable/
 //-------------------------------------------------
 class NumArray {
