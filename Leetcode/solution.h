@@ -4848,30 +4848,28 @@ public:
 	// 279. https://leetcode.com/problems/perfect-squares/
 	//-------------------------------------------------
 	int numSquares(int n) {
-		if (n <= 0) {
+		if (n <= 0)	{
 			return 0;
 		}
-		int maxNum = (int)sqrt(n);
-		vector<int> squares;
-		for (int i = maxNum; i > 0; --i) {
-			squares.push_back(i * i);
-		}
-		return numSquares(n, squares);
-	}
 
-	int numSquares(int n, const vector<int>& squares) {
-		if (n == 0) {
-			return 0;
-		}
-		for (int i = 0; i < squares.size(); ++i) {
-			if (n >= squares[i]) {
-				int k = numSquares(n - squares[i], squares);
-				if (k >= 0) {
-					return k + 1;
-				}
+		// cntPerfectSquares[i] = the least number of perfect square numbers 
+		// which sum to i. Since cntPerfectSquares is a static vector, if 
+		// cntPerfectSquares.size() > n, we have already calculated the result 
+		// during previous function calls and we can just return the result now.
+		static vector<int> cntPerfectSquares({ 0 });
+
+		// While cntPerfectSquares.size() <= n, we need to incrementally 
+		// calculate the next result until we get the result for n.
+		while (cntPerfectSquares.size() <= n) {
+			int m = cntPerfectSquares.size();
+			int cntSquares = INT_MAX;
+			for (int i = 1; i*i <= m; i++) {
+				cntSquares = min(cntSquares, cntPerfectSquares[m - i*i] + 1);
 			}
+			cntPerfectSquares.push_back(cntSquares);
 		}
-		return -1;
+
+		return cntPerfectSquares[n];
 	}
 
 
