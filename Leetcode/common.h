@@ -14,6 +14,7 @@
 #include <functional>
 #include <memory>
 #include <tuple>
+#include <numeric>
 #include <cstdint>
 #include <cstring>
 #include <cassert>
