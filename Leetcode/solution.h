@@ -4751,6 +4751,22 @@ public:
 	}
 
 	//-------------------------------------------------
+	// 264. https://leetcode.com/problems/ugly-number-ii/
+	//-------------------------------------------------
+	int nthUglyNumber(int n) {
+		int t2 = 0, t3 = 0, t5 = 0; //pointers for 2, 3, 5
+		vector<int> k(n, 1);
+		for (int i = 1; i < n; i++)	{
+			k[i] = min(k[t2] * 2, min(k[t3] * 3, k[t5] * 5));
+			if (k[i] == k[t2] * 2) t2++;
+			if (k[i] == k[t3] * 3) t3++;
+			if (k[i] == k[t5] * 5) t5++;
+		}
+		return k[n - 1];
+	}
+
+
+	//-------------------------------------------------
 	// 268. https://leetcode.com/problems/missing-number/
 	//-------------------------------------------------
 	int missingNumber(vector<int>& nums) {
@@ -4870,30 +4886,28 @@ public:
 	// 279. https://leetcode.com/problems/perfect-squares/
 	//-------------------------------------------------
 	int numSquares(int n) {
-		if (n <= 0) {
+		if (n <= 0)	{
 			return 0;
 		}
-		int maxNum = (int)sqrt(n);
-		vector<int> squares;
-		for (int i = maxNum; i > 0; --i) {
-			squares.push_back(i * i);
-		}
-		return numSquares(n, squares);
-	}
 
-	int numSquares(int n, const vector<int>& squares) {
-		if (n == 0) {
-			return 0;
-		}
-		for (int i = 0; i < squares.size(); ++i) {
-			if (n >= squares[i]) {
-				int k = numSquares(n - squares[i], squares);
-				if (k >= 0) {
-					return k + 1;
-				}
+		// cntPerfectSquares[i] = the least number of perfect square numbers 
+		// which sum to i. Since cntPerfectSquares is a static vector, if 
+		// cntPerfectSquares.size() > n, we have already calculated the result 
+		// during previous function calls and we can just return the result now.
+		static vector<int> cntPerfectSquares({ 0 });
+
+		// While cntPerfectSquares.size() <= n, we need to incrementally 
+		// calculate the next result until we get the result for n.
+		while (cntPerfectSquares.size() <= n) {
+			int m = cntPerfectSquares.size();
+			int cntSquares = INT_MAX;
+			for (int i = 1; i*i <= m; i++) {
+				cntSquares = min(cntSquares, cntPerfectSquares[m - i*i] + 1);
 			}
+			cntPerfectSquares.push_back(cntSquares);
 		}
-		return -1;
+
+		return cntPerfectSquares[n];
 	}
 
 
