@@ -217,6 +217,9 @@ int main(int argc, char *argv[]) {
 
 	auto out234_0 = s.isPalindrome(makeList({ 1, 1, 2, 1 }));
 
+	vector<int> in239_0 = { 1,3,-1,-3,5,3,6,7 };
+	auto out239_0 = s.maxSlidingWindow(in239_0, 3);
+
 	vector<int> in275_0 = { 2, 3, 3, 3, 5, 5, 6, 8, 10, 10, 10 };
 	auto out275_0 = s.hIndexii(in275_0);
 
