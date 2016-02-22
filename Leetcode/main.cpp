@@ -254,5 +254,9 @@ int main(int argc, char *argv[]) {
 
 	auto out315_0 = s.removeDuplicateLetters("bcabc");
 	auto out315_1 = s.removeDuplicateLetters("cbacdcbc");
+
+	auto out326_0 = s.isPowerOfThree(2);
+	auto out326_1 = s.isPowerOfThree(59049);
+
 	return 0;
 }

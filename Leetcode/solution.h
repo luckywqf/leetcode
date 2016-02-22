@@ -5063,9 +5063,23 @@ public:
 		return result;
 	}
 
+	//-------------------------------------------------
+	// 326. https://leetcode.com/problems/power-of-three/
+	//-------------------------------------------------
+	bool isPowerOfThree(int n) {
+		if (n == 0) {
+			return false;
+		}
+		double log3f = log(double(n)) / log(3.0);
+		int log3i = (int)log3f;
+		if (log3f - log3i > 0.5) {
+			log3i += 1;
+		}
+		return (int)pow(3.0, log3i) == n;
+	}
 
 	//-------------------------------------------------
-	// 334. https://leetcode.com/problems/remove-duplicate-letters/
+	// 334. https://leetcode.com/problems/increasing-triplet-subsequence/
 	//-------------------------------------------------
 	bool increasingTriplet(vector<int>& nums) {
 		int c1 = INT_MAX, c2 = INT_MAX;
