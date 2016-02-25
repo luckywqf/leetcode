@@ -62,6 +62,12 @@ int main(int argc, char *argv[]) {
 	auto out60 = s.getPermutation(4, 4);
 
 	auto out61 = s.rotateRight(nullptr, 0);
+	
+	vector<string> in68_0 = { "This", "is", "an", "example", "of", "text", "justification." };
+	auto out68_0 = s.fullJustify(in68_0, 16);
+	vector<string> in68_1 = { "a", "b", "c", "d", "e" };
+	auto out68_1 = s.fullJustify(in68_1, 1);
+
 
 	auto out69 = s.mySqrt(2147395599);
 

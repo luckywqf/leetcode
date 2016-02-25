@@ -2168,6 +2168,45 @@ public:
 		return result;
 	}
 
+
+	//-------------------------------------------------
+	// 68. https://leetcode.com/problems/text-justification/
+	//-------------------------------------------------
+	vector<int> evenSpaces(int spaces, int block, bool lastLine) {
+		vector<int> result;
+		int space;
+		for (int i = block - 1; i > 0; --i) {
+			space = lastLine ? 1 : spaces / i;
+			result.insert(result.begin(), space);
+			spaces -= space;
+		}
+		result.push_back(spaces);
+		return result;
+	}
+
+	vector<string> fullJustify(vector<string>& words, int maxWidth) {
+		vector<string> result;
+		int index = 0;
+		while (index < words.size()) {
+			string line;
+			int lineWords(0), lineLeft(maxWidth), lineSpaces(maxWidth);
+			while (index < words.size() && (int)words[index].size() <= lineLeft) {
+				lineLeft -= words[index].size() + 1;
+				lineSpaces -= words[index].size();
+				lineWords++;
+				index++;
+			}
+			auto spaces = evenSpaces(lineSpaces, lineWords, index >= words.size());
+			for (int i = 0; i < lineWords; i++) {
+				line += words[index - lineWords + i];
+				line += string(spaces[i], ' ');
+			}
+			result.push_back(line);
+		}
+		return result;
+	}
+
+
 	//-------------------------------------------------
 	// 69. https://leetcode.com/problems/sqrtx/
 	//-------------------------------------------------
