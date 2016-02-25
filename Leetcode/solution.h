@@ -1013,6 +1013,36 @@ public:
 		}
 	}
 
+
+	//-------------------------------------------------
+	// 32. https://leetcode.com/problems/longest-valid-parentheses/
+	//-------------------------------------------------
+	int longestValidParentheses(string s) {
+		int n = s.length(), longest = 0;
+		stack<int> st;
+		for (int i = 0; i < n; i++) {
+			if (s[i] == '(') st.push(i);
+			else {
+				if (!st.empty()) {
+					if (s[st.top()] == '(') st.pop();
+					else st.push(i);
+				}
+				else st.push(i);
+			}
+		}
+		if (st.empty()) longest = n;
+		else {
+			int a = n, b = 0;
+			while (!st.empty()) {
+				b = st.top(); st.pop();
+				longest = max(longest, a - b - 1);
+				a = b;
+			}
+			longest = max(longest, a);
+		}
+		return longest;
+	}
+
 	//-------------------------------------------------
 	// 33. https://leetcode.com/problems/search-in-rotated-sorted-array/
 	//-------------------------------------------------
@@ -1481,27 +1511,32 @@ public:
 	//-------------------------------------------------
 	// 44. https://leetcode.com/problems/wildcard-matching/
 	//-------------------------------------------------
-	bool isMatchii(string &s, int ss, string &p, int ps) {
-		if (p.size() <= ps) {
-			return s.size() <= ss;
-		}
-		if (p[ps] != '*') {
-			if (s.size() > ss && (s[ss] == p[ps] || p[ps] == '?')) {
-				return isMatchii(s, ss + 1, p, ps + 1);
-			} else {
-				return false;
-			}
-		} else {
-			int i = ss;
-			int next = ps + 1;
-			while (next != p.size() && p[next] == '*') next++;
-			while (i <= s.size()) {
-				if (isMatchii(s, i++, p, next)) {
-					return true;
-				}
-			}
+	bool isMatchii(string s, string p) {
+		const char *str = s.c_str();
+		const char *pattern = p.c_str();
+		const char* star = NULL;
+		const char* ss = str;
+		while (*str) {
+			//advancing both pointers when (both characters match) or ('?' found in pattern)
+			//note that *p will not advance beyond its length 
+			if ((*pattern == '?') || (*pattern == *str)) { str++; pattern++; continue; }
+
+			// * found in pattern, track index of *, only advancing pattern pointer 
+			if (*pattern == '*') { star = pattern++; ss = str; continue; }
+
+			//current characters didn't match, last pattern pointer was *, current pattern pointer is not *
+			//only advancing pattern pointer
+			if (star) { pattern = star + 1; str = ++ss; continue; }
+
+			//current pattern pointer is not star, last patter pointer was not *
+			//characters do not match
 			return false;
 		}
+
+		//check for remaining characters in pattern
+		while (*pattern == '*') { pattern++; }
+
+		return !*pattern;
 	}
 	
 	
@@ -1662,6 +1697,58 @@ public:
 		}
 		return result * myPowPos(x, n - i);
 	}
+
+
+
+	//-------------------------------------------------
+	// 51. https://leetcode.com/problems/n-queens/
+	//-------------------------------------------------
+	vector<vector<string> > solveNQueens(int n) {
+		vector<vector<string>> res;
+		vector<string> nQueens(n, string(n, '.'));
+		solveNQueens(res, nQueens, 0, n);
+		return res;
+	}
+	void solveNQueens(vector<vector<string>> &res, vector<string> &nQueens, int row, int &n) {
+		if (row == n) {
+			res.push_back(nQueens);
+			return;
+		}
+		for (int col = 0; col != n; ++col) {
+			if (isValid(nQueens, row, col, n)) {
+				nQueens[row][col] = 'Q';
+				solveNQueens(res, nQueens, row + 1, n);
+				nQueens[row][col] = '.';
+			}
+		}
+	}
+	bool isValid(vector<string> &nQueens, int row, int col, int &n) {
+		//check if the column had a queen before.
+		for (int i = 0; i != row; ++i) {
+			if (nQueens[i][col] == 'Q')
+				return false;
+		}
+		//check if the 45бу diagonal had a queen before.
+		for (int i = row - 1, j = col - 1; i >= 0 && j >= 0; --i, --j) {
+			if (nQueens[i][j] == 'Q')
+				return false;
+		}
+		//check if the 135бу diagonal had a queen before.
+		for (int i = row - 1, j = col + 1; i >= 0 && j < n; --i, ++j) {
+			if (nQueens[i][j] == 'Q')
+				return false;
+		}
+		return true;
+	}
+
+
+	//-------------------------------------------------
+	// 52. https://leetcode.com/problems/n-queens-ii/
+	//-------------------------------------------------
+	int totalNQueens(int n) {
+		return solveNQueens(n).size();
+	}
+
 
 	//-------------------------------------------------
 	// 53. https://leetcode.com/problems/maximum-subarray/
@@ -1975,6 +2062,41 @@ public:
 		}
 		return grid[m - 1][n - 1];
 	}
+
+	//-------------------------------------------------
+	// 65. https://leetcode.com/problems/valid-number/
+	//-------------------------------------------------
+	bool isNumber(string s) {
+		int i = 0;
+		// skip the whilespaces
+		while (isspace(s[i]))i++;
+
+		// check the significand
+		if (s[i] == '+' || s[i] == '-') i++; // skip the sign if exist
+
+		int n_nm, n_pt;
+		for (n_nm = 0, n_pt = 0; (s[i] <= '9' && s[i] >= '0') || s[i] == '.'; i++)
+			s[i] == '.' ? n_pt++ : n_nm++;
+		if (n_pt > 1 || n_nm < 1) // no more than one point, at least one digit
+			return false;
+
+		// check the exponent if exist
+		if (s[i] == 'e') {
+			i++;
+			if (s[i] == '+' || s[i] == '-') i++; // skip the sign
+
+			int n_nm = 0;
+			for (; s[i] >= '0' && s[i] <= '9'; i++, n_nm++);
+			if (n_nm < 1)
+				return false;
+		}
+
+		// skip the trailing whitespaces
+		while (isspace(s[i]))i++;
+
+		return s[i] == 0;  // must reach the ending 0 of the string
+	}
+
 
 	//-------------------------------------------------
 	// 66. https://leetcode.com/problems/plus-one/
