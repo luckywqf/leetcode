@@ -2592,7 +2592,24 @@ public:
 	// 84. https://leetcode.com/problems/largest-rectangle-in-histogram/
 	//-------------------------------------------------
 	int largestRectangleArea(vector<int>& heights) {
+		int ret = 0;
+		heights.push_back(0);
+		vector<int> index;
 
+		for (int i = 0; i < heights.size(); i++) {
+			while (index.size() > 0 && heights[index.back()] >= heights[i]) {
+				int h = heights[index.back()];
+				index.pop_back();
+
+				int sidx = index.size() > 0 ? index.back() : -1;
+				if (h * (i - sidx - 1) > ret) {
+					ret = h * (i - sidx - 1);
+				}
+			}
+			index.push_back(i);
+		}
+
+		return ret;
 	}
 	
 	//-------------------------------------------------
@@ -3334,6 +3351,43 @@ public:
 				follow = pre->next;
 			}
 			p = p->left;
+		}
+	}
+
+	//-------------------------------------------------
+	// 117. https://leetcode.com/problems/populating-next-right-pointers-in-each-node-ii/
+	//-------------------------------------------------
+	void connectii(TreeLinkNode *root) {
+		TreeLinkNode *p = root;
+		while (true) {
+			while (p && !p->left && !p->right) p = p->next;
+			if (!p) {
+				break;
+			}
+			auto pre = p;
+			auto follow = pre->next;
+			while (follow && !follow->left && !follow->right) {
+				follow = follow->next;
+			}
+			if (pre->left) {
+				pre->left->next = pre->right ? pre->right : (follow == nullptr ? nullptr : 
+					(follow->left ? follow->left : follow->right));
+			}
+			while (follow) {
+				if (pre->right) {
+					pre->right->next = follow->left ? follow->left : follow->right;
+				}
+				pre = follow;
+				follow = pre->next;
+				while (follow && !follow->left && !follow->right) {
+					follow = follow->next;
+				}
+				if (pre->left) {
+					pre->left->next = pre->right ? pre->right : (follow == nullptr ?
+						nullptr : (follow->left ? follow->left : follow->right));
+				}
+			}
+			p = p->left ? p->left : p->right;
 		}
 	}
 
