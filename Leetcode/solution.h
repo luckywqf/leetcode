@@ -2399,6 +2399,31 @@ public:
 	}
 
 	//-------------------------------------------------
+	// 76. https://leetcode.com/problems/minimum-window-substring/
+	//-------------------------------------------------
+	string minWindow(string s, string t) {
+		vector<int> map(128, 0);
+		for (auto c : t) map[c]++;
+		int counter = t.size();
+		int begin = 0, end = 0;
+		int winLen = INT_MAX, head = 0;
+		while (end < s.size()) {
+			if (map[s[end++]]-- > 0) {
+				counter--; //in t
+			}
+			while (counter == 0) { //valid
+				if (end - begin < winLen) {
+					winLen = end - (head = begin);
+				}
+				if (map[s[begin++]]++ == 0) {
+					counter++;  //make it invalid
+				}
+			}
+		}
+		return winLen == INT_MAX ? "" : s.substr(head, winLen);
+	}
+
+	//-------------------------------------------------
 	// 77. https://leetcode.com/problems/combinations/
 	//-------------------------------------------------
 	vector<vector<int>> combineP(const vector<int>& nums, int start, int k) {
@@ -2561,6 +2586,20 @@ public:
 			}
 		}
 		return head;
+	}
+
+	//-------------------------------------------------
+	// 84. https://leetcode.com/problems/largest-rectangle-in-histogram/
+	//-------------------------------------------------
+	int largestRectangleArea(vector<int>& heights) {
+
+	}
+	
+	//-------------------------------------------------
+	// 85. https://leetcode.com/problems/maximal-rectangle/
+	//-------------------------------------------------
+	int maximalRectangle(vector<vector<char>>& matrix) {
+
 	}
 
 
