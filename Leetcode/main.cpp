@@ -235,6 +235,9 @@ int main(int argc, char *argv[]) {
 	vector<int> in239_0 = { 1,3,-1,-3,5,3,6,7 };
 	auto out239_0 = s.maxSlidingWindow(in239_0, 3);
 
+
+	auto out242_0 = s.diffWaysToCompute("2*3-4*5");
+
 	vector<int> in275_0 = { 2, 3, 3, 3, 5, 5, 6, 8, 10, 10, 10 };
 	auto out275_0 = s.hIndexii(in275_0);
 

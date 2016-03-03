@@ -4982,6 +4982,68 @@ public:
 	}
 
 	//-------------------------------------------------
+	// 242. https://leetcode.com/problems/different-ways-to-add-parentheses/
+	//-------------------------------------------------
+	vector<int> diffWaysToCompute(vector<int> nums, vector<function<int(int,int)>> opers) {
+		vector<int> result;
+		if (opers.size() == 0) {
+			result.push_back(nums[0]);
+			return result;
+		}
+		if (opers.size() == 1) {
+			result.push_back(opers[0](nums[0], nums[1]));
+			return result;
+		}
+		for (int i = 0; i < opers.size(); ++i) {
+			vector<int> num1(nums.begin(), nums.begin() + i + 1);
+			vector<int> num2(nums.begin() + i + 1, nums.end());
+			vector<function<int(int, int)>> opers1(opers.begin(), opers.begin() + i);
+			vector<function<int(int, int)>> opers2(opers.begin() + i + 1, opers.end());
+			auto left = diffWaysToCompute(num1, opers1);
+			auto right = diffWaysToCompute(num2, opers2);
+			for (auto l : left) {
+				for (auto r : right) {
+					result.push_back(opers[i](l, r));
+				}
+			}
+		}
+		return result;
+	}
+
+	vector<int> diffWaysToCompute(string input) {
+		int n = 0;
+		vector<int> nums;
+		vector<function<int(int, int)>> opers;
+		for (auto c : input) {
+			if (isdigit(c)) {
+				n *= 10; n += c - '0';
+			}
+			else {
+				nums.push_back(n);
+				n = 0;
+
+				switch (c) {
+				case '+':
+					opers.push_back(std::plus<int>());
+					break;
+				case '-':
+					opers.push_back(std::minus<int>());
+					break;
+				case '*':
+					opers.push_back(std::multiplies<int>());
+					break;
+				case '/':
+					opers.push_back(std::divides<int>());
+					break;
+				}
+			}
+		}
+		nums.push_back(n);
+		return diffWaysToCompute(nums, opers);
+	}
+
+
+	//-------------------------------------------------
 	// 242. https://leetcode.com/problems/valid-anagram/
 	//-------------------------------------------------
 	bool isAnagram(string s, string t) {
