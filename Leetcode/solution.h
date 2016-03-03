@@ -5262,6 +5262,55 @@ public:
 		}
 	}
 
+	//-------------------------------------------------
+	// 287. https://leetcode.com/problems/find-the-duplicate-number/
+	//-------------------------------------------------
+	int findDuplicate(vector<int>& nums) {
+		int low = 1, high = nums.size() - 1;
+		while (low < high) {
+			int mid = (high + low) / 2;
+			int count = 0;
+			for (auto n : nums) {
+				if (n <= mid) {
+					count++;
+				}
+			}
+			if (count <= mid) {
+				low = mid + 1;
+			} else {
+				high = mid;
+			}
+		}
+		return low;
+	}
+
+
+
+	//-------------------------------------------------
+	// 289. https://leetcode.com/problems/game-of-life/
+	//-------------------------------------------------
+	void gameOfLife(vector<vector<int>>& board) {
+		int m = board.size(), n = m ? board[0].size() : 0;
+		for (int i = 0; i < m; ++i) {
+			for (int j = 0; j < n; ++j) {
+				int count = 0;
+				for (int x = max(i - 1, 0); x < min(i + 2, m); ++x) {
+					for (int y = max(j - 1, 0); y < min(j + 2, n); ++y) {
+						count += board[x][y] & 1;
+					}
+				}
+				if (count == 3 || count - board[i][j] == 3) {
+					board[i][j] |= 2;
+				}
+			}
+		}
+		for (int i = 0; i < m; ++i) {
+			for (int j = 0; j < n; ++j) {
+				board[i][j] >>= 1;
+			}
+		}
+	}
+
 
 	//-------------------------------------------------
 	// 292. https://leetcode.com/problems/word-pattern/
