@@ -3491,6 +3491,32 @@ public:
 		return maxPro + sum;
 	}
 
+
+	//-------------------------------------------------
+	// 123. https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/
+	//-------------------------------------------------
+	int maxProfitiii(vector<int>& prices) {
+		if (prices.size() <= 1) {
+			return 0;
+		}
+		int maxTwo[2] = { 0, 0 };
+		int high(prices[0]), low(prices[0]), maxPro(0);
+		for (int i = 1; i < prices.size(); ++i) {
+			if (prices[i] > high) {
+				high = prices[i];
+				maxPro = max(high - low, maxPro);
+				maxTwo[0] = maxPro;
+			}
+			else if (prices[i] < high) {
+				high = low = prices[i];
+				maxPro = 0;
+				maxTwo[1] = maxTwo[0];
+			}
+		}
+		return maxPro;
+	}
+
+
 	//-------------------------------------------------
 	// 125. https://leetcode.com/problems/valid-palindrome/
 	//-------------------------------------------------
@@ -3557,6 +3583,24 @@ public:
 		}
 		return sum;
 	}
+
+
+	//-------------------------------------------------
+	// 131. https://leetcode.com/problems/palindrome-partitioning/
+	//-------------------------------------------------
+	vector<vector<string>> partition(string s) {
+		//vector<vector<string>> result;
+		//for (int i = 0; i < s.size(); ++i) {
+		//	for (int len = 1; len + i <= s.size(); ++len) {
+		//		string sub = s.substr(i, len);
+		//		if (isPalindrome(sub)) {
+		//			result.push_back(sub);
+		//		}
+		//	}
+		//}
+		//return result;
+	}
+
 
 	//-------------------------------------------------
 	// 133. https://leetcode.com/problems/clone-graph/
@@ -4197,6 +4241,15 @@ public:
 		}
 		return result;
 	}
+
+
+	//-------------------------------------------------
+	// 188. https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv/
+	//-------------------------------------------------
+	int maxProfit(int k, vector<int>& prices) {
+
+	}
+
 
 	//-------------------------------------------------
 	// 189. https://leetcode.com/problems/rotate-array/
@@ -5332,6 +5385,23 @@ public:
 		return (int)pow(3.0, log3i) == n;
 	}
 
+
+	//-------------------------------------------------
+	// 328. https://leetcode.com/problems/odd-even-linked-list/
+	//-------------------------------------------------
+	ListNode* oddEvenList(ListNode* head) {
+		if (!head) return head;
+		ListNode *odd = head, *evenhead = head->next, *even = evenhead;
+		while (even && even->next) {
+			odd->next = odd->next->next;
+			even->next = even->next->next;
+			odd = odd->next;
+			even = even->next;
+		}
+		odd->next = evenhead;
+		return head;
+	}
+
 	//-------------------------------------------------
 	// 334. https://leetcode.com/problems/increasing-triplet-subsequence/
 	//-------------------------------------------------
@@ -5727,6 +5797,82 @@ public:
 private:
 	priority_queue<int> smaller_;
 	priority_queue<int, std::vector<int>, std::greater<int>> biger_;
+};
+
+//-------------------------------------------------
+// 297. https://leetcode.com/problems/serialize-and-deserialize-binary-tree/
+//-------------------------------------------------
+class Codec {
+public:
+
+	// Encodes a tree to a single string.
+	string serialize(TreeNode* root) {
+		return this->levelOrder(root);
+	}
+
+	// Decodes your encoded data to tree.
+	TreeNode* deserialize(string data) {
+		return this->makeBinaryTree(data);
+	}
+private:
+	TreeNode* makeBinaryTree(const string &strs) {
+		TreeNode *root = nullptr;
+		if (strs.empty()) {
+			return root;
+		}
+
+		char *cstr = new char[strs.size() + 1];
+		strcpy(cstr, strs.c_str());
+		char *p = strtok(cstr, ",");
+		root = new TreeNode(atoi(p));
+		queue<TreeNode*> treeQueue;
+		treeQueue.push(root);
+		char *left, *right;
+		while (!treeQueue.empty()) {
+			left = strtok(NULL, ",");
+			if (left == nullptr) {
+				break;
+			}
+			auto parent = treeQueue.front();
+			treeQueue.pop();
+			if (strcmp(left, "#") != 0) {
+				parent->left = new TreeNode(atoi(left));
+				treeQueue.push(parent->left);
+			}
+
+			right = strtok(NULL, ",");
+			if (right == nullptr) {
+				break;
+			}
+			if (strcmp(right, "#") != 0) {
+				parent->right = new TreeNode(atoi(right));
+				treeQueue.push(parent->right);
+			}
+		}
+		return root;
+	}
+	string levelOrder(TreeNode* root) {
+		queue<TreeNode*> tq;
+		string result;
+		if (root == NULL) {
+			return result;
+		}
+
+		tq.push(root);
+		while (!tq.empty()) {
+			TreeNode* p = tq.front();
+			if (p) {
+				result += string(",") + to_string(p->val);
+				tq.push(p->left);
+				tq.push(p->right);
+			}
+			else {
+				result += ",#";
+			}
+			tq.pop();
+		}
+		return result.substr(1);// remove ","
+	}
 };
 
 //-------------------------------------------------

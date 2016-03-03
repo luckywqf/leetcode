@@ -247,12 +247,25 @@ int main(int argc, char *argv[]) {
 
 	auto out292_0 = s.wordPattern("abba", "dog dog dog dog");
 	
+
 	MedianFinder mf;
 	mf.addNum(1);
 	mf.addNum(2);
 	auto out295_0 = mf.findMedian();
 	mf.addNum(3);
 	auto out295_1 = mf.findMedian();
+
+	Codec codec;
+	TreeNode *in297_0 = makeBinaryTree("7,-10,2,-4,3,-8,#,#,#,#,-1,11");
+	TreeNode *in297_1 = makeBinaryTree("1,2,3,4,5,#,6,7,#,#,#,#,8");
+	TreeNode *in297_2 = makeBinaryTree("2,1,3,0,7,9,1,2,#,1,0,#,#,8,8,#,#,#,#,7");
+	TreeNode *in297_3 = makeBinaryTree("-2,-9,0,3,5,-1,9,5,2,#,#,-3,#,-7,6,-6,#,#,#,-1,#,#,#,-9,9,#,#,#,#,8,#,-2,5");
+	TreeNode *in297_4 = makeBinaryTree("1,null,2");
+	TreeNode *out297_0 = codec.deserialize(codec.serialize(in297_0));
+	TreeNode *out297_1 = codec.deserialize(codec.serialize(in297_1));
+	TreeNode *out297_2 = codec.deserialize(codec.serialize(in297_2));
+	TreeNode *out297_3 = codec.deserialize(codec.serialize(in297_3));
+	TreeNode *out297_4 = codec.deserialize(codec.serialize(in297_4));
 
 
 	vector<vector<int>> matrix = {
