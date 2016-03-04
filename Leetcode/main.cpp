@@ -227,6 +227,8 @@ int main(int argc, char *argv[]) {
 	vector<vector<char>> in221_0 = { { '0', '1' } };
 	auto out221_0 = s.maximalSquare(in221_0);
 
+	auto out227_0 = s.calculateii("3+2*2");
+
 	auto out230_0 = s.kthSmallest(makeBinaryTree("3,1,4,null,2"), 2);
 	auto out230_1 = s.kthSmallest(makeBinaryTree("3,2,4,1"), 3);
 

@@ -4720,8 +4720,62 @@ public:
 	// 227. https://leetcode.com/problems/basic-calculator-ii/
 	//-------------------------------------------------
 	int calculateii(string s) {
+		int n = 0;
+		vector<int> nums;
+		vector<function<int(int, int)>> opers;
+		for (auto c : s) {
+			if (isdigit(c)) {
+				n *= 10; n += c - '0';
+			}
+			else if (isspace(c)) {
+				continue;
+			}
+			else {
+				nums.push_back(n);
+				n = 0;
 
+				switch (c) {
+				case '+':
+					opers.push_back(std::plus<int>());
+					break;
+				case '-':
+					opers.push_back(std::minus<int>());
+					break;
+				case '*':
+					opers.push_back(std::multiplies<int>());
+					break;
+				case '/':
+					opers.push_back(std::divides<int>());
+					break;
+				}
+			}
+		}
+		nums.push_back(n);
+		return calculateii(nums, opers);
 	}
+	int calculateii(vector<int> &nums, vector<function<int(int, int)>> &opers) {
+		int result = 0;
+		if (opers.size() == 0) {
+			return nums[0];
+		}
+		if (opers.size() == 1) {
+			return opers[0](nums[0], nums[1]);
+		}
+		for (int i = 0; i < opers.size(); ++i) {
+			if (opers[i](3, 1) == 3) { // * or /
+				nums[i] = opers[i](nums[i], nums[i + 1]);
+				opers.erase(opers.begin() + i);
+				nums.erase(nums.begin() + i + 1);
+				--i;
+			}
+		}
+		result = nums[0];
+		for (int i = 0; i < opers.size(); ++i) {
+			result = opers[i](result, nums[i + 1]);
+		}
+		return result;
+	}
+
 
 	//-------------------------------------------------
 	// 228. https://leetcode.com/problems/summary-ranges/
