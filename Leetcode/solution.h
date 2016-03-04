@@ -4504,6 +4504,28 @@ public:
 
 		return last;
 	}
+	//-------------------------------------------------
+	// 209. https://leetcode.com/problems/minimum-size-subarray-sum/
+	//-------------------------------------------------
+	int minSubArrayLen(int s, vector<int>& nums) {
+		if (nums.empty())
+			return 0;
+
+		int i = 0, j = 0;
+		int sum = 0, min = INT_MAX;
+
+		while (j < nums.size()) {
+			sum += nums[j++];
+
+			while (sum >= s) {
+				min = std::min(min, j - i);
+				sum -= nums[i++];
+			}
+		}
+
+		return min == INT_MAX ? 0 : min;
+	}
+
 
 	//-------------------------------------------------
 	// 213. https://leetcode.com/problems/house-robber-ii/
