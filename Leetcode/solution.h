@@ -4547,6 +4547,35 @@ public:
 		}
 		return std::max(bests1.back(), bests2.back());
 	}
+	
+	//-------------------------------------------------
+	// 214. https://leetcode.com/problems/shortest-palindrome/
+	//-------------------------------------------------
+	string shortestPalindrome(string s) {
+		int len = s.size();
+		if (len <= 1) {
+			return s;
+		}
+		for (int i = (len - 1) / 2; i >= 0; --i) {
+			bool found = true;
+			int j;
+			for (j = 1; i - j >= 0; j++) {
+				if (s[i - j] != s[i + j]) {
+					found = false;
+					break;
+				}
+			}
+			if (found) {
+				while (i + j < s.size()) {
+					s.insert(s.begin(), s[i + j]);
+					j++; i++;
+				}
+				break;
+			}
+		}
+		return s;
+	}
+
 
 	//-------------------------------------------------
 	// 215. https://leetcode.com/problems/kth-largest-element-in-an-array/
