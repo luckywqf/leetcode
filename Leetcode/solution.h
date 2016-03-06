@@ -4548,6 +4548,33 @@ public:
 		return std::max(bests1.back(), bests2.back());
 	}
 
+	//-------------------------------------------------
+	// 215. https://leetcode.com/problems/kth-largest-element-in-an-array/
+	//-------------------------------------------------
+	void max_heapify(vector<int>& nums, int idx, int len) {
+		int largest = idx;
+		int l = idx * 2 + 1;
+		int r = idx * 2 + 2;
+		if (l < len && nums[l] > nums[largest]) largest = l;
+		if (r < len && nums[r] > nums[largest]) largest = r;
+		if (largest != idx) {
+			swap(nums[idx], nums[largest]);
+			max_heapify(nums, largest, len);
+		}
+	}
+
+	int findKthLargest(vector<int>& nums, int k) {
+		int heap_size = nums.size();
+		for (int i = (heap_size / 2) - 1; i >= 0; i--) {
+			max_heapify(nums, i, heap_size);
+		}
+		for (int i = 0; i < k; i++) {
+			swap(nums[0], nums[heap_size - 1]);
+			heap_size--;
+			max_heapify(nums, 0, heap_size);
+		}
+		return nums[heap_size];
+	}
 
 	//-------------------------------------------------
 	// 216. https://leetcode.com/problems/combination-sum-iii/

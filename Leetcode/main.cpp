@@ -214,6 +214,9 @@ int main(int argc, char *argv[]) {
 
 	auto out201_0 = s.rangeBitwiseAnd(5, 7);
 
+	vector<int> in215_0 = { 2, 1 };
+	auto out215_0 = s.findKthLargest(in215_0, 1);
+
 	WordDictionary in211;
 	in211.addWord("a");
 	in211.addWord("a");
