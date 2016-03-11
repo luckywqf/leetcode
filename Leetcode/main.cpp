@@ -178,6 +178,11 @@ int main(int argc, char *argv[]) {
 	auto out142_1 = s.detectCycle(in142_1);
 	auto out142_2 = s.detectCycle(in142_2);
 
+
+	LRUCache cache(2);
+	cache.set(2, 1); cache.set(1, 1); cache.set(2, 3); cache.set(4, 1); cache.get(1); cache.get(2);
+
+
 	string in151_0 = "was isi iiis";
 	string in151_1 = "was isi    iiis";
 	string in151_2 = "wasiiis";

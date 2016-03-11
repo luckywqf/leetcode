@@ -5837,6 +5837,46 @@ public:
 };
 
 //-------------------------------------------------
+// 146. https://leetcode.com/problems/lru-cache/
+//-------------------------------------------------
+class LRUCache {
+public:
+	LRUCache(int capacity) {
+		this->capacity = capacity;
+	}
+
+	int get(int key) {
+		if (itmap.count(key) == 0) {
+			return -1;
+		}
+		int value = (*itmap[key]).second;
+		cache.erase(itmap[key]);
+		cache.push_back({ key, value });
+		itmap[key] = --cache.end();
+		return value;
+	}
+
+	void set(int key, int value) {
+		if (itmap.count(key)) {
+			cache.erase(itmap[key]);
+		} else {
+			if (cache.size() >= capacity) {
+				auto p = cache.front();
+				cache.pop_front();
+				itmap.erase(p.first);
+			}
+		}
+		cache.push_back({ key, value });
+		itmap[key] = --cache.end();
+	}
+
+private:
+	int capacity;
+	list<pair<int,int>> cache;
+	unordered_map<int, list<pair<int,int>>::iterator> itmap;
+};
+
+//-------------------------------------------------
 // 155. https://leetcode.com/problems/min-stack/
 //-------------------------------------------------
 class MinStack {
