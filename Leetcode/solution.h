@@ -3541,6 +3541,43 @@ public:
 
 
 	//-------------------------------------------------
+	// 127. https://leetcode.com/problems/word-ladder/
+	//-------------------------------------------------
+	int ladderLength(string beginWord, string endWord, unordered_set<string>& wordList) {
+		wordList.insert(endWord);
+		queue<string> toVisit;
+		addNextWords(beginWord, wordList, toVisit);
+		int dist = 2;
+		while (!toVisit.empty()) {
+			int num = toVisit.size();
+			for (int i = 0; i < num; i++) {
+				string word = toVisit.front();
+				toVisit.pop();
+				if (word == endWord) return dist;
+				addNextWords(word, wordList, toVisit);
+			}
+			dist++;
+		}
+		return 0;
+	}
+
+	void addNextWords(string word, unordered_set<string>& wordDict, queue<string>& toVisit) {
+		wordDict.erase(word);
+		for (int p = 0; p < (int)word.length(); p++) {
+			char letter = word[p];
+			for (int k = 0; k < 26; k++) {
+				word[p] = 'a' + k;
+				if (wordDict.find(word) != wordDict.end()) {
+					toVisit.push(word);
+					wordDict.erase(word);
+				}
+			}
+			word[p] = letter;
+		}
+	}
+
+
+	//-------------------------------------------------
 	// 129. https://leetcode.com/problems/sum-root-to-leaf-numbers/
 	//-------------------------------------------------
 	int sumNumbers(TreeNode* root) {
@@ -3586,6 +3623,68 @@ public:
 
 
 	//-------------------------------------------------
+	// 130. https://leetcode.com/problems/surrounded-regions/
+	//-------------------------------------------------
+	void bfsBoundary(vector<vector<char> >& board, int w, int l) {
+		int width = board.size();
+		int length = board[0].size();
+		queue<pair<int, int>> q;
+		q.push(make_pair(w, l));
+		board[w][l] = 'B';
+		while (!q.empty()) {
+			pair<int, int> cur = q.front();  q.pop();
+			pair<int, int> adjs[4] = { 
+				{ cur.first - 1, cur.second },
+				{ cur.first + 1, cur.second },
+				{ cur.first, cur.second - 1 },
+				{ cur.first, cur.second + 1 } };
+			for (int i = 0; i < 4; ++i) {
+				int adjW = adjs[i].first;
+				int adjL = adjs[i].second;
+				if (adjW >= 0 && adjW < width && 
+					adjL >= 0 && adjL < length && 
+					board[adjW][adjL] == 'O') {
+					q.push(make_pair(adjW, adjL));
+					board[adjW][adjL] = 'B';
+				}
+			}
+		}
+	}
+
+	void solve(vector<vector<char> > &board) {
+		int width = board.size();
+		if (width == 0) //Add this to prevent run-time error!
+			return;
+		int length = board[0].size();
+		if (length == 0) // Add this to prevent run-time error!
+			return;
+
+		for (int i = 0; i < length; ++i) {
+			if (board[0][i] == 'O')
+				bfsBoundary(board, 0, i);
+
+			if (board[width - 1][i] == 'O')
+				bfsBoundary(board, width - 1, i);
+		}
+
+		for (int i = 0; i < width; ++i) {
+			if (board[i][0] == 'O')
+				bfsBoundary(board, i, 0);
+			if (board[i][length - 1] == 'O')
+				bfsBoundary(board, i, length - 1);
+		}
+
+		for (int i = 0; i < width; ++i) {
+			for (int j = 0; j < length; ++j) {
+				if (board[i][j] == 'O')
+					board[i][j] = 'X';
+				else if (board[i][j] == 'B')
+					board[i][j] = 'O';
+			}
+		}
+	}
+
+	//-------------------------------------------------
 	// 131. https://leetcode.com/problems/palindrome-partitioning/
 	//-------------------------------------------------
 	vector<vector<string>> partition(string s) {
@@ -3625,6 +3724,23 @@ public:
 		else {
 			return it->second;
 		}
+	}
+
+	//-------------------------------------------------
+	// 134. https://leetcode.com/problems/gas-station/
+	//-------------------------------------------------
+	int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
+		int start(0), total(0), tank(0);
+		//if car fails at 'start', record the next station
+		for (int i = 0; i < gas.size(); i++) {
+			tank += gas[i] - cost[i];
+			if (tank < 0) {
+				start = i + 1; 
+				total += tank; 
+				tank = 0;
+			}
+		}
+		return (total + tank < 0) ? -1 : start;
 	}
 
 
