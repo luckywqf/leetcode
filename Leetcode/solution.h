@@ -5785,6 +5785,13 @@ public:
 		return result;
 	}
 
+    //-------------------------------------------------
+	// 319. https://leetcode.com/problems/bulb-switcher/
+	//-------------------------------------------------
+    int bulbSwitch(int n) {
+        return sqrt(n);
+    }
+    
 	//-------------------------------------------------
 	// 326. https://leetcode.com/problems/power-of-three/
 	//-------------------------------------------------
