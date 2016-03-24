@@ -161,6 +161,7 @@ int main(int argc, char *argv[]) {
 	vector<vector<int>> in120_0 = { {-1}, {-2,-3} };
 	auto out120_0 = s.minimumTotal(in120_0);
 	
+	auto out131_0 = s.partition("ab");
 
 	auto in142_0 = makeList({ 1 });
 	auto in142_1 = makeList({ 3, 2, 0, 4 });

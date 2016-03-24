@@ -3688,16 +3688,25 @@ public:
 	// 131. https://leetcode.com/problems/palindrome-partitioning/
 	//-------------------------------------------------
 	vector<vector<string>> partition(string s) {
-		//vector<vector<string>> result;
-		//for (int i = 0; i < s.size(); ++i) {
-		//	for (int len = 1; len + i <= s.size(); ++len) {
-		//		string sub = s.substr(i, len);
-		//		if (isPalindrome(sub)) {
-		//			result.push_back(sub);
-		//		}
-		//	}
-		//}
-		//return result;
+		vector<vector<string>> res;
+		vector<string> tmp;
+		getPartition(s, 0, tmp, res);
+		return res;
+	}
+	void getPartition(string& s, int idx, vector<string>& tmp, vector<vector<string>>& res) {
+		if (idx == s.length()) {
+			res.push_back(tmp);
+			return;
+		}
+		for (int i = idx, n = s.length(); i < n; i++) {
+			int l = idx, r = i;
+			while (l < r && s[l] == s[r]) l++, r--;
+			if (l >= r) {
+				tmp.push_back(s.substr(idx, i - idx + 1));
+				getPartition(s, i + 1, tmp, res);
+				tmp.pop_back();
+			}
+		}
 	}
 
 
