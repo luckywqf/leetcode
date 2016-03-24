@@ -1439,8 +1439,8 @@ public:
 
 		string result;
 		result.resize(base.length() + 1);
-		unsigned int carryBit = 0; //½øÎ»
-		unsigned int oneBit; //µ±Ç°Î»
+		unsigned int carryBit = 0; //è¿›ä½
+		unsigned int oneBit; //å½“å‰ä½
 		for (int i = base.length() - 1, j = base.length(); i >= 0; i--, j--) {
 			oneBit = number * AnsiiToNumber(base[i]);
 			oneBit += carryBit;
@@ -1456,7 +1456,7 @@ public:
 		}
 	}
 
-	//µÚÒ»¸öÊıÓëµÚ¶ş¸öÊı×óÒÆleftbitsÎ»µÄºÍ
+	//ç¬¬ä¸€ä¸ªæ•°ä¸ç¬¬äºŒä¸ªæ•°å·¦ç§»leftbitsä½çš„å’Œ
 	string ShiftAdd(const string &first, const string& second, unsigned int leftbits) {
 		string result;
 		result.resize(max(first.length(), second.length() + leftbits) + 1);
@@ -1493,7 +1493,7 @@ public:
 	}
 	string multiply(string num1, string num2) {
 		string result("0");
-		vector<string> base10(10); //Îª¼ÆËã·½±ã°Ñ³ËÊıµÄ0-9±¶¼ÆËã³öÀ´
+		vector<string> base10(10); //ä¸ºè®¡ç®—æ–¹ä¾¿æŠŠä¹˜æ•°çš„0-9å€è®¡ç®—å‡ºæ¥
 		for (int i = 0; i < 10; i++) {
 			base10[i] = MultiplyOneBit(num1, i);
 		}
@@ -1728,12 +1728,12 @@ public:
 			if (nQueens[i][col] == 'Q')
 				return false;
 		}
-		//check if the 45¡ã diagonal had a queen before.
+		//check if the 45Â° diagonal had a queen before.
 		for (int i = row - 1, j = col - 1; i >= 0 && j >= 0; --i, --j) {
 			if (nQueens[i][j] == 'Q')
 				return false;
 		}
-		//check if the 135¡ã diagonal had a queen before.
+		//check if the 135Â° diagonal had a queen before.
 		for (int i = row - 1, j = col + 1; i >= 0 && j < n; --i, ++j) {
 			if (nQueens[i][j] == 'Q')
 				return false;
@@ -2316,7 +2316,7 @@ public:
 	// 73. https://leetcode.com/problems/set-matrix-zeroes/
 	//-------------------------------------------------
 	void setZeroes(vector<vector<int> > &matrix) {
-		//°ÑĞÅÏ¢±£´æÔÚÊ×ĞĞºÍÊ×ÁĞ£¬ËûÃÇÖ»Ó°ÏìËùÔÚĞĞºÍËùÔÚÁĞ£¬ĞĞÓ°ÏìĞĞ£¬ÁĞÓ°ÏìÁĞ
+		//æŠŠä¿¡æ¯ä¿å­˜åœ¨é¦–è¡Œå’Œé¦–åˆ—ï¼Œä»–ä»¬åªå½±å“æ‰€åœ¨è¡Œå’Œæ‰€åœ¨åˆ—ï¼Œè¡Œå½±å“è¡Œï¼Œåˆ—å½±å“åˆ—
 		int col0 = 1, rows = matrix.size(), cols = matrix[0].size();
 
 		for (int i = 0; i < rows; i++) {
@@ -4228,7 +4228,7 @@ public:
 		}
 		result += ".";
 		unordered_map<uint64_t, int> remainderMap;
-		int index = result.size();//Ğ¡ÊıÎ»Êı
+		int index = result.size();//å°æ•°ä½æ•°
 		while (remainder != 0) {
 			if (remainderMap.count(remainder)) {
 				result.insert(remainderMap[remainder], "(");
@@ -5794,6 +5794,13 @@ public:
 		return result;
 	}
 
+    //-------------------------------------------------
+	// 319. https://leetcode.com/problems/bulb-switcher/
+	//-------------------------------------------------
+    int bulbSwitch(int n) {
+        return sqrt(n);
+    }
+    
 	//-------------------------------------------------
 	// 326. https://leetcode.com/problems/power-of-three/
 	//-------------------------------------------------
@@ -5843,6 +5850,26 @@ public:
 		return false;
 	}
 
+    //-------------------------------------------------
+	// 338. https://leetcode.com/problems/counting-bits/
+	//-------------------------------------------------
+    vector<int> countBits(int num) {
+        if (num == 0) {
+            return  { 0 };
+        }
+        vector<int> result = { 0, 1 };
+        int bound = 4;
+        for(int i = 2, j = 0; i <= num; i++) {
+            if (i == bound) {
+                j = 0;
+                bound <<= 1;
+            }
+            result.push_back(result[j] + 1);
+            j++;
+        }
+        
+        return result;
+    }
 };
 
 //-------------------------------------------------
