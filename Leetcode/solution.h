@@ -5768,6 +5768,14 @@ public:
 	}
 
 	//-------------------------------------------------
+	// 300. https://leetcode.com/problems/contains-duplicate-iii/
+	//-------------------------------------------------
+	bool containsNearbyAlmostDuplicate(vector<int>& nums, int k, int t) {
+
+	}
+
+
+	//-------------------------------------------------
 	// 315. https://leetcode.com/problems/remove-duplicate-letters/
 	//-------------------------------------------------
 	string removeDuplicateLetters(string s) {
