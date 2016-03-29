@@ -5902,6 +5902,29 @@ public:
 	}
 
 	//-------------------------------------------------
+	// 332. https://leetcode.com/problems/reconstruct-itinerary/
+	//-------------------------------------------------
+	vector<string> findItinerary(vector<pair<string, string>> tickets) {
+		map<string, set<string>> graph;
+		for (auto t : tickets) {
+			graph[t.first].insert(t.second);
+		}
+		vector<string> route;
+		findItineraryDFS(graph, "JFK", route);
+		std::reverse(route.begin(), route.end());
+		return route;
+	}
+	void findItineraryDFS(map<string, set<string>> &graph, string start, vector<string> &route) {
+		while (!graph[start].empty()) {
+			auto e = graph[start].begin();
+			auto str = *e;
+			graph[start].erase(e);
+			findItineraryDFS(graph, str, route);
+		}
+		route.push_back(start);
+	}
+
+	//-------------------------------------------------
 	// 334. https://leetcode.com/problems/increasing-triplet-subsequence/
 	//-------------------------------------------------
 	bool increasingTriplet(vector<int>& nums) {

@@ -303,5 +303,10 @@ int main(int argc, char *argv[]) {
 	auto out326_0 = s.isPowerOfThree(2);
 	auto out326_1 = s.isPowerOfThree(59049);
 
+
+	vector<pair<string, string>> in332_0 = { {"MUC", "LHR"},{"JFK", "MUC"},{"SFO", "SJC"},{"LHR", "SFO"} };
+	vector<pair<string, string>> in332_1 = { {"JFK", "SFO"}, {"JFK", "ATL"}, {"SFO", "ATL"}, {"ATL", "JFK"}, {"ATL", "SFO"} };
+	auto out332_0 = s.findItinerary(in332_0);
+	auto out332_1 = s.findItinerary(in332_1);
 	return 0;
 }
