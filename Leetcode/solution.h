@@ -5901,11 +5901,33 @@ public:
 		return head;
 	}
 
+
+	//-------------------------------------------------
+	// 331. https://leetcode.com/problems/verify-preorder-serialization-of-a-binary-tree/
+	//-------------------------------------------------
+	bool isValidSerialization(string preorder) {
+		int du = 1;
+		int start = 0;
+		auto p = preorder.find(',', start);
+		while (p != string::npos) {
+			string str = preorder.substr(start, p - start);
+			if (--du < 0)
+				return false;
+			if (str != "#") {
+				du += 2;
+			}
+			start = p + 1;
+			p = preorder.find(',', start);
+		}
+		return du == 1 && preorder.substr(start) == "#";
+	}
+
+
 	//-------------------------------------------------
 	// 332. https://leetcode.com/problems/reconstruct-itinerary/
 	//-------------------------------------------------
 	vector<string> findItinerary(vector<pair<string, string>> tickets) {
-		map<string, set<string>> graph;
+		map<string, multiset<string>> graph;
 		for (auto t : tickets) {
 			graph[t.first].insert(t.second);
 		}
@@ -5914,7 +5936,7 @@ public:
 		std::reverse(route.begin(), route.end());
 		return route;
 	}
-	void findItineraryDFS(map<string, set<string>> &graph, string start, vector<string> &route) {
+	void findItineraryDFS(map<string, multiset<string>> &graph, string start, vector<string> &route) {
 		while (!graph[start].empty()) {
 			auto e = graph[start].begin();
 			auto str = *e;
