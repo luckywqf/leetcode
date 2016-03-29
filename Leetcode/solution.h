@@ -5918,6 +5918,28 @@ public:
 		return false;
 	}
 
+
+	//-------------------------------------------------
+	// 337. https://leetcode.com/problems/house-robber-iii/
+	//-------------------------------------------------
+	void robSub(TreeNode* root, vector<int> &out) {
+		if (root == nullptr) {
+			return;
+		}
+		int val = 0;
+		vector<int> left(2, 0), right(2, 0);
+		robSub(root->left, left);
+		robSub(root->right, right);
+		
+		out[0] = std::max(left[0], left[1]) + std::max(right[0], right[1]);
+		out[1] = root->val + left[0] + right[0];
+	}
+	int rob(TreeNode *root) {
+		vector<int> out(2, 0);
+		robSub(root, out);
+		return std::max(out[0], out[1]);
+	}
+
     //-------------------------------------------------
 	// 338. https://leetcode.com/problems/counting-bits/
 	//-------------------------------------------------
