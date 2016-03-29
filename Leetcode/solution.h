@@ -5835,6 +5835,29 @@ public:
 		return res;
 	}
 
+
+	//-------------------------------------------------
+	// 313. https://leetcode.com/problems/super-ugly-number/
+	//-------------------------------------------------
+	int nthSuperUglyNumber(int n, vector<int>& primes) {
+		vector<int> ret(n, INT_MAX);
+		ret[0] = 1;
+
+		vector<int> indexes(primes.size(), 0);
+		for (int i = 1; i < n; i++) {
+			for (int j = 0; j < primes.size(); j++) {
+				ret[i] = std::min(ret[i], primes[j] * ret[indexes[j]]);
+			}
+			for (int j = 0; j < indexes.size(); j++) {
+				if (ret[i] == primes[j] * ret[indexes[j]]) {
+					indexes[j]++;
+				}
+			}
+		}
+
+		return ret[n - 1];
+	}
+
 	//-------------------------------------------------
 	// 315. https://leetcode.com/problems/remove-duplicate-letters/
 	//-------------------------------------------------
@@ -5862,6 +5885,30 @@ public:
 		return result;
 	}
 
+
+	//-------------------------------------------------
+	// 318. https://leetcode.com/problems/maximum-product-of-word-lengths/
+	//-------------------------------------------------
+	int maxProduct(vector<string>& words) {
+		map<int, size_t> masks;
+		for (auto w : words) {
+			int mask = 0;
+			for (auto c : w) {
+				mask |= 1 << (c - 'a');
+			}
+			masks[mask] = std::max(w.size(), masks[mask]);
+		}
+		size_t result = 0;
+		for (auto i : masks) {
+			for (auto j : masks) {
+				if (!(i.first & j.first)) {
+					result = std::max(result, i.second * j.second);
+				}
+			}
+		}
+		return result;
+	}
+
     //-------------------------------------------------
 	// 319. https://leetcode.com/problems/bulb-switcher/
 	//-------------------------------------------------
@@ -5869,6 +5916,34 @@ public:
         return sqrt(n);
     }
     
+
+	//-------------------------------------------------
+	// 324. https://leetcode.com/problems/wiggle-sort-ii/
+	//-------------------------------------------------
+	void wiggleSort(vector<int>& nums) {
+		int n = nums.size();
+
+		// Find a median.
+		auto midptr = nums.begin() + n / 2;
+		nth_element(nums.begin(), midptr, nums.end());
+		int mid = *midptr;
+
+		// Index-rewiring.
+#define A(i) nums[( 1 + 2 * (i)) % (n | 1)]
+
+		// 3-way-partition-to-wiggly in O(n) time with O(1) space.
+		int i = 0, j = 0, k = n - 1;
+		while (j <= k) {
+			if (A(j) > mid)
+				swap(A(i++), A(j++));
+			else if (A(j) < mid)
+				swap(A(j), A(k--));
+			else
+				j++;
+		}
+	}
+
+
 	//-------------------------------------------------
 	// 326. https://leetcode.com/problems/power-of-three/
 	//-------------------------------------------------
@@ -5899,6 +5974,26 @@ public:
 		}
 		odd->next = evenhead;
 		return head;
+	}
+
+
+	//-------------------------------------------------
+	// 330. https://leetcode.com/problems/patching-array/
+	//-------------------------------------------------
+	int minPatches(vector<int>& nums, int n) {
+		uint32_t miss = 1;
+		int added = 0;
+		int i = 0;
+		while (miss <= n) {
+			if (i < nums.size() && miss >= nums[i]) {
+				miss += nums[i++];
+			}
+			else {
+				miss += miss;
+				added++;
+			}
+		}
+		return added;
 	}
 
 

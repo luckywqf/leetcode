@@ -300,6 +300,9 @@ int main(int argc, char *argv[]) {
 	auto out315_0 = s.removeDuplicateLetters("bcabc");
 	auto out315_1 = s.removeDuplicateLetters("cbacdcbc");
 
+	vector<int> in324_0 = { 5, 6, 4, 3, 2, 6, 7, 9, 3 };
+	s.wiggleSort(in324_0);
+
 	auto out326_0 = s.isPowerOfThree(2);
 	auto out326_1 = s.isPowerOfThree(59049);
 
