@@ -2616,7 +2616,40 @@ public:
 	// 85. https://leetcode.com/problems/maximal-rectangle/
 	//-------------------------------------------------
 	int maximalRectangle(vector<vector<char>>& matrix) {
-
+		if (matrix.empty()) {
+			return 0;
+		}
+		int m = matrix.size();
+		int n = matrix[0].size();
+		vector<int> left(n, 0), right(n, n), height(n, 0);
+		int maxA = 0;
+		for (int i = 0; i < m; i++) {
+			int cur_left = 0, cur_right = n;
+			for (int j = 0; j < n; j++) { // compute height (can do this from either side)
+				if (matrix[i][j] == '1') height[j]++;
+				else height[j] = 0;
+			}
+			for (int j = 0; j < n; j++) { // compute left (from left to right)
+				if (matrix[i][j] == '1') left[j] = std::max(left[j], cur_left);
+				else { 
+					left[j] = 0; 
+					cur_left = j + 1; 
+				}
+			}
+			// compute right (from right to left)
+			for (int j = n - 1; j >= 0; j--) {
+				if (matrix[i][j] == '1') right[j] = std::min(right[j], cur_right);
+				else { 
+					right[j] = n; 
+					cur_right = j; 
+				}
+			}
+			// compute the area of rectangle (can do this from either side)
+			for (int j = 0; j < n; j++) {
+				maxA = std::max(maxA, (right[j] - left[j]) * height[j]);
+			}
+		}
+		return maxA;
 	}
 
 
@@ -2649,6 +2682,33 @@ public:
 		return result.next;
 	}
 
+	//-------------------------------------------------
+	// 87. https://leetcode.com/problems/scramble-string/
+	//-------------------------------------------------
+	bool isScramble(string s1, string s2) {
+		if (s1 == s2)
+			return true;
+
+		int len = s1.length();
+		int count[26] = { 0 };
+		for (int i = 0; i < len; i++) {
+			count[s1[i] - 'a']++;
+			count[s2[i] - 'a']--;
+		}
+
+		for (int i = 0; i < 26; i++) {
+			if (count[i] != 0)
+				return false;
+		}
+
+		for (int i = 1; i <= len - 1; i++) {
+			if (isScramble(s1.substr(0, i), s2.substr(0, i)) && isScramble(s1.substr(i), s2.substr(i)))
+				return true;
+			if (isScramble(s1.substr(0, i), s2.substr(len - i)) && isScramble(s1.substr(i), s2.substr(0, len - i)))
+				return true;
+		}
+		return false;
+	}
 
 	//-------------------------------------------------
 	// 88. https://leetcode.com/problems/merge-sorted-array/
@@ -2888,6 +2948,32 @@ public:
 		}
 		return sum;
 	}
+
+
+	//-------------------------------------------------
+	// 97. https://leetcode.com/problems/interleaving-string/
+	//-------------------------------------------------
+	bool isInterleave(string s1, string s2, string s3) {
+		if (s3.length() != s1.length() + s2.length())
+			return false;
+
+		vector<vector<bool>> table(s1.length() + 1, vector<bool>(s2.length() + 1));
+
+		for (int i = 0; i < s1.length() + 1; i++)
+			for (int j = 0; j < s2.length() + 1; j++) {
+				if (i == 0 && j == 0)
+					table[i][j] = true;
+				else if (i == 0)
+					table[i][j] = (table[i][j - 1] && s2[j - 1] == s3[i + j - 1]);
+				else if (j == 0)
+					table[i][j] = (table[i - 1][j] && s1[i - 1] == s3[i + j - 1]);
+				else
+					table[i][j] = (table[i - 1][j] && s1[i - 1] == s3[i + j - 1]) || (table[i][j - 1] && s2[j - 1] == s3[i + j - 1]);
+			}
+
+		return table[s1.length()][s2.length()];
+	}
+
 
 	//-------------------------------------------------
 	// 98. https://leetcode.com/problems/validate-binary-search-tree/
