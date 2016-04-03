@@ -4851,7 +4851,9 @@ public:
 	// 220. https://leetcode.com/problems/contains-duplicate-iii/
 	//-------------------------------------------------
 	bool containsNearbyAlmostDuplicate(vector<int>& nums, int k, int t) {
-
+		if (nums.empty() || k <= 0) {
+			return false;
+		}
 	}
 
 
@@ -5835,6 +5837,67 @@ public:
 		return res;
 	}
 
+
+	//-------------------------------------------------
+	// 309. https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/
+	//-------------------------------------------------
+	int maxProfitiv(vector<int>& prices) {
+		if (prices.size() <= 1) {
+			return 0;
+		}
+
+		vector<int> profit(prices.size(), 0);
+		int low = 0, high = 0;
+		int maxPro(0), sum(0);
+		for (int i = 1; i < prices.size(); ++i) {
+			if (prices[i] > prices[high]) {
+				high = i;
+				profit[i] = prices[high] - prices[low];
+				//maxPro = max(high - low, maxPro);
+			}
+			else if (prices[i] < high) {
+				high = low = prices[i];
+				sum += maxPro;
+				maxPro = 0;
+			}
+		}
+
+		return maxPro + sum;
+	}
+
+	//-------------------------------------------------
+	// 310. https://leetcode.com/problems/minimum-height-trees/
+	//-------------------------------------------------
+	vector<int> findMinHeightTrees(int n, vector<pair<int, int>>& edges) {
+		if (n == 1) {
+			return { 0 };
+		}
+		vector<list<int>> graph(n);
+		for (auto e : edges) {
+			graph[e.first].push_back(e.second);
+			graph[e.second].push_back(e.first);
+		}
+		vector<int> result;
+		for (int i = 0; i < graph.size(); i++) {
+			if (graph[i].size() == 1) {
+				result.push_back(i);
+			}
+		}
+		while (n > 2) {
+			n -= result.size();
+			vector<int> newResult;
+			for (auto i : result) {
+				auto next = graph[i].front();
+				graph[next].remove(i);
+				if (graph[next].size() == 1) {
+					newResult.push_back(next);
+				}
+			}
+			result = newResult;
+		}
+
+		return result;
+	}
 
 	//-------------------------------------------------
 	// 313. https://leetcode.com/problems/super-ugly-number/
