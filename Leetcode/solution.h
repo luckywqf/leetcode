@@ -3015,6 +3015,33 @@ public:
 
 
 	//-------------------------------------------------
+	// 99. https://leetcode.com/problems/recover-binary-search-tree/
+	//-------------------------------------------------
+	void recoverTree(TreeNode* root) {
+		TreeNode *first = nullptr, *second = nullptr;
+		TreeNode *pre = new TreeNode(INT_MIN);
+		travelTree(root, &first, &second, &pre);
+		swap(first->val, second->val);
+	}
+	void travelTree(TreeNode *root, TreeNode **first, TreeNode **second, TreeNode **pre) {
+		if (root == nullptr) {
+			return;
+		}
+		
+		travelTree(root->left, first, second, pre);
+
+		if (*first == nullptr && (*pre)->val >= root->val) {
+			*first = *pre;
+		}
+		if (*first != nullptr && (*pre)->val >= root->val) {
+			*second = root;
+		}
+		*pre = root;
+
+		travelTree(root->right, first, second, pre);
+	}
+
+	//-------------------------------------------------
 	// 100. https://leetcode.com/problems/same-tree/
 	//-------------------------------------------------
 	bool isSameTree(TreeNode* p, TreeNode* q) {
