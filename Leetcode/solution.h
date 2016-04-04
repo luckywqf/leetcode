@@ -3629,6 +3629,25 @@ public:
 		return maxPro;
 	}
 
+	//-------------------------------------------------
+	// 124. https://leetcode.com/problems/binary-tree-maximum-path-sum/
+	//-------------------------------------------------
+	int maxPathSum(TreeNode* root) {
+		int maxSum = INT_MIN;
+		maxPathSumDFS(root, maxSum);
+		return maxSum;
+	}
+	int maxPathSumDFS(TreeNode* root, int& maxSum) {
+		if (root == nullptr) {
+			return 0;
+		}
+		int left = maxPathSumDFS(root->left, maxSum);
+		int right = maxPathSumDFS(root->right, maxSum);
+		left = std::max(0, left);
+		right = std::max(0, right);
+		maxSum = std::max(maxSum, left + right + root->val);
+		return std::max(left, right) + root->val;
+	}
 
 	//-------------------------------------------------
 	// 125. https://leetcode.com/problems/valid-palindrome/
