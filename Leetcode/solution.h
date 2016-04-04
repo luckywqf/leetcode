@@ -3708,6 +3708,27 @@ public:
 		}
 	}
 
+	//-------------------------------------------------
+	// 128. https://leetcode.com/problems/longest-consecutive-sequence/
+	//-------------------------------------------------
+	int longestConsecutive(vector<int>& nums) {
+		unordered_map<int, int> ranges;
+		int result = 0;
+		for (auto n : nums) {
+			if (ranges.count(n) == 0) {
+				int left = ranges.count(n - 1) > 0 ? ranges[n - 1] : 0;
+				int right = ranges.count(n + 1) > 0 ? ranges[n + 1] : 0;
+				int sum = left + right + 1;
+				ranges[n] = sum;
+				result = std::max(result, sum);
+
+				ranges[n - left] = sum;
+				ranges[n + right] = sum;
+			}
+		}
+		return result;
+	}
+
 
 	//-------------------------------------------------
 	// 129. https://leetcode.com/problems/sum-root-to-leaf-numbers/
