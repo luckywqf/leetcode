@@ -4072,6 +4072,32 @@ public:
 		return result;
 	}
 
+
+	//-------------------------------------------------
+	// 145. https://leetcode.com/problems/binary-tree-postorder-traversal/
+	//-------------------------------------------------
+	vector<int> postorderTraversal(TreeNode* root) {
+		vector<int> result;
+		if (root == nullptr) {
+			return result;
+		}
+		TreeNode *p = root;
+		stack<TreeNode*> trees;
+		trees.push(p);
+		while (!trees.empty()) {
+			TreeNode* node = trees.top();
+			result.push_back(node->val);
+			trees.pop();
+			if (node->left)
+				trees.push(node->left);
+			if (node->right)
+				trees.push(node->right);
+		}
+		std::reverse(result.begin(), result.end());
+		return result;
+	}
+
+
 	//-------------------------------------------------
 	// 147. https://leetcode.com/problems/insertion-sort-list/
 	//-------------------------------------------------
@@ -4331,6 +4357,15 @@ public:
 		}
 		return low;
 	}
+
+
+	//-------------------------------------------------
+	// 164. https://leetcode.com/problems/maximum-gap/
+	//-------------------------------------------------
+	int maximumGap(vector<int>& nums) {
+
+	}
+
 
 	//-------------------------------------------------
 	// 165. https://leetcode.com/problems/compare-version-numbers/
@@ -5024,9 +5059,18 @@ public:
 	// 220. https://leetcode.com/problems/contains-duplicate-iii/
 	//-------------------------------------------------
 	bool containsNearbyAlmostDuplicate(vector<int>& nums, int k, int t) {
-		if (nums.empty() || k <= 0) {
-			return false;
+		set<int> window; // set is ordered automatically 
+		for (int i = 0; i < nums.size(); i++) {
+			if (i > k) window.erase(nums[i - k - 1]); // keep the set contains nums i j at most k
+													  // |x - nums[i]| <= t  ==> -t <= x - nums[i] <= t;
+			auto pos = window.lower_bound(nums[i] - t); // x-nums[i] >= -t ==> x >= nums[i]-t 
+														// x - nums[i] <= t ==> |x - nums[i]| <= t    
+			if (pos != window.end() && *pos - nums[i] <= t) {
+				return true;
+			}
+			window.insert(nums[i]);
 		}
+		return false;
 	}
 
 
@@ -5253,6 +5297,39 @@ public:
 		return result;
 	}
 
+	//-------------------------------------------------
+	// 229. https://leetcode.com/problems/majority-element-ii/
+	//-------------------------------------------------
+	vector<int> majorityElementii(vector<int>& nums) {
+		int y = 0, z = 1, cy = 0, cz = 0;
+		for (auto x : nums) {
+			if (x == y) {
+				cy++;
+			} else if (x == z) {
+				cz++;
+			} else if (!cy) {
+				y = x, cy = 1;
+			} else if (!cz) {
+				z = x, cz = 1;
+			} else {
+				cy--, cz--;
+			}
+		}
+		cy = cz = 0;
+		for (auto x : nums) {
+			if (x == y) cy++;
+			else if (x == z) cz++;
+		}
+
+		vector<int> r;
+		if (cy > nums.size() / 3) {
+			r.push_back(y);
+		}
+		if (cz > nums.size() / 3) {
+			r.push_back(z);
+		}
+		return r;
+	}
 
 	//-------------------------------------------------
 	// 230. https://leetcode.com/problems/power-of-two/
