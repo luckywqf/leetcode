@@ -2616,7 +2616,40 @@ public:
 	// 85. https://leetcode.com/problems/maximal-rectangle/
 	//-------------------------------------------------
 	int maximalRectangle(vector<vector<char>>& matrix) {
-
+		if (matrix.empty()) {
+			return 0;
+		}
+		int m = matrix.size();
+		int n = matrix[0].size();
+		vector<int> left(n, 0), right(n, n), height(n, 0);
+		int maxA = 0;
+		for (int i = 0; i < m; i++) {
+			int cur_left = 0, cur_right = n;
+			for (int j = 0; j < n; j++) { // compute height (can do this from either side)
+				if (matrix[i][j] == '1') height[j]++;
+				else height[j] = 0;
+			}
+			for (int j = 0; j < n; j++) { // compute left (from left to right)
+				if (matrix[i][j] == '1') left[j] = std::max(left[j], cur_left);
+				else { 
+					left[j] = 0; 
+					cur_left = j + 1; 
+				}
+			}
+			// compute right (from right to left)
+			for (int j = n - 1; j >= 0; j--) {
+				if (matrix[i][j] == '1') right[j] = std::min(right[j], cur_right);
+				else { 
+					right[j] = n; 
+					cur_right = j; 
+				}
+			}
+			// compute the area of rectangle (can do this from either side)
+			for (int j = 0; j < n; j++) {
+				maxA = std::max(maxA, (right[j] - left[j]) * height[j]);
+			}
+		}
+		return maxA;
 	}
 
 
@@ -2649,6 +2682,33 @@ public:
 		return result.next;
 	}
 
+	//-------------------------------------------------
+	// 87. https://leetcode.com/problems/scramble-string/
+	//-------------------------------------------------
+	bool isScramble(string s1, string s2) {
+		if (s1 == s2)
+			return true;
+
+		int len = s1.length();
+		int count[26] = { 0 };
+		for (int i = 0; i < len; i++) {
+			count[s1[i] - 'a']++;
+			count[s2[i] - 'a']--;
+		}
+
+		for (int i = 0; i < 26; i++) {
+			if (count[i] != 0)
+				return false;
+		}
+
+		for (int i = 1; i <= len - 1; i++) {
+			if (isScramble(s1.substr(0, i), s2.substr(0, i)) && isScramble(s1.substr(i), s2.substr(i)))
+				return true;
+			if (isScramble(s1.substr(0, i), s2.substr(len - i)) && isScramble(s1.substr(i), s2.substr(0, len - i)))
+				return true;
+		}
+		return false;
+	}
 
 	//-------------------------------------------------
 	// 88. https://leetcode.com/problems/merge-sorted-array/
@@ -2889,6 +2949,32 @@ public:
 		return sum;
 	}
 
+
+	//-------------------------------------------------
+	// 97. https://leetcode.com/problems/interleaving-string/
+	//-------------------------------------------------
+	bool isInterleave(string s1, string s2, string s3) {
+		if (s3.length() != s1.length() + s2.length())
+			return false;
+
+		vector<vector<bool>> table(s1.length() + 1, vector<bool>(s2.length() + 1));
+
+		for (int i = 0; i < s1.length() + 1; i++)
+			for (int j = 0; j < s2.length() + 1; j++) {
+				if (i == 0 && j == 0)
+					table[i][j] = true;
+				else if (i == 0)
+					table[i][j] = (table[i][j - 1] && s2[j - 1] == s3[i + j - 1]);
+				else if (j == 0)
+					table[i][j] = (table[i - 1][j] && s1[i - 1] == s3[i + j - 1]);
+				else
+					table[i][j] = (table[i - 1][j] && s1[i - 1] == s3[i + j - 1]) || (table[i][j - 1] && s2[j - 1] == s3[i + j - 1]);
+			}
+
+		return table[s1.length()][s2.length()];
+	}
+
+
 	//-------------------------------------------------
 	// 98. https://leetcode.com/problems/validate-binary-search-tree/
 	//-------------------------------------------------
@@ -2927,6 +3013,33 @@ public:
 		return validAndGetBST(root, m, n);
 	}
 
+
+	//-------------------------------------------------
+	// 99. https://leetcode.com/problems/recover-binary-search-tree/
+	//-------------------------------------------------
+	void recoverTree(TreeNode* root) {
+		TreeNode *first = nullptr, *second = nullptr;
+		TreeNode *pre = new TreeNode(INT_MIN);
+		travelTree(root, &first, &second, &pre);
+		swap(first->val, second->val);
+	}
+	void travelTree(TreeNode *root, TreeNode **first, TreeNode **second, TreeNode **pre) {
+		if (root == nullptr) {
+			return;
+		}
+		
+		travelTree(root->left, first, second, pre);
+
+		if (*first == nullptr && (*pre)->val >= root->val) {
+			*first = *pre;
+		}
+		if (*first != nullptr && (*pre)->val >= root->val) {
+			*second = root;
+		}
+		*pre = root;
+
+		travelTree(root->right, first, second, pre);
+	}
 
 	//-------------------------------------------------
 	// 100. https://leetcode.com/problems/same-tree/
@@ -3516,6 +3629,25 @@ public:
 		return maxPro;
 	}
 
+	//-------------------------------------------------
+	// 124. https://leetcode.com/problems/binary-tree-maximum-path-sum/
+	//-------------------------------------------------
+	int maxPathSum(TreeNode* root) {
+		int maxSum = INT_MIN;
+		maxPathSumDFS(root, maxSum);
+		return maxSum;
+	}
+	int maxPathSumDFS(TreeNode* root, int& maxSum) {
+		if (root == nullptr) {
+			return 0;
+		}
+		int left = maxPathSumDFS(root->left, maxSum);
+		int right = maxPathSumDFS(root->right, maxSum);
+		left = std::max(0, left);
+		right = std::max(0, right);
+		maxSum = std::max(maxSum, left + right + root->val);
+		return std::max(left, right) + root->val;
+	}
 
 	//-------------------------------------------------
 	// 125. https://leetcode.com/problems/valid-palindrome/
@@ -4851,7 +4983,9 @@ public:
 	// 220. https://leetcode.com/problems/contains-duplicate-iii/
 	//-------------------------------------------------
 	bool containsNearbyAlmostDuplicate(vector<int>& nums, int k, int t) {
-
+		if (nums.empty() || k <= 0) {
+			return false;
+		}
 	}
 
 
@@ -5835,6 +5969,90 @@ public:
 		return res;
 	}
 
+
+	//-------------------------------------------------
+	// 309. https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/
+	//-------------------------------------------------
+	int maxProfitiv(vector<int>& prices) {
+		if (prices.size() <= 1) {
+			return 0;
+		}
+
+		vector<int> profit(prices.size(), 0);
+		int low = 0, high = 0;
+		int maxPro(0), sum(0);
+		for (int i = 1; i < prices.size(); ++i) {
+			if (prices[i] > prices[high]) {
+				high = i;
+				profit[i] = prices[high] - prices[low];
+				//maxPro = max(high - low, maxPro);
+			}
+			else if (prices[i] < high) {
+				high = low = prices[i];
+				sum += maxPro;
+				maxPro = 0;
+			}
+		}
+
+		return maxPro + sum;
+	}
+
+	//-------------------------------------------------
+	// 310. https://leetcode.com/problems/minimum-height-trees/
+	//-------------------------------------------------
+	vector<int> findMinHeightTrees(int n, vector<pair<int, int>>& edges) {
+		if (n == 1) {
+			return { 0 };
+		}
+		vector<list<int>> graph(n);
+		for (auto e : edges) {
+			graph[e.first].push_back(e.second);
+			graph[e.second].push_back(e.first);
+		}
+		vector<int> result;
+		for (int i = 0; i < graph.size(); i++) {
+			if (graph[i].size() == 1) {
+				result.push_back(i);
+			}
+		}
+		while (n > 2) {
+			n -= result.size();
+			vector<int> newResult;
+			for (auto i : result) {
+				auto next = graph[i].front();
+				graph[next].remove(i);
+				if (graph[next].size() == 1) {
+					newResult.push_back(next);
+				}
+			}
+			result = newResult;
+		}
+
+		return result;
+	}
+
+	//-------------------------------------------------
+	// 313. https://leetcode.com/problems/super-ugly-number/
+	//-------------------------------------------------
+	int nthSuperUglyNumber(int n, vector<int>& primes) {
+		vector<int> ret(n, INT_MAX);
+		ret[0] = 1;
+
+		vector<int> indexes(primes.size(), 0);
+		for (int i = 1; i < n; i++) {
+			for (int j = 0; j < primes.size(); j++) {
+				ret[i] = std::min(ret[i], primes[j] * ret[indexes[j]]);
+			}
+			for (int j = 0; j < indexes.size(); j++) {
+				if (ret[i] == primes[j] * ret[indexes[j]]) {
+					indexes[j]++;
+				}
+			}
+		}
+
+		return ret[n - 1];
+	}
+
 	//-------------------------------------------------
 	// 315. https://leetcode.com/problems/remove-duplicate-letters/
 	//-------------------------------------------------
@@ -5862,14 +6080,37 @@ public:
 		return result;
 	}
 
+
+	//-------------------------------------------------
+	// 318. https://leetcode.com/problems/maximum-product-of-word-lengths/
+	//-------------------------------------------------
+	int maxProduct(vector<string>& words) {
+		map<int, size_t> masks;
+		for (auto w : words) {
+			int mask = 0;
+			for (auto c : w) {
+				mask |= 1 << (c - 'a');
+			}
+			masks[mask] = std::max(w.size(), masks[mask]);
+		}
+		size_t result = 0;
+		for (auto i : masks) {
+			for (auto j : masks) {
+				if (!(i.first & j.first)) {
+					result = std::max(result, i.second * j.second);
+				}
+			}
+		}
+		return result;
+	}
+
     //-------------------------------------------------
 	// 319. https://leetcode.com/problems/bulb-switcher/
 	//-------------------------------------------------
     int bulbSwitch(int n) {
         return sqrt(n);
     }
-    
-
+  
 	//-------------------------------------------------
 	// 322. https://leetcode.com/problems/coin-change/
 	//-------------------------------------------------
@@ -5887,13 +6128,34 @@ public:
 		return dp[amount] > amount ? -1 : dp[amount];
 	}
 
+
 	//-------------------------------------------------
 	// 324. https://leetcode.com/problems/wiggle-sort-ii/
 	//-------------------------------------------------
 	void wiggleSort(vector<int>& nums) {
+		int n = nums.size();
 
+		// Find a median.
+		auto midptr = nums.begin() + n / 2;
+		nth_element(nums.begin(), midptr, nums.end());
+		int mid = *midptr;
+
+		// Index-rewiring.
+#define A(i) nums[( 1 + 2 * (i)) % (n | 1)]
+
+		// 3-way-partition-to-wiggly in O(n) time with O(1) space.
+		int i = 0, j = 0, k = n - 1;
+		while (j <= k) {
+			if (A(j) > mid)
+				swap(A(i++), A(j++));
+			else if (A(j) < mid)
+				swap(A(j), A(k--));
+			else
+				j++;
+		}
 	}
-
+	
+	
 	//-------------------------------------------------
 	// 326. https://leetcode.com/problems/power-of-three/
 	//-------------------------------------------------
@@ -5926,6 +6188,71 @@ public:
 		return head;
 	}
 
+
+	//-------------------------------------------------
+	// 330. https://leetcode.com/problems/patching-array/
+	//-------------------------------------------------
+	int minPatches(vector<int>& nums, int n) {
+		uint32_t miss = 1;
+		int added = 0;
+		int i = 0;
+		while (miss <= n) {
+			if (i < nums.size() && miss >= nums[i]) {
+				miss += nums[i++];
+			}
+			else {
+				miss += miss;
+				added++;
+			}
+		}
+		return added;
+	}
+
+
+	//-------------------------------------------------
+	// 331. https://leetcode.com/problems/verify-preorder-serialization-of-a-binary-tree/
+	//-------------------------------------------------
+	bool isValidSerialization(string preorder) {
+		int du = 1;
+		int start = 0;
+		auto p = preorder.find(',', start);
+		while (p != string::npos) {
+			string str = preorder.substr(start, p - start);
+			if (--du < 0)
+				return false;
+			if (str != "#") {
+				du += 2;
+			}
+			start = p + 1;
+			p = preorder.find(',', start);
+		}
+		return du == 1 && preorder.substr(start) == "#";
+	}
+
+
+	//-------------------------------------------------
+	// 332. https://leetcode.com/problems/reconstruct-itinerary/
+	//-------------------------------------------------
+	vector<string> findItinerary(vector<pair<string, string>> tickets) {
+		map<string, multiset<string>> graph;
+		for (auto t : tickets) {
+			graph[t.first].insert(t.second);
+		}
+		vector<string> route;
+		findItineraryDFS(graph, "JFK", route);
+		std::reverse(route.begin(), route.end());
+		return route;
+	}
+	void findItineraryDFS(map<string, multiset<string>> &graph, string start, vector<string> &route) {
+		while (!graph[start].empty()) {
+			auto e = graph[start].begin();
+			auto str = *e;
+			graph[start].erase(e);
+			findItineraryDFS(graph, str, route);
+		}
+		route.push_back(start);
+	}
+
 	//-------------------------------------------------
 	// 334. https://leetcode.com/problems/increasing-triplet-subsequence/
 	//-------------------------------------------------
@@ -5941,6 +6268,60 @@ public:
 			}
 		}
 		return false;
+	}
+
+	//-------------------------------------------------
+	// 335. https://leetcode.com/problems/self-crossing/
+	//-------------------------------------------------
+	bool isSelfCrossing(vector<int>& x) {
+		int len = x.size();
+		if (len <= 3) {
+			return false;
+		}
+
+		// Categorize the self-crossing scenarios, there are 3 of them: 
+		// 1. Fourth line crosses first line and works for fifth line crosses second line and so on...
+		// 2. Fifth line meets first line and works for the lines after
+		// 3. Sixth line crosses first line and works for the lines after
+		for (int i = 3; i < len; i++) {
+			if (x[i] >= x[i - 2] && x[i - 1] <= x[i - 3]) {
+				return true; //Fourth line crosses first line and onward
+			}
+			if (i >= 4)	{
+				if (x[i - 1] == x[i - 3] && x[i] + x[i - 4] >= x[i - 2]) {
+					return true; // Fifth line meets first line and onward
+				}
+			}
+			if (i >= 5) {
+				if (x[i - 2] - x[i - 4] >= 0 && x[i] >= x[i - 2] - x[i - 4] &&
+					x[i - 1] >= x[i - 3] - x[i - 5] && x[i - 1] <= x[i - 3]) {
+					return true;  // Sixth line crosses first line and onward
+				}
+			}
+		}
+		return false;
+	}
+
+
+	//-------------------------------------------------
+	// 337. https://leetcode.com/problems/house-robber-iii/
+	//-------------------------------------------------
+	void robSub(TreeNode* root, vector<int> &out) {
+		if (root == nullptr) {
+			return;
+		}
+		int val = 0;
+		vector<int> left(2, 0), right(2, 0);
+		robSub(root->left, left);
+		robSub(root->right, right);
+		
+		out[0] = std::max(left[0], left[1]) + std::max(right[0], right[1]);
+		out[1] = root->val + left[0] + right[0];
+	}
+	int rob(TreeNode *root) {
+		vector<int> out(2, 0);
+		robSub(root, out);
+		return std::max(out[0], out[1]);
 	}
 
     //-------------------------------------------------
