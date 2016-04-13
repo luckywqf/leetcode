@@ -3444,6 +3444,26 @@ public:
 		return rightEnd;
 	}
 
+	//-------------------------------------------------
+	// 115. https://leetcode.com/problems/distinct-subsequences/
+	//-------------------------------------------------
+	int numDistinct(string s, string t) {
+		vector<vector<int>> value(t.size() + 1, vector<int>(s.size() + 1, 0));
+		for (int i = 0; i <= s.size(); i++) {
+			value[0][i] = 1;
+		}
+		for (int i = 1; i <= t.size(); i++) {
+			for (int j = 1; j <= s.size(); j++) {
+				if (s[j - 1] == t[i - 1]) {
+					value[i][j] = value[i - 1][j - 1] + value[i][j - 1];
+				} else {
+					value[i][j] = value[i][j - 1];
+				}
+			}
+		}
+		return value[t.size()][s.size()];
+	}
+
 
 	//-------------------------------------------------
 	// 116. https://leetcode.com/problems/populating-next-right-pointers-in-each-node/
@@ -3671,6 +3691,12 @@ public:
 		return true;
 	}
 
+	//-------------------------------------------------
+	// 126. https://leetcode.com/problems/word-ladder-ii/
+	//-------------------------------------------------
+	vector<vector<string>> findLadders(string beginWord, string endWord, unordered_set<string> &wordList) {
+
+	}
 
 	//-------------------------------------------------
 	// 127. https://leetcode.com/problems/word-ladder/
@@ -4002,26 +4028,33 @@ public:
 	// 142. https://leetcode.com/problems/linked-list-cycle-ii/
 	//-------------------------------------------------
 	ListNode *detectCycle(ListNode *head) {
-		ListNode *p = head;
-		while (p) {
-			ListNode *pc1 = p->next;
-			ListNode *pc2 = p->next;
-			while (pc1) {
-				if (pc1 == p) {
-					return p;
-				}
-				pc1 = pc1->next;
-				pc2 = pc2->next;
-				if (pc2 == nullptr) {
-					return nullptr;
-				}
-				pc2 = pc2->next;
-				if (pc1 == pc2)
-					break;
+		if (head == NULL || head->next == NULL)
+			return NULL;
+
+		ListNode* firstp = head;
+		ListNode* secondp = head;
+		bool isCycle = false;
+
+		while (firstp != NULL && secondp != NULL) {
+			firstp = firstp->next;
+			if (secondp->next == NULL) {
+				return NULL;
 			}
-			p = p->next;
+			secondp = secondp->next->next;
+			if (firstp == secondp) {
+				isCycle = true;
+				break;
+			}
 		}
-		return nullptr;
+
+		if (!isCycle) return NULL;
+		firstp = head;
+		while (firstp != secondp) {
+			firstp = firstp->next;
+			secondp = secondp->next;
+		}
+
+		return firstp;
 	}
 
 

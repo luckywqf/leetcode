@@ -189,3 +189,5 @@ _Pvt_Extensions/
 ModelManifest.xml
 config
 /Leetcode.VC.opendb
+*.db
+*.opendb
