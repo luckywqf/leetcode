@@ -1,4 +1,7 @@
 #include "solution.h"
+#include "384ShuffleArray.h"
+#include "385MiniParser.h"
+
 
 int main(int argc, char *argv[]) {
 	Solution s;
@@ -311,5 +314,20 @@ int main(int argc, char *argv[]) {
 	vector<pair<string, string>> in332_1 = { {"JFK", "SFO"}, {"JFK", "ATL"}, {"SFO", "ATL"}, {"ATL", "JFK"}, {"ATL", "SFO"} };
 	auto out332_0 = s.findItinerary(in332_0);
 	auto out332_1 = s.findItinerary(in332_1);
+
+
+	Solution_384 s384({ 1,2,3 });
+	for (int i = 0; i < 100; i++) {
+		auto out384 = s384.shuffle();
+	}
+
+	Solution_385 s385;
+	auto out385_0 = s385.deserialize("324");
+	auto out385_1 = s385.deserialize("[324]");
+	auto out385_2 = s385.deserialize("[324,[123]]");
+	auto out385_3 = s385.deserialize("[123,[456,[789]]]");
+	auto out385_4 = s385.deserialize("[]");
+	auto out385_5 = s385.deserialize("[[]]");
+
 	return 0;
 }

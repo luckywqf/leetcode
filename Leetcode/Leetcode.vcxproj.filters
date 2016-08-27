@@ -29,5 +29,11 @@
     <ClInclude Include="solution.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="385MiniParser.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="384ShuffleArray.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
