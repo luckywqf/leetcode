@@ -321,6 +321,8 @@ int main(int argc, char *argv[]) {
 	auto out347_0 = s.topKFrequent({ 1, 1, 1, 2, 2, 3 }, 2);
 	auto out347_1 = s.topKFrequent({ 3, 0, 1, 0 }, 1);
 
+	auto out349_0 = s.intersection({ 9, 3, 7 }, { 6, 4, 1, 0, 0, 4, 4, 8, 7 });
+
 	Solution_384 s384({ 1,2,3 });
 	for (int i = 0; i < 100; i++) {
 		auto out384 = s384.shuffle();
