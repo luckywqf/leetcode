@@ -6495,6 +6495,61 @@ public:
         
         return result;
     }
+
+	//-------------------------------------------------
+	// 342. https://leetcode.com/problems/power-of-four/
+	//-------------------------------------------------
+	bool isPowerOfFour(int num) {
+		return num > 0 && (num & (num - 1)) == 0 && (num - 1) % 3 == 0;
+	}
+
+
+	//-------------------------------------------------
+	// 343. https://leetcode.com/problems/integer-break/
+	//-------------------------------------------------
+	int integerBreak(int n) {
+		if (n == 2) {
+			return 1;
+		}
+		if (n == 3) {
+			return 2;
+		}
+		int result = 1;
+		while (n > 4) {
+			result *= 3;
+			n -= 3;
+		}
+		result *= n;
+		return result;
+	}
+
+	//-------------------------------------------------
+	// 344. https://leetcode.com/problems/reverse-string/
+	//-------------------------------------------------
+	string reverseString(string s) {
+		int len = s.size();
+		for (int i = 0, j = len - 1; i < j; i++, j--) {
+			swap(s[i], s[j]);
+		}
+		return s;
+	}
+
+	//-------------------------------------------------
+	// 345. https://leetcode.com/problems/reverse-vowels-of-a-string/
+	//-------------------------------------------------
+	string reverseVowels(string s) {
+		int i = 0;
+		int j = s.size() - 1;
+		set<char> dict = { 'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U' };
+		while (i < j) {
+			while (i < j && dict.count(s[i]) == 0) i++;
+			while (i < j && dict.count(s[j]) == 0) j--;
+			if (i < j) {
+				swap(s[i++], s[j--]);
+			}
+		}
+		return s;
+	}
 };
 
 //-------------------------------------------------

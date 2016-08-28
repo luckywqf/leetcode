@@ -315,6 +315,7 @@ int main(int argc, char *argv[]) {
 	auto out332_0 = s.findItinerary(in332_0);
 	auto out332_1 = s.findItinerary(in332_1);
 
+	auto out345_0 = s.reverseVowels("hello");
 
 	Solution_384 s384({ 1,2,3 });
 	for (int i = 0; i < 100; i++) {
