@@ -6550,6 +6550,27 @@ public:
 		}
 		return s;
 	}
+
+	//-------------------------------------------------
+	// 347. https://leetcode.com/problems/top-k-frequent-elements/
+	//-------------------------------------------------
+	vector<int> topKFrequent(vector<int> nums, int k) {
+		unordered_map<int, int> frequent;
+		for (auto num : nums) {
+			frequent[num]++;
+		}
+		vector<pair<int, int>> arrays;
+		for (auto f : frequent) {
+			arrays.push_back(f);
+		}
+		heap_sort_ks(arrays, k, [](pair<int, int> f, pair<int, int> s) { return f.second > s.second; });
+
+		vector<int> result;
+		for (int i = 0, j = arrays.size() - 1; i < k; i++, j--) {
+			result.push_back(arrays[j].first);
+		}
+		return result;
+	}
 };
 
 //-------------------------------------------------

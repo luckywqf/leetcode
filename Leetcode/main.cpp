@@ -5,6 +5,7 @@
 
 int main(int argc, char *argv[]) {
 	Solution s;
+
 	auto out6_0 = s.convert("PAYPALISHIRING", 3);
 	auto out6_1 = s.convert("PAYPALISHIRING", 4);
 
@@ -316,6 +317,9 @@ int main(int argc, char *argv[]) {
 	auto out332_1 = s.findItinerary(in332_1);
 
 	auto out345_0 = s.reverseVowels("hello");
+
+	auto out347_0 = s.topKFrequent({ 1, 1, 1, 2, 2, 3 }, 2);
+	auto out347_1 = s.topKFrequent({ 3, 0, 1, 0 }, 1);
 
 	Solution_384 s384({ 1,2,3 });
 	for (int i = 0; i < 100; i++) {
