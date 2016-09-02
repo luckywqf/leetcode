@@ -6615,6 +6615,26 @@ public:
 	}
 
 	//-------------------------------------------------
+	// 357. https://leetcode.com/problems/count-numbers-with-unique-digits/
+	//-------------------------------------------------
+	int countNumbersWithUniqueDigits(int n) {
+		if (n == 0) {
+			return 1;
+		} else if (n == 1) {
+			return 10;
+		}
+		int result = 10;
+		for (int i = 2; i <= n; i++) {
+			int base = 9;
+			for (int j = 1; j < i; j++) {
+				base *= 10 - j;
+			}
+			result += base;
+		}
+		return result;
+	}
+
+	//-------------------------------------------------
 	// 367. https://leetcode.com/problems/valid-perfect-square/
 	//-------------------------------------------------
 	bool isPerfectSquare(int num) {
