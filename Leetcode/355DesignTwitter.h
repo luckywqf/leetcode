@@ -3,7 +3,7 @@
 
 class Twitter {
 public:
-	/** Initialize your data structure here. */
+    /** Initialize your data structure here. */
 	Twitter() {
 
 	}
@@ -13,16 +13,43 @@ public:
 		twitters[userId].posts.push_back({ counter++, tweetId });
 	}
 
-	/** Retrieve the 10 most recent tweet ids in the user's news feed. 
-	    Each item in the news feed must be posted by users who the user followed or by the user herself. 
-		Tweets must be ordered from most recent to least recent. 
+	/** Retrieve the 10 most recent tweet ids in the user's news feed.
+	Each item in the news feed must be posted by users who the user followed or by the user herself.
+	Tweets must be ordered from most recent to least recent.
 	**/
 	vector<int> getNewsFeed(int userId) {
+		vector<vector<Post>::reverse_iterator> iters = { twitters[userId].posts.rbegin(), };
+		vector<vector<Post>::reverse_iterator> endIters = { twitters[userId].posts.rend(), };
+		set<int> &followees = twitters[userId].followees;
+		for (auto s : followees) {
+			iters.push_back(twitters[s].posts.rbegin());
+			endIters.push_back(twitters[s].posts.rend());
+		}
+		vector<int> feeds;
+		for (int i = 0; i < 10; i++) {
+			int maxOrder = -1;
+			int maxIndex = -1;
+			for (int j = 0; j < iters.size(); j++) {
+				if (iters[j] != endIters[j] && maxOrder < iters[j]->order) {
+					maxOrder = iters[j]->order;
+					maxIndex = j;
+				}
+			}
 
+			if (maxIndex == -1) {
+				break;
+			}
+			feeds.push_back(iters[maxIndex]->id);
+			iters[maxIndex]++;
+		}
+		return feeds;
 	}
 
 	/** Follower follows a followee. If the operation is invalid, it should be a no-op. */
 	void follow(int followerId, int followeeId) {
+		if (followeeId == followerId) {
+			return;
+		}
 		twitters[followerId].followees.insert(followeeId);
 	}
 
@@ -41,7 +68,7 @@ private:
 		set<int> followees;
 	};
 	map<int, User> twitters;
-	int counter;
+	int counter = 0;
 };
 
 /**
