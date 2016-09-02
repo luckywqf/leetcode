@@ -323,6 +323,14 @@ int main(int argc, char *argv[]) {
 
 	auto out349_0 = s.intersection({ 9, 3, 7 }, { 6, 4, 1, 0, 0, 4, 4, 8, 7 });
 
+	auto out367_1 = s.isPerfectSquare(1);
+	auto out367_2 = s.isPerfectSquare(2);
+	auto out367_3 = s.isPerfectSquare(3);
+	auto out367_4 = s.isPerfectSquare(4);
+	auto out367_5 = s.isPerfectSquare(16);
+	auto out367_6 = s.isPerfectSquare(808201);
+	auto out367_7 = s.isPerfectSquare(2147395600);
+
 	Solution_384 s384({ 1,2,3 });
 	for (int i = 0; i < 100; i++) {
 		auto out384 = s384.shuffle();
