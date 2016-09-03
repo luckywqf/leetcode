@@ -82,6 +82,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="341FlattenNestedListIterator.h" />
     <ClInclude Include="355DesignTwitter.h" />
     <ClInclude Include="384ShuffleArray.h" />
     <ClInclude Include="385MiniParser.h" />

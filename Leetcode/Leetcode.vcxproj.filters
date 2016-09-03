@@ -38,5 +38,8 @@
     <ClInclude Include="355DesignTwitter.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="341FlattenNestedListIterator.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
